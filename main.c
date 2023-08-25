@@ -6,11 +6,33 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/21 17:59:47 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/08/25 05:09:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *remove_double_quotes(char *str)
+{
+    int x;
+    int idx;
+    char *ptr;
+    
+    x = 0;
+    idx = 0;
+    ptr = malloc(ft_strlen(str) * sizeof(char) + 1);
+    while (str[x])
+    {
+        if (str[x] != '\"')
+        {
+            ptr[idx] = str[x];
+            idx++;
+        }
+        x++;
+    }
+    ptr[idx] = '\0';
+    return (ptr);
+}
 
 void    minishell_loop()
 {
@@ -23,7 +45,7 @@ void    minishell_loop()
     while (1)
     {
         working_dir = print_current_dir();
-        printf("Minishell>%s$ ", working_dir);
+        printf("Minishell:%s$ ", working_dir);
         input = readline("");
         if (!input) {
             printf("Exit\n");
@@ -38,21 +60,38 @@ void    minishell_loop()
         tokens = ft_split(input, ' ');
         command = tokens[0];
         args = &tokens[1];
-        if (!tokens[0])
+        if (!args || args[0] == NULL)
         {
-            printf("\n");
+            printf("no arguments\n");
         }
-        else if (ft_strcmp(command, "cd") == 0)
-        {
+        if (ft_strcmp(command, "cd") == 0)
             handle_cd(args);
-        }
         else if (ft_strcmp(command, "pwd") == 0)
-        {
             printf("%s\n", working_dir);
-        }
         else if (ft_strcmp(command, "echo") == 0)
         {
-            printf("displaying text...\n");
+            int x = 0;
+            char *temp = remove_double_quotes(join_args(args));
+            args = ft_split(temp, ' ');
+            if (ft_strcmp(args[0], "-n") == 0)
+            {
+                x = 1;
+                while (args[x + 1])
+                {
+                    printf("%s ", args[x]);
+                    x++;
+                }
+                printf("%s", args[x]);
+            }
+            else
+            {
+                while (args[x + 1])
+                {
+                    printf("%s ", args[x]);
+                    x++;
+                }
+                printf("%s\n", args[x]);
+            }
         }
         else if (ft_strcmp(command, "export") == 0)
         {

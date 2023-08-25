@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/21 17:56:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/08/25 02:28:09 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*ft_substr(char *s, unsigned int start, int len);
 int     ft_strcmp(const char *s1, const char *s2);
 char	**ft_split(char *s, char c);
 char	*ft_strdup(const char *s1);
-
+char	*ft_strjoin(char *s1, char *s2);
+char	*join_args(char **args);
 
 #endif

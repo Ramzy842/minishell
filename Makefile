@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 # Define the source files for the so_long executable
-SRC = main.c ./src/utils/ft_strcmp.c ./src/utils/ft_split.c ./src/utils/ft_substr.c ./src/utils/ft_strdup.c ./src/utils/ft_strlen.c ./src/builtins/builtins.c ./src/builtins/utils/cd_helpers.c ./src/execution/execution.c ./src/parsing/parsing.c ./src/signals/signals.c
+SRC = main.c ./src/utils/ft_strcmp.c ./src/utils/ft_split.c ./src/utils/ft_substr.c ./src/utils/ft_strdup.c ./src/utils/ft_strlen.c ./src/utils/ft_strjoin.c ./src/utils/handle_args.c ./src/builtins/builtins.c ./src/builtins/utils/cd_helpers.c ./src/execution/execution.c ./src/parsing/parsing.c ./src/signals/signals.c
 
 # Define the object files for the so_long executable, generated from the source files
 OBJ = $(SRC:.c=.o)
