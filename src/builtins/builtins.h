@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:52:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/21 18:11:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/08/27 12:45:35 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 int     handle_cd(char **args);
 char    *print_current_dir();
 int     visit_home_dir();
+int     apply_hybrid_cd(char *path);
 
 
 #endif

@@ -6,12 +6,11 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:51:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/21 18:37:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:14:03 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./builtins.h"
-#include "../../minishell.h"
 
 char *print_current_dir()
 {
@@ -26,35 +25,6 @@ char *print_current_dir()
     return (NULL);
 }
 
-int apply_hybrid_cd(char *path)
-{
-    char *home;
-
-    home = getenv("HOME");
-    if (home == NULL)
-        return (1);
-    if ((path[1] == '\0' || path[1] == '/') && !path[2])
-    {
-        if (chdir(home) != 0)
-            return (1);
-    } 
-    else
-    {
-        // Extract the path after '~/'
-        char *subpath = &path[2]; // Skip '~/' part
-            // go to home first
-        if (chdir(home) != 0)
-            return (1);
-            // and then go to subpath
-        if (chdir(subpath) != 0)
-        {
-            printf("Minishell: cd: %s: No such file or directory\n", &path[1]);
-            return (1);
-        }
-    }
-    return (0);
-}
-
 int handle_cd(char **args) 
 {
     if (*args == NULL || !args) 
@@ -62,7 +32,7 @@ int handle_cd(char **args)
     else 
     {
         char *path = args[0];
-        if (*path == '~') 
+        if (path[0] == '~') 
             apply_hybrid_cd(path);
         else if (chdir(path) != 0)
         {
@@ -71,6 +41,7 @@ int handle_cd(char **args)
         }
     }
     // Update the prompt to display the current working directory
-    print_current_dir();
+    //print_current_dir();
     return 0;
 }
+
