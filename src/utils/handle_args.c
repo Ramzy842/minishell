@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:10:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/25 04:51:33 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:07:54 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ char	*join_args(char **args)
     char    *str;
 
 	x = 0;
-    str = malloc(sizeof(char) * 2);
-	str[0] = ' ';
-	str[1] = '\0';
+    str = malloc(sizeof(char) * 1);
+	str[0] = '\0';
 	while (args[x])
 	{
 		temp = ft_strjoin(str, args[x]);

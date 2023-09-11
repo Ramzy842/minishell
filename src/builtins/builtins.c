@@ -6,11 +6,11 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:51:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/29 17:14:03 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/11 05:11:47 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./builtins.h"
+#include "../../minishell.h"
 
 char *print_current_dir()
 {
@@ -40,8 +40,34 @@ int handle_cd(char **args)
             return 1;
         }
     }
-    // Update the prompt to display the current working directory
-    //print_current_dir();
     return 0;
 }
 
+void    handle_env(char **envp, char **args)
+{
+    int x;
+
+    x = 0;
+    while (envp[x] && !args[0])
+    {
+        printf("%s\n", envp[x]);
+        x++;
+    }
+}
+
+void    handle_echo(char **args, char *input)
+{
+     char    *temp;
+
+    if (args[0] == NULL || !args)
+        printf("\n");
+    else
+    {
+        temp = remove_double_quotes(join_args(args));
+        args = ft_split(temp, ' ');
+        if (ft_strcmp(args[0], "-n") == 0)
+            echo_option_n(args);
+        else
+            echo_without_option_n(args, input);
+    }
+}

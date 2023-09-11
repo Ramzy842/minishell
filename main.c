@@ -6,35 +6,15 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/29 17:15:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:52:22 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *remove_double_quotes(char *str)
-{
-    int x;
-    int idx;
-    char *ptr;
-    
-    x = 0;
-    idx = 0;
-    ptr = malloc(ft_strlen(str) * sizeof(char) + 1);
-    while (str[x])
-    {
-        if (str[x] != '\"')
-        {
-            ptr[idx] = str[x];
-            idx++;
-        }
-        x++;
-    }
-    ptr[idx] = '\0';
-    return (ptr);
-}
 
-void    minishell_loop()
+
+void    minishell_loop(char **envp)
 {
     char    *input = NULL;
     char    **tokens = NULL;
@@ -45,12 +25,15 @@ void    minishell_loop()
     while (1)
     {
         working_dir = print_current_dir();
-        printf("Minishell:%s$ ", working_dir);
+        printf("\x1b[32mMinishell:\x1b[36m%s$ \x1b[0m", working_dir);
         input = readline("");
         if (!input)
             break ;
         if (ft_strlen(input) == 0)
+        {
             printf("\n");
+            free(input);
+        }
         else 
         {
             // Add input to history
@@ -67,35 +50,8 @@ void    minishell_loop()
             else if (ft_strcmp(command, "pwd") == 0)
                 printf("%s\n", working_dir);
             else if (ft_strcmp(command, "echo") == 0)
-            {
-                if (args[0] == NULL )
-                    printf("\n");
-                else
-                {
-                    int x = 0;
-                    char *temp = remove_double_quotes(join_args(args));
-                    args = ft_split(temp, ' ');
-                    if (ft_strcmp(args[0], "-n") == 0)
-                    {
-                        x = 1;
-                        while (args[x + 1])
-                        {
-                            printf("%s ", args[x]);
-                            x++;
-                        }
-                        printf("%s", args[x]);
-                    }
-                    else
-                    {
-                        while (args[x + 1])
-                        {
-                            printf("%s ", args[x]);
-                            x++;
-                        }
-                        printf("%s\n", args[x]);
-                    }
-                }
-            }
+                // handle_echo(args);
+                handle_echo(args, input);
             else if (ft_strcmp(command, "export") == 0)
             {
                 printf("exporting...\n");
@@ -105,10 +61,8 @@ void    minishell_loop()
                 printf("unsetting...\n");
             }
             else if (ft_strcmp(command, "env") == 0)
-            {
-                printf("environment variable...\n");
-            }
-             else if (ft_strcmp(command, "exit") == 0)
+                handle_env(envp, args);
+            else if (ft_strcmp(command, "exit") == 0)
             {
                 printf("exiting...\n");
                 free(input);
@@ -131,13 +85,13 @@ void    minishell_loop()
 
 
 
-int main(int argc, char **argv) 
+int main(int argc, char **argv, char **envp) 
 {
     if (argc != 1 || argv[1])
     {
         printf("Minishell does not accept arguments.\n");
         return (1);
     }
-    minishell_loop();
+    minishell_loop(envp);
     return (0);
 }
