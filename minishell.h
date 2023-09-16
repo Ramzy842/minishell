@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/07 20:40:30 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/17 00:02:24 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
 
+typedef struct s_command
+{
+    char    *command;
+    char    **args;
+    char    *input_file;
+    char    *output_file;
+    int     pipe_to;
+} t_command;
+
+typedef struct s_command_pipeline
+{
+    int         number_of_commands;
+    t_command   *commands;
+} t_command_pipeline;
 
 int     ft_strlen(char *str);
 char	*ft_substr(char *s, unsigned int start, int len);
@@ -33,4 +47,6 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
 char	*join_args(char **args);
 void    handle_env(char **envp, char **args);
+char    *remove_beg_end(char *str);
+char	*ft_strnstr( char *haystack, char *needle, int len);
 #endif
