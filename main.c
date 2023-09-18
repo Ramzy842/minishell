@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/17 00:33:27 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/19 00:43:11 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
     char    *input = NULL;
     char    *history_input = NULL;
     char    **tokens = NULL;
-    //char    **args = NULL;
-    //char    *command = NULL;
     char    *working_dir = NULL;
     (void) envp;
     while (1)
@@ -69,7 +67,7 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
                 if (ft_strnstr(tokens[x], "<", ft_strlen(tokens[x])))
                 {
                     char **full_command = ft_split(tokens[x], '<');
-                    char **first_part = ft_split(full_command[0], ' ');
+                    char **first_part = ft_split_spaces(remove_beg_end(full_command[0]));
                     pipeline->commands[x].command = first_part[0];
                     pipeline->commands[x].args = malloc(sizeof(char *) * ft_strlen_2d(first_part));
 
@@ -89,7 +87,7 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
                 else if (ft_strnstr(tokens[x], ">", ft_strlen(tokens[x])))
                 {
                     char **full_command = ft_split(tokens[x], '>');
-                    char **first_part = ft_split(full_command[0], ' ');
+                    char **first_part = ft_split_spaces(remove_beg_end(full_command[0]));
                     pipeline->commands[x].command = first_part[0];
                     pipeline->commands[x].args = malloc(sizeof(char *) * ft_strlen_2d(first_part));
 
@@ -109,7 +107,7 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
                 else
                 {
                     // default parsing
-                    char **full_command = ft_split(tokens[x], ' ');
+                    char **full_command = ft_split_spaces(remove_beg_end(tokens[x]));
                     pipeline->commands[x].command = full_command[0];
                     pipeline->commands[x].args = malloc(sizeof(char *) * ft_strlen_2d(full_command));
                     
@@ -129,35 +127,7 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
                 x++;
             }
 
-            // print commands
-            int z = 0;
-            printf("Commands:\n");
-            while (z < pipeline->number_of_commands)
-            {
-                printf("command %d is: %s\n",z + 1, pipeline->commands[z].command);
-                z++;
-            }
-            // end print commands
-            printf("Arguments:\n");
-            z = 0;
-            int y = 0;
-            while (y < pipeline->number_of_commands)
-            {
-                z = 0;
-                while (pipeline->commands[y].args[z])
-                {
-                    printf("Argument %d of command %s: %s\n",
-                        z+1, pipeline->commands[y].command, pipeline->commands[y].args[z]);
-                    z++;
-                }
-                y++;
-            }
-            // printf 1st cmd args
-            
-            // end printf 1st cmd args
-            
             // ending new struct code
-
 
             // tokens = ft_split(input, ' ');
             // command = tokens[0];
@@ -197,6 +167,30 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
             //     printf("Command '%s' not found\n", command);
             free(input);
         }
+            printf("Number of commands: %d\n", pipeline->number_of_commands);
+            // print commands
+            int z = 0;
+            printf("Commands:\n");
+            while (z < pipeline->number_of_commands)
+            {
+                printf("command %d is: %s\n",z + 1, pipeline->commands[z].command);
+                z++;
+            }
+            // end print commands
+            printf("Arguments:\n");
+            z = 0;
+            int y = 0;
+            while (y < pipeline->number_of_commands)
+            {
+                z = 0;
+                while (pipeline->commands[y].args[z])
+                {
+                    printf("Argument %d of command %s: %s\n",
+                        z+1, pipeline->commands[y].command, pipeline->commands[y].args[z]);
+                    z++;
+                }
+                y++;
+            }
     }
 }
 
@@ -204,8 +198,10 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
 
 int main(int argc, char **argv, char **envp) 
 {
-    t_command_pipeline  pipeline;
+    (void)envp;
 
+    t_command_pipeline  pipeline;
+    (void) pipeline;
     if (argc != 1 || argv[1])
     {
         printf("Minishell does not accept arguments.\n");
@@ -214,5 +210,13 @@ int main(int argc, char **argv, char **envp)
     pipeline.number_of_commands = 0;
     pipeline.commands = NULL;
     minishell_loop(envp, &pipeline);
+    // char *str = "hello \"world    \" i am groot hh";
+    // char **split = ft_split_spaces(str);
+    // int x = 0;
+    // while(split[x])
+    // {
+    //     printf("%s|||", split[x]);
+    //     x++;
+    // }
     return (0);
 }

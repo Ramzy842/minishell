@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/17 00:02:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/18 21:02:50 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ char	*join_args(char **args);
 void    handle_env(char **envp, char **args);
 char    *remove_beg_end(char *str);
 char	*ft_strnstr( char *haystack, char *needle, int len);
+char    **ft_split_spaces(char *s);
 #endif
