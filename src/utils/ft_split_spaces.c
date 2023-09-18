@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 00:44:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/19 00:50:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,15 @@ char **ft_split_spaces(char *s)
     int		y;
     int		start;
     char	**ptr;
+    int inside_quotes;
 
 	x = 0;
 	y = 0;
 	start = 0;
+	inside_quotes = 0;
 	ptr = malloc((count_words(s) + 1) * sizeof(char *));
-
     if (!ptr)
-        return NULL;
-
-    int inside_quotes = 0;
-
+        return (NULL);
     while (s[x] != '\0') 
 	{
         if (s[x] == '"' || s[x] == '\'')
@@ -91,7 +89,11 @@ char **ft_split_spaces(char *s)
         }
         x++;
     }
-	if (inside_quotes == 0 && (x == 0 || (s[x - 1] != ' ' && s[x - 1] != '\n' && s[x - 1] != '\t')))
+	if (inside_quotes == 0 
+		&& (x == 0 
+		|| (s[x - 1] != ' '
+			&& s[x - 1] != '\n'
+			&& s[x - 1] != '\t')))
 	{
         ptr[y] = ft_substr(s, start, x - start);
         if (!ptr[y])
