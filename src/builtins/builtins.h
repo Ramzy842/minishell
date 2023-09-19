@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:52:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/11 04:09:22 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/19 04:27:02 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ void    handle_echo(char **args, char *input);
 void    echo_without_option_n(char **args, char *input);
 char    *extract_echo_args(char *input, int start);
 int     count_double_quotes(char *str);
-int     is_between_quotes(char *str);
+
 #endif

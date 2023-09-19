@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/18 21:02:50 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/19 06:01:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
+
 
 typedef struct s_command
 {
@@ -50,4 +51,15 @@ void    handle_env(char **envp, char **args);
 char    *remove_beg_end(char *str);
 char	*ft_strnstr( char *haystack, char *needle, int len);
 char    **ft_split_spaces(char *s);
+int     ft_strlen_2d(char **tab);
+
+
+
+// printing
+void    print_commands_count(t_command_pipeline *pipeline);
+void    print_commands(t_command_pipeline *pipeline);
+void    print_args(t_command_pipeline *pipeline);
+void    print_input_files(t_command_pipeline *pipeline);
+void    print_output_files(t_command_pipeline *pipeline);
+void    printer(t_command_pipeline *pipeline);
 #endif

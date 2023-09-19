@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 20:46:21 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/11 04:08:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/19 04:19:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ char    *extract_echo_args(char *input, int start)
     return str;
 }
 
-int is_between_quotes(char *str)
-{
-    if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
-        return (1);
-    return (0);
-}
+// int is_between_quotes(char *str)
+// {
+//     if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
+//         return (1);
+//     return (0);
+// }
 
 int     count_double_quotes(char *str)
 {
