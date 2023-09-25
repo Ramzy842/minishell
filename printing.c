@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:50:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 06:01:35 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:45:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    print_commands_count(t_command_pipeline *pipeline)
 {
-    printf("Number of commands: %d\n", pipeline->number_of_commands);
+    printf("Number of commands:%d\n", pipeline->number_of_commands);
 }
 
 void    print_commands(t_command_pipeline *pipeline)
@@ -24,7 +24,7 @@ void    print_commands(t_command_pipeline *pipeline)
     printf("Commands:\n");
     while (z < pipeline->number_of_commands)
     {
-        printf("command %d is: %s\n",z + 1, pipeline->commands[z].command);
+        printf("command %d is:%s\n",z + 1, pipeline->commands[z].command);
         z++;
     }
     // end print commands
@@ -43,7 +43,7 @@ void    print_args(t_command_pipeline *pipeline)
         z = 0;
         while (pipeline->commands[y].args[z])
         {
-            printf("Argument %d of command %s: %s\n",
+            printf("Argument %d of command %s:%s\n",
                 z+1, pipeline->commands[y].command, pipeline->commands[y].args[z]);
             z++;
         }
@@ -58,7 +58,7 @@ void    print_input_files(t_command_pipeline *pipeline)
     x = 0;
     while (x < pipeline->number_of_commands)
     {
-        printf("input file for command %s: %s\n", pipeline->commands[x].command, pipeline->commands[x].input_file);
+        printf("input file for command %s:%s\n", pipeline->commands[x].command, pipeline->commands[x].input_file);
         x++;
     }
 }
@@ -70,11 +70,10 @@ void    print_output_files(t_command_pipeline *pipeline)
     x = 0;
     while (x < pipeline->number_of_commands)
     {
-        printf("output file for command %s: %s\n", pipeline->commands[x].command, pipeline->commands[x].output_file);
+        printf("output file for command %s:%s\n", pipeline->commands[x].command, pipeline->commands[x].output_file);
         x++;
     }
 }
-
 
 void printer(t_command_pipeline *pipeline)
 {

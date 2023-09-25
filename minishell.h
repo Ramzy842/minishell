@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 06:01:48 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/25 09:44:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ typedef struct s_command
     char    **args;
     char    *input_file;
     char    *output_file;
+	char	**vars;
     int     pipe_to;
+	// t_redirect     redirect_to;
 } t_command;
 
 typedef struct s_command_pipeline
@@ -52,7 +54,8 @@ char    *remove_beg_end(char *str);
 char	*ft_strnstr( char *haystack, char *needle, int len);
 char    **ft_split_spaces(char *s);
 int     ft_strlen_2d(char **tab);
-
+char	**tok_w_no_quotes(char **args);
+void	expander(t_command_pipeline *pipeline, char **full_command);
 
 
 // printing

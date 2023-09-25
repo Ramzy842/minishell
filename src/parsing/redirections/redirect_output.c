@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 03:57:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 05:59:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/25 07:44:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    redirect_output(char **tokens, t_command_pipeline *pipeline, int *x)
 {
     char **full_command = ft_split(tokens[*x], '>');
     char **first_part = ft_split_spaces(remove_beg_end(full_command[0]));
+	first_part = tok_w_no_quotes(first_part);
     pipeline->commands[*x].command = first_part[0];
     pipeline->commands[*x].args = malloc(sizeof(char *) * ft_strlen_2d(first_part));
     int y = 1;

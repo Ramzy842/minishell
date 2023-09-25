@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/09/19 04:54:48 by rchahban         ###   ########.fr        #
+#    Updated: 2023/09/25 09:46:24 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,9 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/utils/ft_strdup.c ./src/utils/ft_strlen.c \
 	./src/utils/ft_strjoin.c ./src/utils/handle_args.c \
 	./src/builtins/builtins.c ./src/builtins/utils/cd_helpers.c \
-	./src/execution/execution.c \
-	./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c
+	./src/execution/execution.c ./src/utils/tok_w_no_quotes.c \
+	./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
+	./src/parsing/expansion/expander.c
 
 # Define the object files for the so_long executable, generated from the source files
 OBJ = $(SRC:.c=.o)

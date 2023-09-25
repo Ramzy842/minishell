@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 00:50:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/25 06:53:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int count_words(const char *str)
+static	int	count_words(const char *str)
 {
     int	count;
     int	inside_quotes;
@@ -25,10 +25,10 @@ static int count_words(const char *str)
 	{
         if (str[x] == '"' || str[x] == '\'' )
             inside_quotes = !inside_quotes;
-    	else if (!inside_quotes 
+    	else if (!inside_quotes
 				&& (str[x] == ' '
 				|| str[x] == '\n'
-				|| str[x] == '\t')) 
+				|| str[x] == '\t'))
 		{
             count++;
             // Skip consecutive spaces, tabs, and newlines
@@ -42,13 +42,13 @@ static int count_words(const char *str)
     return (count);
 }
 
-char **ft_split_spaces(char *s)
+char	**ft_split_spaces(char *s)
 {
     int		x;
     int		y;
     int		start;
     char	**ptr;
-    int inside_quotes;
+    int		inside_quotes;
 
 	x = 0;
 	y = 0;
@@ -61,7 +61,7 @@ char **ft_split_spaces(char *s)
 	{
         if (s[x] == '"' || s[x] == '\'')
             inside_quotes = !inside_quotes;
-        if (!inside_quotes && (s[x] == ' ' || s[x] == '\n' || s[x] == '\t')) 
+        if (!inside_quotes && (s[x] == ' ' || s[x] == '\n' || s[x] == '\t'))
 		{
             // End of a word, store it
             int finish = x - 1;
@@ -89,9 +89,8 @@ char **ft_split_spaces(char *s)
         }
         x++;
     }
-	if (inside_quotes == 0 
-		&& (x == 0 
-		|| (s[x - 1] != ' '
+	if (inside_quotes == 0
+		&& (x == 0 || (s[x - 1] != ' '
 			&& s[x - 1] != '\n'
 			&& s[x - 1] != '\t')))
 	{
@@ -109,7 +108,23 @@ char **ft_split_spaces(char *s)
         }
         y++;
     }
+	if (inside_quotes == 1)
+    {
+        // Inside quotes, treat the open quote as a regular character
+        ptr[y] = ft_substr(s, start - 1, x - start + 1); // Include the open quote
+        if (!ptr[y])
+        {
+            int i = 0;
+            while (i <= y)
+            {
+                free(ptr[i]);
+                i++;
+            }
+            free(ptr);
+            return NULL;
+        }
+        y++;
+    }
     ptr[y] = NULL;
     return ptr;
 }
-
