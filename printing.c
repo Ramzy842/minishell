@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:50:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/25 09:45:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/27 20:52:58 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,66 @@ void    print_args(t_command_pipeline *pipeline)
 void    print_input_files(t_command_pipeline *pipeline)
 {
     int x;
+	int y;
 
     x = 0;
-    while (x < pipeline->number_of_commands)
-    {
-        printf("input file for command %s:%s\n", pipeline->commands[x].command, pipeline->commands[x].input_file);
-        x++;
-    }
+	y = 0;
+	if (pipeline->commands[x].input_files)
+	{
+    	while (x < pipeline->number_of_commands)
+    	{
+			while (pipeline->commands[x].input_files[y].file)
+			{
+				printf("input file for command %s:%s =====> order: %d\n",
+				pipeline->commands[x].command, pipeline->commands[x].input_files[y].file, pipeline->commands[x].input_files[y].order);
+				y++;
+			}
+        	x++;
+    	}
+	}
+	else
+		printf("No input files pesent.\n");
 }
 
 void    print_output_files(t_command_pipeline *pipeline)
 {
     int x;
+	int y;
 
     x = 0;
-    while (x < pipeline->number_of_commands)
+	y = 0;
+	if (pipeline->commands[x].output_files)
+	{
+		while (x < pipeline->number_of_commands)
+    	{
+			while (pipeline->commands[x].output_files[y].file)
+			{
+				printf("output file for command %s:%s =====> order: %d\n",
+					pipeline->commands[x].command, pipeline->commands[x].output_files[y].file, pipeline->commands[x].output_files[y].order);
+				y++;
+			}
+        	x++;
+    	}
+	}
+	else
+		printf("No output files pesent.\n");
+}
+void    print_tokens(char **tokens)
+{
+    int x;
+
+    x = 0;
+    while (tokens[x])
     {
-        printf("output file for command %s:%s\n", pipeline->commands[x].command, pipeline->commands[x].output_file);
+        printf("token: %d, %s\n", x+1, tokens[x]);
         x++;
     }
 }
 
-void printer(t_command_pipeline *pipeline)
+
+void printer(t_command_pipeline *pipeline, char **tokens)
 {
+	print_tokens(tokens);
     print_commands_count(pipeline);
     print_commands(pipeline);
     print_args(pipeline);

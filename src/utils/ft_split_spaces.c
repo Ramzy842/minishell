@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/25 06:53:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/26 08:39:42 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_split_spaces(char *s)
 	ptr = malloc((count_words(s) + 1) * sizeof(char *));
     if (!ptr)
         return (NULL);
-    while (s[x] != '\0') 
+    while (s[x] != '\0')
 	{
         if (s[x] == '"' || s[x] == '\'')
             inside_quotes = !inside_quotes;

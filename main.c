@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/25 09:47:38 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/27 21:49:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
             pipeline->commands = malloc(sizeof(t_command) * pipeline->number_of_commands);
             initialize_commands(pipeline);
 			if (!tokens_quotes_validation(tokens))
-			{
 				printf("Error: quotes not matching\n");
-			}
 			else
 			{
 				x = 0;
@@ -67,14 +65,14 @@ void    minishell_loop(char **envp, t_command_pipeline *pipeline)
 				{
 				    if (ft_strnstr(tokens[x], "<", ft_strlen(tokens[x])))
 				        redirect_input(tokens, pipeline, &x);
-				    else if (ft_strnstr(tokens[x], ">", ft_strlen(tokens[x])))
+				    if (ft_strnstr(tokens[x], ">", ft_strlen(tokens[x])))
 				        redirect_output(tokens, pipeline, &x);
 				    else
 				        default_input_parsing(tokens, pipeline, &x);
 				    x++;
 				}
             	// prints commands info
-            	printer(pipeline);
+            	printer(pipeline, ft_split_spaces(tokens[0]));
 				expander(pipeline, NULL);
 			}
             // ending new struct code

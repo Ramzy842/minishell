@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/25 09:44:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/09/27 21:02:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,28 @@
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
 
+typedef struct s_input_files
+{
+	char	*file;
+	int		order;
+} t_input_files;
+
+typedef struct s_output_files
+{
+	char	*file;
+	int		order;
+} t_output_files;
 
 typedef struct s_command
 {
-    char    *command;
-    char    **args;
-    char    *input_file;
-    char    *output_file;
-	char	**vars;
-    int     pipe_to;
-	// t_redirect     redirect_to;
+    char			*command;
+    char			**args;
+	t_input_files	*input_files;
+	t_output_files	*output_files;
+	char			**vars;
+    int				pipe_to;
 } t_command;
+
 
 typedef struct s_command_pipeline
 {
@@ -64,5 +75,7 @@ void    print_commands(t_command_pipeline *pipeline);
 void    print_args(t_command_pipeline *pipeline);
 void    print_input_files(t_command_pipeline *pipeline);
 void    print_output_files(t_command_pipeline *pipeline);
-void    printer(t_command_pipeline *pipeline);
+void    print_tokens(char **tokens);
+void	printer(t_command_pipeline *pipeline, char **tokens);
+void	print_full_command(char **full_command);
 #endif
