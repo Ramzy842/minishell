@@ -6,16 +6,16 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:25 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/28 00:37:26 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:24:54 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parsing.h"
+#include "../../minishell.h"
 
 int is_between_matching_quotes(char *str)
 {
 	
-    int length = strlen(str);
+    int length = ft_strlen(str);
     if (length < 2)
         return 1;
     char start_quote = str[0];
@@ -25,42 +25,20 @@ int is_between_matching_quotes(char *str)
     return 0; // Word is not enclosed in matching quotes
 }
 
-void    default_input_parsing(char **tokens, t_command_pipeline *pipeline, int *x)
+
+int    initialize_data(t_data *data)
 {
-    char **full_command = ft_split_spaces(remove_beg_end(tokens[*x]));
-	//full_command = tok_w_no_quotes(full_command);
-    pipeline->commands[*x].command = full_command[0];
-    pipeline->commands[*x].args = malloc(sizeof(char *) * ft_strlen_2d(full_command));
-
-    int y = 1;
-    int idx = 0;
-    while (full_command[y] != NULL)
-    {
-        pipeline->commands[*x].args[idx] = full_command[y];
-        y++;
-        idx++;
-    }
-    pipeline->commands[*x].args[idx] = NULL;
-    // end filling args of single command
-    pipeline->commands[*x].pipe_to = *x + 1;
-    // end default parsing
-}
-
-void    initialize_commands(t_command_pipeline *pipeline)
-{
-    int x;
-
-    x = 0;
-    pipeline->commands = malloc(sizeof(t_command) * pipeline->number_of_commands);
-    while(x < pipeline->number_of_commands)
-    {
-        pipeline->commands[x].command = NULL;
-        pipeline->commands[x].args = NULL;
-        pipeline->commands[x].input_files = NULL;
-        pipeline->commands[x].output_files = NULL;
-		pipeline->commands[x].vars = NULL;
-        x++;
-    }
+    data->simple_cmds = NULL;
+	data->lexer_list = NULL;
+	data->reset = 0;
+	data->pid = NULL;
+	data->heredoc = 0;
+	g_global.stop_heredoc = 0;
+	g_global.command_mode = 0;
+	g_global.heredoc_mode = 0;
+	//parse_envp(data);
+	//init_signals();
+	return (1);
 }
 
 int		args_are_matching(char **args)

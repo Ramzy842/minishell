@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/09/25 09:46:24 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/01 07:56:09 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,12 @@ CFLAGS = -Wall -Wextra -Werror
 
 # Define the source files for the so_long executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
+	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
 	./src/parsing/redirections/redirect_output.c \
 	./src/utils/ft_split_spaces.c ./src/utils/spaces.c \
-	./src/utils/ft_strcmp.c \
+	./src/utils/ft_strcmp.c ./src/utils/ft_strchr.c \
+	./src/utils/ft_putchar_fd.c ./src/parsing/lexer/lexer.c \
+	./src/utils/ft_strtrim.c ./src/utils/ft_putendl_fd.c \
 	./src/utils/ft_strnstr.c ./src/signals/signals.c \
 	./src/utils/ft_split.c ./src/utils/ft_substr.c \
 	./src/utils/ft_strdup.c ./src/utils/ft_strlen.c \
@@ -28,7 +31,8 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/builtins/builtins.c ./src/builtins/utils/cd_helpers.c \
 	./src/execution/execution.c ./src/utils/tok_w_no_quotes.c \
 	./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
-	./src/parsing/expansion/expander.c
+	./src/parsing/expansion/expander.c ./src/parsing/utils/quotes_utils.c ./src/parsing/utils/lexer_utils.c \
+	./src/parsing/lexer/lexer_list_operations.c
 
 # Define the object files for the so_long executable, generated from the source files
 OBJ = $(SRC:.c=.o)

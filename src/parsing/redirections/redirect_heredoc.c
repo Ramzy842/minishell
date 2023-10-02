@@ -1,51 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect_input.c                                   :+:      :+:    :+:   */
+/*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 03:57:56 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/29 11:09:23 by rchahban         ###   ########.fr       */
+/*   Created: 2023/09/29 09:47:53 by rchahban          #+#    #+#             */
+/*   Updated: 2023/09/29 11:17:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 // #include "../parsing.h"
 
-void print_full_command(char **full_command)
-{
-	int x = 0;
-	while (full_command[x])
-	{
-		printf("%s\n", remove_beg_end(full_command[x]));
-		x++;
-	}
-}
-
-void	assign_input_files(char **full_command,  t_input_files *files)
+void	assign_input_heredoc(char **full_command,  t_input_files *files)
 {
 	int	x;
 	int	idx;
 
 	x = 1;
 	idx = 0;
-	printf("print full command | input files\n");
+	printf("print full command | input heredoc files\n");
 	print_full_command(full_command);
 	while (x < ft_strlen_2d(full_command))
 	{
 		files[idx].file = full_command[x];
 		files[idx].order = x;
-		files[idx].type = INPUT;
+		files[idx].type = HEREDOC;
 		x++;
 		idx++;
 	}
 	printf("--------------------------------------------------------------\n");
 }
 
-void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x)
+void    redirect_heredoc(char **tokens, t_command_pipeline *pipeline, int *x)
 {
-    char **full_command = ft_split(tokens[*x], '<');
+    char **full_command = ft_split_spaces(ft_strnstr(tokens[*x], "<<", ft_strlen(tokens[*x])));
     char **first_part = ft_split_spaces(remove_beg_end(full_command[0]));
 	//first_part = tok_w_no_quotes(first_part);
     pipeline->commands[*x].command = first_part[0];
@@ -63,6 +53,6 @@ void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x)
         idx++;
     }
     pipeline->commands[*x].args[idx] = NULL;
-    assign_input_files(full_command, pipeline->commands[*x].input_files);
+    assign_input_heredoc(full_command, pipeline->commands[*x].input_files);
     pipeline->commands[*x].pipe_to = *x + 1;
 }

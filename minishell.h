@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/27 21:02:31 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/01 10:51:36 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,39 +23,54 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
+# include "./src/parsing/parsing.h"
 
-typedef struct s_input_files
-{
-	char	*file;
-	int		order;
-} t_input_files;
+// enum redirection_types
+// {
+// 	INPUT,
+// 	OUTPUT,
+// 	APPEND,
+// 	HEREDOC,
+// };
 
-typedef struct s_output_files
-{
-	char	*file;
-	int		order;
-} t_output_files;
+// typedef struct s_input_files
+// {
+// 	char	*file;
+// 	enum	redirection_types type;
+// 	int		order;
+// } t_input_files;
 
-typedef struct s_command
-{
-    char			*command;
-    char			**args;
-	t_input_files	*input_files;
-	t_output_files	*output_files;
-	char			**vars;
-    int				pipe_to;
-} t_command;
+// typedef struct s_output_files
+// {
+// 	char	*file;
+// 	enum	redirection_types type;
+// 	int		order;
+// } t_output_files;
+
+// typedef struct s_command
+// {
+//     char			*command;
+//     char			**args;
+// 	t_input_files	*input_files;
+// 	t_output_files	*output_files;
+// 	char			**vars;
+//     int				pipe_to;
+// } t_command;
+
+// --------------------------------------------------
 
 
-typedef struct s_command_pipeline
-{
-    int         number_of_commands;
-    t_command   *commands;
-} t_command_pipeline;
+
+// typedef struct s_command_pipeline
+// {
+//     int         number_of_commands;
+//     t_command   *commands;
+// } t_command_pipeline;
 
 int     ft_strlen(char *str);
 char	*ft_substr(char *s, unsigned int start, int len);
 int     ft_strcmp(const char *s1, const char *s2);
+char	*ft_strchr(const char *str, int c);
 char	**ft_split(char *s, char c);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
@@ -66,16 +81,35 @@ char	*ft_strnstr( char *haystack, char *needle, int len);
 char    **ft_split_spaces(char *s);
 int     ft_strlen_2d(char **tab);
 char	**tok_w_no_quotes(char **args);
-void	expander(t_command_pipeline *pipeline, char **full_command);
+char	*ft_strtrim(char  *s1, char  *set);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putchar_fd(char c, int fd);
+//void	expander(t_command_pipeline *pipeline, char **full_command);
 
 
 // printing
-void    print_commands_count(t_command_pipeline *pipeline);
-void    print_commands(t_command_pipeline *pipeline);
-void    print_args(t_command_pipeline *pipeline);
-void    print_input_files(t_command_pipeline *pipeline);
-void    print_output_files(t_command_pipeline *pipeline);
-void    print_tokens(char **tokens);
-void	printer(t_command_pipeline *pipeline, char **tokens);
-void	print_full_command(char **full_command);
+// void    print_commands_count(t_command_pipeline *pipeline);
+// void    print_commands(t_command_pipeline *pipeline);
+// void    print_args(t_command_pipeline *pipeline);
+// void    print_input_files(t_command_pipeline *pipeline);
+// void    print_output_files(t_command_pipeline *pipeline);
+// void    print_tokens(char **tokens);
+void	printer(t_data *data);
+// void	print_full_command(char **full_command);
+
+
+// ----------------------------------------------------------------------------------
+//								NEW CODE											|
+// ----------------------------------------------------------------------------------
+
+typedef struct s_global
+{
+	int	error_num;
+	int	stop_heredoc;
+	int	command_mode;
+	int	heredoc_mode;
+}	t_global;
+
+t_global	g_global;
+
 #endif

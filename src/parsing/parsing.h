@@ -6,18 +6,85 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/24 16:03:46 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:15:32 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
-# include "../../minishell.h"
 
-int		is_between_matching_quotes(char *str);
-void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x);
-void    redirect_output(char **tokens, t_command_pipeline *pipeline, int *x);
-void    default_input_parsing(char **tokens, t_command_pipeline *pipeline, int *x);
-void    initialize_commands(t_command_pipeline *pipeline);
-int		tokens_quotes_validation(char **tokens);
+typedef enum s_tokens
+{
+	INPUT = 1,
+	OUTPUT = 2,
+	APPEND = 3,
+	HEREDOC = 4,
+	PIPE = 5
+} t_tokens;
+
+typedef struct s_lexer
+{
+	int				index;
+	char			*str;
+	t_tokens 		token;
+	struct s_lexer	*next;
+	struct s_lexer	*prev;
+}	t_lexer;
+
+typedef struct s_parser_data
+{
+	t_lexer			*lexer_list;
+	int				num_redirections;
+	t_lexer			*redirections;
+	struct s_data	*data;
+}	t_parser_data;
+
+
+typedef struct s_data
+{
+	char					*shell_input;
+	char					**paths;
+	char					**envp;
+	struct s_simple_cmds	*simple_cmds;
+	t_lexer					*lexer_list;
+	char					*pwd;
+	char					*old_pwd;
+	int						pipes;
+	int						*pid;
+	int						heredoc;
+	int						reset;
+}	t_data;
+
+typedef struct s_simple_cmds
+{
+	char					**str;
+	int						(*builtin)(t_data *, struct s_simple_cmds *);
+	int						num_redirections;
+	char					*heredoc_file;
+	t_lexer					*redirections;
+	struct s_simple_cmds	*next;
+	struct s_simple_cmds	*prev;
+}	t_simple_cmds;
+
+
+int			initialize_data(t_data *data);
+int			quotes_are_matching(char *line);
+int			tokens_reader(t_data *data);
+int			handle_quotes(int x, char *str, char del);
+int			handle_token(char *str, int x, t_lexer **lexer_list);
+int			handle_words(int x, char *str, t_lexer **lexer_list);
+t_tokens	extract_token(char c);
+
+t_lexer		*create_lexer_node(char *str, int token);
+void		append_node(t_lexer	**list, t_lexer *new_node);
+int			add_node(char *str, t_tokens token, t_lexer **lexer_list);
+
+// int		is_between_matching_quotes(char *str);
+// void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x);
+// void    redirect_output(char **tokens, t_command_pipeline *pipeline, int *x);
+// void    redirect_heredoc(char **tokens, t_command_pipeline *pipeline, int *x);
+// void    redirect_append(char **tokens, t_command_pipeline *pipeline, int *x);
+// void    default_input_parsing(char **tokens, t_command_pipeline *pipeline, int *x);
+// void    initialize_commands(t_command_pipeline *pipeline);
+// int		tokens_quotes_validation(char **tokens);
 #endif

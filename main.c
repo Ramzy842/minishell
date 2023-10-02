@@ -6,129 +6,88 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/27 21:49:45 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:19:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "./src/parsing/parsing.h"
 
-void    minishell_loop(char **envp, t_command_pipeline *pipeline)
+
+
+int	minishell_loop(t_data *data);
+
+int	reset_data(t_data *data)
 {
-    char    *input = NULL;
-    char    *history_input = NULL;
-    char    **tokens = NULL;
-    char    *working_dir = NULL;
-    int     x;
-
-    (void) envp;
-    x = 0;
-    while (1)
-    {
-        working_dir = print_current_dir();
-		working_dir = ft_strjoin("\x1b[32mMinishell:\x1b[36m",working_dir);
-		working_dir = ft_strjoin(working_dir, "$ \x1b[0m");
-        input = readline(working_dir);
-        //printf("\x1b[32mMinishell:\x1b[36m%s$ \x1b[0m", working_dir);
-        history_input = input;
-        input = remove_beg_end(input);
-        if (!input)
-            break ;
-        if (ft_strlen(input) == 0)
-        {
-            //printf("\n");
-            free(input);
-        }
-        else if (input[ft_strlen(input) - 1] == '|')
-        {
-            printf("error pipe is last\n");
-            free(input);
-        }
-        else 
-        {
-            // Add input to history
-            add_history(history_input);
-
-            // beginning new struct code
-            tokens = ft_split(input, '|');
-            while (tokens[x])
-                x++;
-            pipeline->number_of_commands = x;
-            pipeline->commands = malloc(sizeof(t_command) * pipeline->number_of_commands);
-            initialize_commands(pipeline);
-			if (!tokens_quotes_validation(tokens))
-				printf("Error: quotes not matching\n");
-			else
-			{
-				x = 0;
-				while (x < pipeline->number_of_commands)
-				{
-				    if (ft_strnstr(tokens[x], "<", ft_strlen(tokens[x])))
-				        redirect_input(tokens, pipeline, &x);
-				    if (ft_strnstr(tokens[x], ">", ft_strlen(tokens[x])))
-				        redirect_output(tokens, pipeline, &x);
-				    else
-				        default_input_parsing(tokens, pipeline, &x);
-				    x++;
-				}
-            	// prints commands info
-            	printer(pipeline, ft_split_spaces(tokens[0]));
-				expander(pipeline, NULL);
-			}
-            // ending new struct code
-
-            // tokens = ft_split(input, ' ');
-            // command = tokens[0];
-            // args = &tokens[1];
-            // if (ft_strcmp(pipeline->commands[0].command, "cd") == 0)
-            //    handle_cd(pipeline->commands[0].args);
-            // else if (ft_strcmp(command, "pwd") == 0)
-            //     printf("%s\n", working_dir);
-            // else if (ft_strcmp(command, "echo") == 0)
-            //     // handle_echo(args);
-            //     handle_echo(args, input);
-            // else if (ft_strcmp(command, "export") == 0)
-            // {
-            //     printf("exporting...\n");
-            // }
-            // else if (ft_strcmp(command, "unset") == 0)
-            // {
-            //     printf("unsetting...\n");
-            // }
-            // else if (ft_strcmp(command, "env") == 0)
-            //     handle_env(envp, args);
-            // else if (ft_strcmp(command, "exit") == 0)
-            // {
-            //     printf("exiting...\n");
-            //     free(input);
-            //     break ;
-            // }
-            // else if (ft_strcmp(command, "$") == 0)
-            // {
-            //     printf("%s: command not found\n", command);
-            // }
-            // else if (ft_strcmp(command, ".") == 0)
-            // {
-            //     printf("Minishell: %s: filename argument required\n.: usage: . filename [arguments]\n", command);
-            // }
-            // else
-            //     printf("Command '%s' not found\n", command);
-            free(input);
-        }
-    }
+	//ft_simple_cmdsclear(&data->simple_cmds);
+	free(data->shell_input);
+	//if (data->pid)
+	//	free(data->pid);
+	//free_arr(data->paths);
+	initialize_data(data);
+	data->reset = 1;
+	printf("performing reset\n");
+	minishell_loop(data);
+	return (1);
 }
 
-int main(int argc, char **argv, char **envp) 
+char *show_current_path(char *working_dir)
 {
-    t_command_pipeline  pipeline;
+	working_dir = print_current_dir();
+	working_dir = ft_strjoin("\x1b[32mMinishell:\x1b[36m",working_dir);
+	working_dir = ft_strjoin(working_dir, "$ \x1b[0m");
+	return (working_dir);
+}
 
-    if (argc != 1 || argv[1])
-    {
-        printf("Minishell does not accept arguments.\n");
-        return (1);
-    }
-    pipeline.number_of_commands = 0;
-    pipeline.commands = NULL;
-    minishell_loop(envp, &pipeline);
-    return (0);
+int	minishell_loop(t_data *data)
+{
+	char    *working_dir = NULL;
+	char	*temp;
+
+	working_dir = show_current_path(working_dir);
+	data->shell_input = readline(working_dir);
+	temp = ft_strtrim(data->shell_input, " ");
+	free(data->shell_input);
+	data->shell_input = temp;
+	if (!data->shell_input)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
+	}
+	if (ft_strlen(&data->shell_input[0]) == '\0')
+		return (reset_data(data));
+	add_history(data->shell_input);
+	if (!quotes_are_matching(data->shell_input))
+		//return (ft_error(2, data));
+	{
+		printf("error in quotes\n");
+		return (EXIT_FAILURE);		
+	}
+	if (!tokens_reader(data))
+		//return (ft_error(1, data)); -----> this is correct
+	{
+		printf("tokenization error\n");
+	}
+	//parser(data);
+	//prepare_executor(data);
+	printf("executing command\n");
+	printer(data);
+	reset_data(data);
+	return (1);
+}
+
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+	(void) envp;
+	if (argc != 1 || argv[1])
+	{
+		printf("\x1b[31mMinishell does not accept arguments\n");
+		exit(0);
+	}
+	//data.envp = ft_arrdup(envp);
+	//find_pwd(&tools);
+	initialize_data(&data);
+	minishell_loop(&data);
+	return (0);
 }
