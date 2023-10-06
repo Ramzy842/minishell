@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/01 10:51:36 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:14:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,14 @@ char	**tok_w_no_quotes(char **args);
 char	*ft_strtrim(char  *s1, char  *set);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *s, int fd);
 //void	expander(t_command_pipeline *pipeline, char **full_command);
 
 
 // printing
-// void    print_commands_count(t_command_pipeline *pipeline);
-// void    print_commands(t_command_pipeline *pipeline);
-// void    print_args(t_command_pipeline *pipeline);
-// void    print_input_files(t_command_pipeline *pipeline);
-// void    print_output_files(t_command_pipeline *pipeline);
-// void    print_tokens(char **tokens);
-void	printer(t_data *data);
-// void	print_full_command(char **full_command);
-
+void printer(t_data *data, t_command *command);
+void	print_tokens_list(t_data *data);
+void	print_commands(t_command *command);
 
 // ----------------------------------------------------------------------------------
 //								NEW CODE											|
@@ -111,5 +106,8 @@ typedef struct s_global
 }	t_global;
 
 t_global	g_global;
+
+
+int	reset_data(t_data *data);
 
 #endif

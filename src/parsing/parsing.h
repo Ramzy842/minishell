@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/02 11:15:32 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:15:36 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef enum s_tokens
 
 typedef struct s_lexer
 {
-	int				index;
+	int				id;
 	char			*str;
 	t_tokens 		token;
 	struct s_lexer	*next;
@@ -34,7 +34,7 @@ typedef struct s_lexer
 typedef struct s_parser_data
 {
 	t_lexer			*lexer_list;
-	int				num_redirections;
+	int				number_of_redirections;
 	t_lexer			*redirections;
 	struct s_data	*data;
 }	t_parser_data;
@@ -45,7 +45,7 @@ typedef struct s_data
 	char					*shell_input;
 	char					**paths;
 	char					**envp;
-	struct s_simple_cmds	*simple_cmds;
+	struct s_command		*command;
 	t_lexer					*lexer_list;
 	char					*pwd;
 	char					*old_pwd;
@@ -53,18 +53,19 @@ typedef struct s_data
 	int						*pid;
 	int						heredoc;
 	int						reset;
+	// t_parser_data			*parser_data;
 }	t_data;
 
-typedef struct s_simple_cmds
+typedef struct s_command
 {
 	char					**str;
-	int						(*builtin)(t_data *, struct s_simple_cmds *);
-	int						num_redirections;
+	int						(*builtin)(t_data *, struct s_command *);
+	int						number_of_redirections;
 	char					*heredoc_file;
 	t_lexer					*redirections;
-	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*prev;
-}	t_simple_cmds;
+	struct s_command		*next;
+	struct s_command		*prev;
+}	t_command;
 
 
 int			initialize_data(t_data *data);
@@ -79,6 +80,18 @@ t_lexer		*create_lexer_node(char *str, int token);
 void		append_node(t_lexer	**list, t_lexer *new_node);
 int			add_node(char *str, t_tokens token, t_lexer **lexer_list);
 
+// PARSER
+int			launch_parser(t_data *data);
+void 		update_pipes_count(t_data *data);
+
+void		parser_error(int error, t_data *data, t_lexer *lexer_list);
+void		remove_lexer_node(t_lexer **lst, int key);
+int			parser_double_token_error(t_data *data, t_lexer *lexer_list, t_tokens token);
+void		delete_first_lexer_node(t_lexer **lst);
+void		lexer_error(int error, t_data *data);
+t_lexer		*free_lexer_node(t_lexer **lst);
+void		clear_lexer_nodes(t_lexer **lst);
+int			ft_error(int error, t_data *data);
 // int		is_between_matching_quotes(char *str);
 // void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x);
 // void    redirect_output(char **tokens, t_command_pipeline *pipeline, int *x);
