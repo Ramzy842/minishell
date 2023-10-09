@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:22:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/02 17:20:52 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:44:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_lexer	*create_lexer_node(char *str, int token)
 	new_node->token = token;
 	new_node->id = idx++;
 	new_node->next = NULL;
-	new_node->prev = NULL;
 	return (new_node);
 }
 
@@ -41,7 +40,6 @@ void	append_node(t_lexer	**list, t_lexer *new_node)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new_node;
-	new_node->prev = temp;
 }
 
 int	add_node(char *str, t_tokens token, t_lexer **lexer_list)
@@ -59,7 +57,6 @@ int	add_node(char *str, t_tokens token, t_lexer **lexer_list)
 void	remove_lexer_node(t_lexer **lst, int key)
 {
 	t_lexer	*current;
-	t_lexer	*prev;
 	t_lexer	*start;
 
 	start = *lst;
@@ -70,16 +67,7 @@ void	remove_lexer_node(t_lexer **lst, int key)
 		return ;
 	}
 	while (current && current->id != key)
-	{
-		prev = current;
 		current = current->next;
-	}
-	if (current)
-		prev->next = current->next;
-	else
-		prev->next = NULL;
-	if (prev->next)
-		prev->next->prev = prev;
 	free_lexer_node(&current);
 	*lst = start;
 }

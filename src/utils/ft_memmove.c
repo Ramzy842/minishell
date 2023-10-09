@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/08 07:55:09 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/08 12:17:16 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/08 12:17:29 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../minishell.h"
 
-void update_pipes_count(t_data *data)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	t_lexer *current;
+	char	*dst1;
+	char	*src1;
 
-	data->pipes = 0;
-	current = data->lexer_list;
-	while(current)
+	dst1 = (char *)dst;
+	src1 = (char *)src;
+	if (dst1 > src1)
 	{
-		if (current->token == PIPE)
-			data->pipes++;
-		current = current->next;
+		while (len)
+		{
+			dst1[len - 1] = src1[len - 1];
+			len--;
+		}
+		return (dst1);
 	}
+	return (ft_memcpy(dst1, src1, len));
 }

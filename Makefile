@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/05 12:41:10 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/08 12:18:45 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
 	./src/parsing/expansion/expander.c ./src/parsing/utils/lexer/quotes_utils.c ./src/parsing/utils/lexer/lexer_utils.c \
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
-	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c
-
+	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
+	./src/utils/ft_memmove.c ./src/utils/ft_memcpy.c
 # Define the object files for the so_long executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 
@@ -46,7 +46,7 @@ all: $(NAME)
 
 # Rule to generate the so_long executable from the object files
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline #-g -fsanitize=address
 
 # Rule to generate the object files from the source files
 %.o: %.c

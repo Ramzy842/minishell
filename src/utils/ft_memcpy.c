@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/08 07:55:09 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/08 12:16:39 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/08 12:16:49 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../minishell.h"
 
-void update_pipes_count(t_data *data)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	t_lexer *current;
+	size_t	x;
+	char	*dst1;
+	char	*src1;
 
-	data->pipes = 0;
-	current = data->lexer_list;
-	while(current)
+	dst1 = (char *)dst;
+	src1 = (char *)src;
+	x = 0;
+	if (dst1 == NULL && src1 == NULL && n > 0)
 	{
-		if (current->token == PIPE)
-			data->pipes++;
-		current = current->next;
+		return (NULL);
 	}
+	while (x < n)
+	{
+		dst1[x] = src1[x];
+		x++;
+	}
+	return (dst1);
 }

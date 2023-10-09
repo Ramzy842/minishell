@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/05 16:33:38 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:41:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	free_arr(char **arr)
 
 int	minishell_loop(t_data *data);
 
-void	clear_command_nodes(t_command **lst)
+void	clear_command_nodes(t_commands **lst)
 {
-	t_command	*tmp;
+	t_commands		*tmp;
 	t_lexer			*redirections_tmp;
 
 	if (!*lst)
@@ -39,11 +39,10 @@ void	clear_command_nodes(t_command **lst)
 	{
 		tmp = (*lst)->next;
 		redirections_tmp = (*lst)->redirections;
-		clear_lexer_nodes(&redirections_tmp);
-		if ((*lst)->str)
-			free_arr((*lst)->str);
-		if ((*lst)->heredoc_file)
-			free((*lst)->heredoc_file);
+		if (redirections_tmp)
+			clear_lexer_nodes(&redirections_tmp);
+		if ((*lst)->command_args)
+			free_arr((*lst)->command_args);
 		free(*lst);
 		*lst = tmp;
 	}
@@ -52,11 +51,12 @@ void	clear_command_nodes(t_command **lst)
 
 int	reset_data(t_data *data)
 {
-	//clear_command_nodes(&data->command);
-	free(data->shell_input);
-	//if (data->pid)
-	//	free(data->pid);
-	//free_arr(data->paths);
+	// if (data->commands)
+	// 	clear_command_nodes(&data->commands);
+	// free(data->shell_input);
+	// if (data->pid)
+	// 	free(data->pid);
+	// free_arr(data->paths);
 	initialize_data(data);
 	data->reset = 1;
 	printf("performing reset...\n");
@@ -74,11 +74,16 @@ char *show_current_path(char *working_dir)
 
 int	minishell_loop(t_data *data)
 {
-	char    *working_dir = NULL;
+	// char    *working_dir = NULL;
 	char	*temp;
-
-	working_dir = show_current_path(working_dir);
-	data->shell_input = readline(working_dir);
+	data->commands = NULL;
+	data->lexer_list = NULL;
+	data->pipes = 0;
+	data->shell_input = NULL;
+	//working_dir = show_current_path(working_dir);
+	// data->shell_input = readline(working_dir);
+	data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
+	//free(working_dir);
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
 	data->shell_input = temp;
@@ -100,14 +105,19 @@ int	minishell_loop(t_data *data)
 	if (!tokens_reader(data))
 		return (ft_error(1, data));
 	//print_tokens_list(data);
-	launch_parser(data);
+	// launch_parser(data);
+	// print_commands(data->commands);
 	//print_commands(data->command);
 	//prepare_executor(data);
-	//launch_parser(data);
+	// launch_parser(data);
+	build_commands_list(&data->lexer_list, data);
+	// t_commands *cmds = parse_commands(data);
+	// print_commands_list(data->commands);
 	printf("\x1b[33mexecuting command...\x1b[0m\n");
 	reset_data(data);
 	return (1);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {

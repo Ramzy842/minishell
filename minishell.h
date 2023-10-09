@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/05 16:14:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:41:42 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@
 // } t_command_pipeline;
 
 int     ft_strlen(char *str);
+void	*ft_memmove(void *dst, const void *src, size_t len);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_substr(char *s, unsigned int start, int len);
 int     ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *str, int c);
@@ -89,9 +91,15 @@ void	ft_putstr_fd(char *s, int fd);
 
 
 // printing
-void printer(t_data *data, t_command *command);
+void printer(t_data *data, t_commands *command);
 void	print_tokens_list(t_data *data);
-void	print_commands(t_command *command);
+// void	print_commands(t_commands *command);
+void print_lexer_list(t_lexer *list);
+void print_commands_list(t_commands *list);
+// void print_commands_list(t_command **list);
+void	clear_command_nodes(t_commands **lst);
+void build_commands_list(t_lexer **lexer_list, t_data *data);
+// void build_commands_list(t_lexer **tokens, t_data *data);
 
 // ----------------------------------------------------------------------------------
 //								NEW CODE											|

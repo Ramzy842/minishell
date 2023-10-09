@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:14:31 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/05 12:41:37 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/07 09:32:41 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,4 @@ void	delete_first_lexer_node(t_lexer **lst)
 	node = *lst;
 	*lst = node->next;
 	free_lexer_node(&node);
-	if (*lst)
-		(*lst)->prev = NULL;
 }

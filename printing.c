@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:50:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/05 16:13:49 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:55:27 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,26 @@ void	print_tokens_list(t_data *data)
 	}
 }
 
-
-void	print_commands(t_command *command)
-{
-	t_command	*temp;
-	int x = 0;
-	//int idx = 0;
-	temp = command;
-	while (temp && temp->str)
-	{
-		//printf("command %d\n", x + 1);
-		x = 0;
-		printf("command %d\n", x + 1);
+// void	print_commands(t_commands *command)
+// {
+// 	t_commands	*temp;
+// 	int x = 0;
+// 	//int idx = 0;
+// 	temp = command;
+// 	while (temp && temp->str)
+// 	{
+// 		//printf("command %d\n", x + 1);
+// 		x = 0;
+// 		printf("command %d\n", x + 1);
 		
-		printf("%s\n",temp->redirections->str);
-		temp = temp->next;
-		x++;
-		printf("--------------------\n");
-		//idx++;
-	}
-	printf("number of commands %d\n", x);
-}
+// 		printf("%s\n",temp->redirections->str);
+// 		temp = temp->next;
+// 		x++;
+// 		printf("--------------------\n");
+// 		//idx++;
+// 	}
+// 	printf("number of commands %d\n", x);
+// }
 
 // void printer(t_data *data, t_command *command)
 // {
@@ -74,3 +73,42 @@ void	print_commands(t_command *command)
 // 	print_commands(command);
 // 	//print_parser_data(parser_data);
 // }
+
+void print_lexer_list(t_lexer *list)
+{
+	t_lexer *current = list;
+	printf("redir list: \n");
+	while (current)
+	{
+		printf("str is (%s) and token is (%d)\n", current->str, current->token);
+		current = current->next;
+	} 
+}
+
+void print_commands_list(t_commands *list)
+{
+    t_commands *current = list;
+    int idx = 1;
+    printf("Command list: \n");
+    while (current)
+    {
+        printf("Command %d args: \n", idx);
+        int x = 0;
+        while (current->command_args[x])
+        {
+            printf("  Arg %d: %s\n", x + 1, current->command_args[x]);
+            x++;
+        }
+
+        printf("Command %d redirections: \n", idx);
+        t_lexer *redirections = current->redirections;
+        while (redirections)
+        {
+            printf("  Redirection: %s, Token: %d\n", redirections->str, redirections->token);
+            redirections = redirections->next;
+        }
+
+        idx++;
+        current = current->next;
+    }
+}
