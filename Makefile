@@ -14,7 +14,7 @@
 CC = cc
 
 # Define the flags to pass to the compiler
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -ggdb
+CFLAGS = -Wall -Wextra -Werror
 # Define the source files for the so_long executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
 	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \

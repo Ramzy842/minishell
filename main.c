@@ -121,12 +121,6 @@ t_commands* gen_cmd_lst(t_data* data) {
 			data->lexer_list = data->lexer_list->next;
 			i++;
 		}
-		if (data->lexer_list && is_redir_op(data->lexer_list->str) && !data->lexer_list->next)
-		{
-			// maybe free hna
-			// syntax error
-			return NULL;
-		}
 		while (data->lexer_list && is_metachar(data->lexer_list->str)) {
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|")) {
 				tmp->next = gen_cmd_node();
