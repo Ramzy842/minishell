@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 11:24:17 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 17:50:01 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:07:53 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,163 +264,90 @@ void init_redirs(t_lexer **list)
 	}
 }
 
-// void extract_command(t_data **data, int x, int *command_id,int redirs)
-// {
-	// int y = 0;
-	// t_data *temp = *data;
-	// int tok_present = 0;
-	// int redir_count = 0;
-	// char *str = malloc(1);
-	// str[0] = '\0';
-	// printf("num redir %d\n", redirs);
-	// if (temp->commands->redirections > 0)
-	// {
-	// 	temp->commands->redirections = malloc(sizeof(t_lexer) * redirs);
-	// 	if (!temp->commands->redirections)
-	// 		return ;
-	// }
-	// init_redirs(&temp->commands->redirections);
-	// while (y < x)
-	// {
-	// 	if (temp->lexer_list->token != PIPE)
-	// 	{
-	// 		if (temp->lexer_list->token >= INPUT
-	// 			&& temp->lexer_list->token <= HEREDOC)
-	// 		{
-	// 			tok_present = 1;
-	// 			redir_count++;
-	// 			if (temp->lexer_list->next->str && temp->lexer_list->token)
-	// 			{
-	// 				add_node(temp->lexer_list->next->str,
-	// 				  	temp->lexer_list->token, &temp->commands->redirections);
-	// 				// printf("hh\n");
-	// 				temp->commands->redirections = temp->commands->redirections->next;
-	// 			}
-	// 		}
-	// 		else
-	// 		{
-	// 			if (tok_present == 0)
-	// 			{
-	// 				str = ft_strjoin(str, temp->lexer_list->str);
-	// 				str = ft_strjoin(str, " ");
-    //             }
-	// 		}
-	// 	}
-	// 	else
-	// 		(*command_id)++;
-	// 	y++;
-	// 	temp->lexer_list = temp->lexer_list->next;
-	// }
-	// char **args = ft_split(str, ' ');
-	// t_commands *new_cmd = create_command_node(args,
-	// 	redir_count, temp->commands->redirections);
-	// add_command_node(&temp->commands, new_cmd);
-	// printf("-----------------------------------------------------------\n");
-// }
-
-// int	launch_parser(t_data *data)
-// {
-// 	if (check_pipe_last(data))
-// 	{
-// 		printf("a token is last\n");
-// 		return (0);
-// 	}
-// 	int number_of_cmds = count_commands(data->lexer_list);
-// 	data->commands = malloc(sizeof(t_commands) * number_of_cmds);
-// 	update_pipes_count(data);
-// 	int x = 1;
-// 	int cmd_id = 1;
-// 	printf("-------------------------------- PARSER -----------------------------------------\n");
-// 	t_data temp_data;
-// 	ft_memcpy(&temp_data, data, sizeof(t_data));
-// 	t_lexer *temp_lexer_list = data->lexer_list;
-// 	while (temp_lexer_list)
-// 	{
-// 		if (temp_lexer_list->token == PIPE || !temp_lexer_list->next)
-// 		{	
-// 			int redirs = count_redir(&temp_data, x);
-// 			extract_command(&data, x, &cmd_id, redirs);
-// 			x = 0;
-// 		}
-// 		x++;
-// 		temp_lexer_list = temp_lexer_list->next;
-// 	}
-// 	// print_commands_list(data->commands);
-// 	print_lexer_list(data->commands->redirections);
-// 	printf("commands: %d\n", number_of_cmds);
-// 	return (EXIT_SUCCESS);
-// }
-
-// t_commands* create_commands_node() {
-//     // Allocate memory for a new t_commands node
-//     // Initialize the members of the node (e.g., command_args, redirections)
-//     // Return a pointer to the newly created node
-// }
-
-
-void extract_command_args(t_commands* command, t_lexer** current_lexer)
+void extract_command(t_data **data, int x, int *command_id,int redirs)
 {
-	t_lexer* temp_lexer = *current_lexer;
+	int y = 0;
+	t_data *temp = *data;
+	int tok_present = 0;
+	int redir_count = 0;
 	char *str = malloc(1);
 	str[0] = '\0';
-	int tok_present = 0;
-    // Loop to extract command arguments (WORDS) and store them in command_args.
-	while ((temp_lexer))
+	printf("num redir %d\n", redirs);
+	if (redirs > 0)
 	{
-		if (tok_present == 1 && temp_lexer->token == PIPE)
-			tok_present = 0;
-		else if (!((temp_lexer)->token >= INPUT && (temp_lexer)->token <= HEREDOC) && tok_present == 0)
+		temp->commands->redirections = malloc(sizeof(t_lexer) * redirs);
+		if (!temp->commands->redirections)
+			return ;
+	}
+	init_redirs(&temp->commands->redirections);
+	while (y < x)
+	{
+		if (temp->lexer_list->token != PIPE)
 		{
-			str = ft_strjoin(str, ft_strdup(temp_lexer->str));
-			str = ft_strjoin(str, " ");
-			printf("%s\n", str);
+			if (temp->lexer_list->token >= INPUT
+				&& temp->lexer_list->token <= HEREDOC)
+			{
+				tok_present = 1;
+				redir_count++;
+				if (temp->lexer_list->next->str && temp->lexer_list->token)
+				{
+					add_node(temp->lexer_list->next->str,
+					  	temp->lexer_list->token, &temp->commands->redirections);
+					// printf("hh\n");
+					// temp->commands->redirections = temp->commands->redirections->next;
+				}
+			}
+			else
+			{
+				if (tok_present == 0)
+				{
+					str = ft_strjoin(str, temp->lexer_list->str);
+					str = ft_strjoin(str, " ");
+                }
+			}
 		}
 		else
-			tok_present = 1;
-        temp_lexer = temp_lexer->next;
-    }
-	command->command_args = ft_split(str, ' ');
-	
-	free(str);
-}
-
-
-void extract_redirections(t_commands* command, t_lexer** current_lexer) {
-    // Loop to extract and store redirections (INPUT, OUTPUT, APPEND, HEREDOC).
-	t_lexer* temp_lexer = *current_lexer;
-    while (temp_lexer)
-	{
-        if (temp_lexer->token >= INPUT && temp_lexer->token <= HEREDOC)
-		{
-			// printf("token is %d and file is %s\n", temp_lexer->token, temp_lexer->next->str);
-			if (add_node(ft_strdup(temp_lexer->next->str), temp_lexer->token, &command->redirections) == 0)
-				printf("failed to create redir node\n");
-			command->number_of_redirections++;
-        }
-        temp_lexer = temp_lexer->next;
-    }
-}
-
-
-// Function to build a linked list of commands
-void build_commands_list(t_lexer **lexer_list, t_data *data)
-{
-	t_lexer *tokens = *lexer_list;
-	int number_of_cmds = count_commands(tokens);
-	printf("cmd count: %d\n", number_of_cmds);
-    data->commands = malloc(sizeof(t_commands) * number_of_cmds);
-    // t_commands* current = NULL;
-	// int redir_detected = 0;
-    // Loop through the tokenized input (tokens)
-    while (tokens)
-	{
-        // Check the token type (e.g., WORD, PIPE, REDIRECTIONS)
-        t_commands* new_command = create_command_node(NULL, 0, NULL);
-        extract_command_args(new_command, &tokens);
-		extract_redirections(new_command, &tokens);
-		add_command_node(&data->commands, new_command);
-		// printf("moving forward\n");
-        tokens = tokens->next;
+			(*command_id)++;
+		y++;
+		temp->lexer_list = temp->lexer_list->next;
 	}
+	char **args = ft_split(str, ' ');
+	t_commands *new_cmd = create_command_node(args,
+		redir_count, temp->commands->redirections);
+	add_command_node(&temp->commands, new_cmd);
+	printf("-----------------------------------------------------------\n");
 }
+
+int	launch_parser(t_data *data)
+{
+	if (check_pipe_last(data))
+	{
+		printf("a token is last\n");
+		return (0);
+	}
+	int number_of_cmds = count_commands(data->lexer_list);
+	data->commands = malloc(sizeof(t_commands) * number_of_cmds);
+	update_pipes_count(data);
+	int x = 1;
+	int cmd_id = 1;
+	printf("-------------------------------- PARSER -----------------------------------------\n");
+	t_data temp_data;
+	ft_memcpy(&temp_data, data, sizeof(t_data));
+	t_lexer *temp_lexer_list = data->lexer_list;
+	while (temp_lexer_list)
+	{
+		if (temp_lexer_list->token == PIPE || !temp_lexer_list->next)
+		{	
+			int redirs = count_redir(&temp_data, x);
+			extract_command(&data, x, &cmd_id, redirs);
+			x = 0;
+		}
+		x++;
+		temp_lexer_list = temp_lexer_list->next;
+	}
+	print_lexer_list(data->commands->redirections);
+	printf("commands: %d\n", number_of_cmds);
+	return (EXIT_SUCCESS);
+}
+
 

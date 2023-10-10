@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 17:41:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:59:15 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ int	minishell_loop(t_data *data)
 	// print_commands(data->commands);
 	//print_commands(data->command);
 	//prepare_executor(data);
-	// launch_parser(data);
-	build_commands_list(&data->lexer_list, data);
+	launch_parser(data);
+	// build_commands_list(&data->lexer_list, data);
 	// t_commands *cmds = parse_commands(data);
 	// print_commands_list(data->commands);
 	printf("\x1b[33mexecuting command...\x1b[0m\n");
