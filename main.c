@@ -100,6 +100,9 @@ void print_cmd_lst(t_commands* cmd) {
 			i++;
 		}
 		printf("\n");
+		printf("input_redir: %i | output_redir: %i\n", cmd->i_redir, cmd->o_redir);
+		printf("input_file: %s | output_file: %s\n", cmd->input_filename, cmd->output_filename);
+		printf("\n");
 		cmd = cmd->next;
 	}
 }
@@ -111,50 +114,57 @@ t_commands* gen_cmd_lst(t_data* data) {
 	t_commands* tmp = head;
 	int i = 0;
 	while (data->lexer_list) {
-		int sz = calc_argv_sz(data->lexer_list);
-		tmp->command_args = malloc(sizeof(char*) * calc_argv_sz(data->lexer_list) + 1);
-		ft_memset(tmp->command_args, 0, sizeof(char*) * calc_argv_sz(data->lexer_list) + 1);
+		tmp->command_args = malloc(sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
+		ft_memset(tmp->command_args, 0, sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
 		while (data->lexer_list && !is_metachar(data->lexer_list->str)) {
 			tmp->command_args[i] = ft_strdup(data->lexer_list->str);
 			data->lexer_list = data->lexer_list->next;
 			i++;
 		}
-		if (!ft_strcmp(data->lexer_list->str, "|")) {
-			tmp->next = gen_cmd_node();
-			data->lexer_list = data->lexer_list->next;
-			tmp = tmp->next;
-			continue;
-		}
-		if (is_redir_op(data->lexer_list->str) && !data->lexer_list->next)
+		if (data->lexer_list && is_redir_op(data->lexer_list->str) && !data->lexer_list->next)
 		{
 			// maybe free hna
 			// syntax error
 			return NULL;
 		}
-		if (!ft_strcmp(data->lexer_list->str, "<")) {
-			if (tmp->input_filename)
-				free(tmp->input_filename);
-			tmp->input_filename = ft_strdup(data->lexer_list->next->str);
-			data->lexer_list = data->lexer_list->next;
-			tmp->i_redir = INPUT;
-		}
-		if (!ft_strcmp(data->lexer_list->str, "<<")) {
-			data->lexer_list = data->lexer_list->next;
-			tmp->i_redir = HEREDOC;
-		}
-		if (!ft_strcmp(data->lexer_list->str, ">>")) {
-			if (tmp->output_filename)
-				free(tmp->output_filename);
-			tmp->output_filename = ft_strdup(data->lexer_list->next->str);
-			data->lexer_list = data->lexer_list->next;
-			tmp->o_redir = APPEND;
-		}
-		if (!ft_strcmp(data->lexer_list->str, ">")) {
-			if (tmp->output_filename)
-				free(tmp->output_filename);
-			data->lexer_list = data->lexer_list->next;
-			tmp->output_filename = ft_strdup(data->lexer_list->next->str);
-			tmp->o_redir = OUTPUT;
+		while (data->lexer_list && is_metachar(data->lexer_list->str)) {
+			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|")) {
+				tmp->next = gen_cmd_node();
+				data->lexer_list = data->lexer_list->next;
+				tmp = tmp->next;
+				continue;
+			}
+			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<")) {
+				if (tmp->input_filename)
+					free(tmp->input_filename);
+				tmp->input_filename = ft_strdup(data->lexer_list->next->str);
+				tmp->i_redir = IO_INPUT;
+				data->lexer_list = data->lexer_list->next;
+				if (data->lexer_list)
+					data->lexer_list = data->lexer_list->next;
+			}
+			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<<")) {
+				tmp->i_redir = IO_HEREDOC;
+				data->lexer_list = data->lexer_list->next;
+			}
+			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">>")) {
+				if (tmp->output_filename)
+					free(tmp->output_filename);
+				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
+				tmp->o_redir = IO_APPEND;
+				data->lexer_list = data->lexer_list->next;
+				if (data->lexer_list)
+					data->lexer_list = data->lexer_list->next;
+			}
+			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">")) {
+				if (tmp->output_filename)
+					free(tmp->output_filename);
+				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
+				tmp->o_redir = IO_OUTPUT;
+				data->lexer_list = data->lexer_list->next;
+				if (data->lexer_list)
+					data->lexer_list = data->lexer_list->next;
+			}
 		}
 		i = 0;
 	}

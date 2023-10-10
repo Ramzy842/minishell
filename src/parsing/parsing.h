@@ -25,11 +25,13 @@ typedef enum s_tokens
 
 
 typedef enum {
+	INPUT_NONE,
 	IO_INPUT,
 	IO_HEREDOC
 } input_redirections;
 
 typedef enum {
+	OUTPUT_NONE,
 	IO_OUTPUT,
 	IO_APPEND
 } output_redirections;

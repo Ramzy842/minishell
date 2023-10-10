@@ -1,0 +1,14 @@
+total 352
+drwxr-xr-x  13 ikorchi  candidates     442 Oct 10 20:46 .
+drwxr-xr-x   6 ikorchi  candidates     204 Oct 10 19:13 ..
+drwxr-xr-x  13 ikorchi  candidates     442 Oct 10 20:30 .git
+-rw-r--r--   1 ikorchi  candidates    3054 Oct 10 20:46 Makefile
+-rw-r--r--   1 ikorchi  candidates      10 Oct 10 19:13 README.md
+-rw-r--r--   1 ikorchi  candidates    6066 Oct 10 20:46 main.c
+-rw-r--r--   1 ikorchi  candidates   29588 Oct 10 20:46 main.o
+-rwxr-xr-x   1 ikorchi  candidates  108972 Oct 10 20:46 minishell
+-rw-r--r--   1 ikorchi  candidates    3682 Oct 10 19:13 minishell.h
+-rw-r--r--   1 ikorchi  candidates       0 Oct 10 20:46 ok
+-rw-r--r--   1 ikorchi  candidates    2537 Oct 10 19:45 printing.c
+-rw-r--r--   1 ikorchi  candidates   11344 Oct 10 20:46 printing.o
+drwxr-xr-x   7 ikorchi  candidates     238 Oct 10 19:13 src
