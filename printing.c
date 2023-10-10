@@ -85,30 +85,3 @@ void print_lexer_list(t_lexer *list)
 	} 
 }
 
-void print_commands_list(t_commands *list)
-{
-    t_commands *current = list;
-    int idx = 1;
-    printf("Command list: \n");
-    while (current)
-    {
-        printf("Command %d args: \n", idx);
-        int x = 0;
-        while (current->command_args[x])
-        {
-            printf("  Arg %d: %s\n", x + 1, current->command_args[x]);
-            x++;
-        }
-
-        printf("Command %d redirections: \n", idx);
-        t_lexer *redirections = current->redirections;
-        while (redirections)
-        {
-            printf("  Redirection: %s, Token: %d\n", redirections->str, redirections->token);
-            redirections = redirections->next;
-        }
-
-        idx++;
-        current = current->next;
-    }
-}

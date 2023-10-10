@@ -23,7 +23,17 @@ typedef enum s_tokens
 	PIPE = 5,
 } t_tokens;
 
-	
+
+typedef enum {
+	IO_INPUT,
+	IO_HEREDOC
+} input_redirections;
+
+typedef enum {
+	IO_OUTPUT,
+	IO_APPEND
+} output_redirections;
+
 typedef struct s_lexer
 {
 	int				id;
@@ -71,9 +81,10 @@ typedef struct s_data
 typedef struct s_commands
 {
 	char					**command_args;
-	// int						(*builtin)(t_data *, struct s_commands *);
-	int						number_of_redirections;
-	t_lexer					*redirections;
+	input_redirections i_redir;
+	output_redirections o_redir;
+	char* input_filename;
+	char* output_filename;
 	struct s_commands		*next;
 }	t_commands;
 

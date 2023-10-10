@@ -51,20 +51,30 @@ int	handle_token(char *str, int x, t_lexer **lexer_list)
 	token = extract_token(str[x]);
 	if (token == OUTPUT && extract_token(str[x + 1]) == OUTPUT)
 	{
-		if (!add_node(NULL, APPEND, lexer_list))
+		if (!add_node(ft_strdup(">>"), APPEND, lexer_list))
 			return (-1);
 		return (2);
 	}
 	else if (token == INPUT && extract_token(str[x + 1]) == INPUT)
 	{
-		if (!add_node(NULL, HEREDOC, lexer_list))
+		if (!add_node(ft_strdup("<<"), HEREDOC, lexer_list))
 			return (-1);
 		return (2);
 	}
 	else if (token)
 	{
-		if (!add_node(NULL, token, lexer_list))
-			return (-1);
+		if (token == 1) {
+			if (!add_node(ft_strdup("<"), INPUT, lexer_list))
+				return -1;
+		}
+		if (token == 2) {
+			if (!add_node(ft_strdup(">"), OUTPUT, lexer_list))
+				return -1;
+		}
+		if (token == PIPE) {
+			if (!add_node(ft_strdup("|"), PIPE, lexer_list))
+				return -1;
+		}
 		return (1);
 	}	
 	return (0);

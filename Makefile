@@ -15,7 +15,6 @@ CC = cc
 
 # Define the flags to pass to the compiler
 CFLAGS = -Wall -Wextra -Werror
-
 # Define the source files for the so_long executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
 	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
@@ -46,7 +45,7 @@ all: $(NAME)
 
 # Rule to generate the so_long executable from the object files
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline #-g -fsanitize=address
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline 
 
 # Rule to generate the object files from the source files
 %.o: %.c
