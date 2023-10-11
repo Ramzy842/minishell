@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/10 18:59:15 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/11 23:54:47 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,36 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-int	minishell_loop(t_data *data);
+char **dup_env(char **envp)
+{
+	int		x;
+	char	**ptr;
 
+	x = 0;
+	ptr = NULL;
+	// count number of strs
+	while (envp[x])
+		x++;
+	// allocate memo for strs
+	ptr = ft_calloc((x + 1), sizeof(char *));
+	if (!ptr)
+		return (NULL);
+	// dup each str in  the envp to the ptr
+	x = 0;
+	while (envp[x])
+	{
+		ptr[x] = ft_strdup(envp[x]);
+		if (!ptr[x])
+		{
+			free_arr(ptr);
+			return (NULL);
+		}
+		x++;
+	}
+	return (ptr);
+}
+
+int	minishell_loop(t_data *data);
 
 int	reset_data(t_data *data)
 {
@@ -39,7 +67,7 @@ int	reset_data(t_data *data)
 	// free_arr(data->paths);
 	initialize_data(data);
 	data->reset = 1;
-	printf("performing reset...\n");
+	printf("Performing reset...\n");
 	minishell_loop(data);
 	return (1);
 }
@@ -93,7 +121,8 @@ void print_cmd_lst(t_commands* cmd) {
 	while (cmd) {
 		int i = 0;
 		printf("argv: ");
-		while (cmd->command_args[i]) {
+		while (cmd->command_args[i])
+		{
 			printf("%s", cmd->command_args[i]);
 			if (cmd->command_args[i + 1])
 				printf(", ");
@@ -101,13 +130,11 @@ void print_cmd_lst(t_commands* cmd) {
 		}
 		printf("\n");
 		printf("input_redir: %i | output_redir: %i\n", cmd->i_redir, cmd->o_redir);
-		printf("input_file: %s | output_file: %s\n", cmd->input_filename, cmd->output_filename);
+		printf("input_file: %s  | output_file: %s\n", cmd->input_filename, cmd->output_filename);
 		printf("\n");
 		cmd = cmd->next;
 	}
 }
-
-
 
 t_commands* gen_cmd_lst(t_data* data) {
 	t_commands* head = gen_cmd_node();
@@ -138,8 +165,13 @@ t_commands* gen_cmd_lst(t_data* data) {
 					data->lexer_list = data->lexer_list->next;
 			}
 			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<<")) {
+				if (tmp->input_filename)
+					free(tmp->input_filename);
+				tmp->input_filename = ft_strdup(data->lexer_list->next->str);
 				tmp->i_redir = IO_HEREDOC;
 				data->lexer_list = data->lexer_list->next;
+				if (data->lexer_list)
+					data->lexer_list = data->lexer_list->next;
 			}
 			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">>")) {
 				if (tmp->output_filename)
@@ -166,18 +198,36 @@ t_commands* gen_cmd_lst(t_data* data) {
 }
 
 
+void print_dollar_vars(t_commands *cmd)
+{
+	int x = 0;
+	t_commands *current = cmd;
+	while (current)
+	{
+		x = 0;
+		while (current->command_args[x])
+		{
+			if (ft_strtrim(current->command_args[x], "\"")[0] == '$')
+				printf("%s", current->command_args[x]);
+			x++;
+		}
+		printf("\n");
+		current = current->next;
+	}
+}
+
 int	minishell_loop(t_data *data)
 {
 	// char    *working_dir = NULL;
 	char	*temp;
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	data->pipes = 0;
-	data->shell_input = NULL;
-	//working_dir = show_current_path(working_dir);
+	// data->pipes = 0;
+	// data->shell_input = NULL;
+	// working_dir = show_current_path(working_dir);
 	// data->shell_input = readline(working_dir);
 	data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
-	//free(working_dir);
+	// free(working_dir);
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
 	data->shell_input = temp;
@@ -191,43 +241,73 @@ int	minishell_loop(t_data *data)
 	add_history(data->shell_input);
 	if (!quotes_are_matching(data->shell_input))
 	{
-		//return (ft_error(2, data));
 		printf("error in quotes\n");
 		reset_data(data);
 		return (EXIT_FAILURE);	
 	}
 	if (!tokens_reader(data))
 		return (ft_error(1, data));
-	//print_tokens_list(data);
-	// launch_parser(data);
-	// print_commands(data->commands);
-	//print_commands(data->command);
-	//prepare_executor(data);
-	t_commands* cmd = gen_cmd_lst(data);
-
-	print_cmd_lst(cmd);
-	// launch_parser(data);
-	// build_commands_list(&data->lexer_list, data);
-	// t_commands *cmds = parse_commands(data);
-	// print_commands_list(data->commands);
+	data->commands = gen_cmd_lst(data);
+	print_cmd_lst(data->commands);
 	printf("\x1b[33mexecuting command...\x1b[0m\n");
 	reset_data(data);
 	return (1);
 }
 
+char *extract_path(char **envp)
+{
+	int		x;
+	char	*empty_str;
+
+	x = 0;
+	empty_str = NULL;
+	while (envp[x])
+	{
+		if (!ft_strncmp(envp[x], "PATH=", 5))
+			return (ft_substr(envp[x], 5, ft_strlen(envp[x])));
+		x++;
+	}
+	empty_str = ft_strdup("\0");
+	return (empty_str);
+}
+
+void handle_envp(t_data *data)
+{
+	int		x;
+	char	*envp_path;
+	char	*temp;
+
+	envp_path = NULL;
+	temp = NULL;
+	envp_path = extract_path(data->envp);
+	data->paths = ft_split(envp_path, ':');
+	free(envp_path);
+	x = 0;
+	while (data->paths[x])
+	{ 
+		if (ft_strncmp(&data->paths[x][ft_strlen(data->paths[x]) - 1],
+			"/", 1) != 0)
+		{
+			temp = ft_strjoin(data->paths[x], "/");
+			free(data->paths[x]);
+			data->paths[x] = temp;
+		}
+		x++;
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-	(void) envp;
 	if (argc != 1 || argv[1])
 	{
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
-	//data.envp = ft_arrdup(envp);
-	//find_pwd(&tools);
 	initialize_data(&data);
+	//find_pwd(&tools);
+	data.envp = dup_env(envp);
+	handle_envp(&data);
 	minishell_loop(&data);
 	return (0);
 }

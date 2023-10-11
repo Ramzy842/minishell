@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 16:33:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:01:35 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_data
 	t_lexer					*lexer_list;
 	char					*pwd;
 	char					*old_pwd;
-	int						pipes;
+	// int						pipes;
 	int						*pid;
 	int						heredoc;
 	int						reset;

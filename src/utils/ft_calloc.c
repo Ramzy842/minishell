@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:14:13 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/11 19:45:46 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/11 19:46:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../minishell.h"
 
-// void update_pipes_count(t_data *data)
-// {
-// 	t_lexer *current;
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*ptr;
+	int		x;
 
-// 	data->pipes = 0;
-// 	current = data->lexer_list;
-// 	while(current)
-// 	{
-// 		if (current->token == PIPE)
-// 			data->pipes++;
-// 		current = current->next;
-// 	}
-// }
+	if (count == SIZE_MAX && size == SIZE_MAX)
+		return (NULL);
+	x = 0;
+	ptr = malloc(count * size);
+	if (ptr == 0)
+	{
+		return (ptr);
+	}
+	ft_bzero(ptr, count * size);
+	return (ptr);
+}

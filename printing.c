@@ -6,16 +6,16 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:50:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 15:55:27 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:14:00 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void print_pipes_count(t_data *data)
-{
-	printf("pipes present in the pipeline: %d\n", data->pipes);
-}
+// void print_pipes_count(t_data *data)
+// {
+// 	printf("pipes present in the pipeline: %d\n", data->pipes);
+// }
 
 void print_token_type(t_tokens token)
 {

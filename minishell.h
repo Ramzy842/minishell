@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 17:41:42 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:14:34 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ char	*ft_strtrim(char  *s1, char  *set);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
+void	*ft_calloc(size_t count, size_t size);
+int		ft_strncmp(const char *s1, const char *s2, size_t length);
+void	ft_bzero(void *s, size_t n);
 //void	expander(t_command_pipeline *pipeline, char **full_command);
 
 

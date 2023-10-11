@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:14:13 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/11 20:11:22 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/11 20:11:37 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../minishell.h"
 
-// void update_pipes_count(t_data *data)
-// {
-// 	t_lexer *current;
+int	ft_strncmp(const char *s1, const char *s2, size_t length)
+{
+	size_t			x;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-// 	data->pipes = 0;
-// 	current = data->lexer_list;
-// 	while(current)
-// 	{
-// 		if (current->token == PIPE)
-// 			data->pipes++;
-// 		current = current->next;
-// 	}
-// }
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	x = 0;
+	while (x < length && (str1[x] != '\0' || str2[x] != '\0'))
+	{
+		if (str1[x] != str2[x])
+		{
+			return (str1[x] - str2[x]);
+		}
+		x++;
+	}
+	return (0);
+}

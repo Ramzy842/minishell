@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:14:13 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/11 19:55:50 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/11 19:56:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../minishell.h"
 
-// void update_pipes_count(t_data *data)
-// {
-// 	t_lexer *current;
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	x;
+	char	*str;
 
-// 	data->pipes = 0;
-// 	current = data->lexer_list;
-// 	while(current)
-// 	{
-// 		if (current->token == PIPE)
-// 			data->pipes++;
-// 		current = current->next;
-// 	}
-// }
+	x = 0;
+	str = (char *)s;
+	if (n == 0)
+		return ;
+	while (x < n)
+	{
+		str[x] = '\0';
+		x++;
+	}
+}

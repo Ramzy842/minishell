@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:25 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 09:47:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:54:02 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ int is_between_matching_quotes(char *str)
 int    initialize_data(t_data *data)
 {
     data->commands = NULL;
+	data->envp = NULL;
 	data->lexer_list = NULL;
 	data->reset = 0;
 	data->pid = NULL;
 	data->heredoc = 0;
-	g_global.stop_heredoc = 0;
-	g_global.command_mode = 0;
-	g_global.heredoc_mode = 0;
+	// g_global.stop_heredoc = 0;
+	// g_global.command_mode = 0;
+	// g_global.heredoc_mode = 0;
 	//parse_envp(data);
 	//init_signals();
 	return (1);
