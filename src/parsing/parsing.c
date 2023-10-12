@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:25 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 19:54:02 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:48:47 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int is_between_matching_quotes(char *str)
 
 int    initialize_data(t_data *data)
 {
+	data->shell_input = NULL;
     data->commands = NULL;
 	data->envp = NULL;
 	data->lexer_list = NULL;

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 23:54:47 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:36:22 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,29 @@ char **dup_env(char **envp)
 
 int	minishell_loop(t_data *data);
 
+void clear_command_nodes(t_commands **list)
+{
+	t_commands	*tmp;
+
+	if (!*list)
+		return ;
+	while (*list)
+	{
+		tmp = (*list)->next;
+		if ((*list)->command_args)
+			free_arr((*list)->command_args);
+		if ((*list)->heredoc)
+			free((*list)->heredoc);
+		free(*list);
+		*list = tmp;
+	}
+	*list = NULL;
+}
+
 int	reset_data(t_data *data)
 {
-	// if (data->commands)
-	// 	clear_command_nodes(&data->commands);
+	if (data->commands)
+	 	clear_command_nodes(&data->commands);
 	// free(data->shell_input);
 	// if (data->pid)
 	// 	free(data->pid);
@@ -136,21 +155,53 @@ void print_cmd_lst(t_commands* cmd) {
 	}
 }
 
+int getLinkedListLength(t_commands* head)
+{
+    int length;
+	
+	length = 0;
+    t_commands* current = head;
+
+    while (current != NULL) {
+        length++;
+        current = current->next;
+    }
+
+    return length;
+}
+
 t_commands* gen_cmd_lst(t_data* data) {
 	t_commands* head = gen_cmd_node();
 	t_commands* tmp = head;
 	int i = 0;
-	while (data->lexer_list) {
-		tmp->command_args = malloc(sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
-		ft_memset(tmp->command_args, 0, sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
-		while (data->lexer_list && !is_metachar(data->lexer_list->str)) {
+	int initial_len = getLinkedListLength(head);
+	int current_len = initial_len;
+	int args_unfilled = 0;
+	while (data->lexer_list)
+	{
+		if ((initial_len == 1 && !args_unfilled) || current_len != initial_len )
+		{
+			// printf("initial len: %d\n", initial_len);
+			tmp->command_args = malloc(sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
+			ft_memset(tmp->command_args, 0, sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
+		}
+		while (data->lexer_list && !is_metachar(data->lexer_list->str))
+		{
 			tmp->command_args[i] = ft_strdup(data->lexer_list->str);
 			data->lexer_list = data->lexer_list->next;
 			i++;
 		}
 		while (data->lexer_list && is_metachar(data->lexer_list->str)) {
+			if (is_metachar(data->lexer_list->next->str))
+			{
+				printf("double token error\n");
+				return NULL;
+			}
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|")) {
 				tmp->next = gen_cmd_node();
+				current_len++;
+				initial_len = -1;
+				// args_unfilled = 0;
 				data->lexer_list = data->lexer_list->next;
 				tmp = tmp->next;
 				continue;
@@ -188,6 +239,16 @@ t_commands* gen_cmd_lst(t_data* data) {
 				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
 				tmp->o_redir = IO_OUTPUT;
 				data->lexer_list = data->lexer_list->next;
+				// if (data->lexer_list)
+				// {
+				// 	data->lexer_list = data->lexer_list->next;
+				// 	while (data->lexer_list && !is_metachar(data->lexer_list->str))
+				// 	{
+				// 		ft_strjoin_2d(data->lexer_list->str, data->commands->command_args, ft_strlen(data->lexer_list->str));
+				// 		if (data->lexer_list)
+				// 			data->lexer_list = data->lexer_list->next;
+				// 	}
+				// }
 				if (data->lexer_list)
 					data->lexer_list = data->lexer_list->next;
 			}
@@ -198,34 +259,29 @@ t_commands* gen_cmd_lst(t_data* data) {
 }
 
 
-void print_dollar_vars(t_commands *cmd)
-{
-	int x = 0;
-	t_commands *current = cmd;
-	while (current)
-	{
-		x = 0;
-		while (current->command_args[x])
-		{
-			if (ft_strtrim(current->command_args[x], "\"")[0] == '$')
-				printf("%s", current->command_args[x]);
-			x++;
-		}
-		printf("\n");
-		current = current->next;
-	}
-}
+// void print_dollar_vars(t_commands *cmd)
+// {
+// 	int x = 0;
+// 	t_commands *current = cmd;
+// 	while (current)
+// 	{
+// 		x = 0;
+// 		while (current->command_args[x])
+// 		{
+// 			if (ft_strtrim(current->command_args[x], "\"")[0] == '$')
+// 				printf("%s", current->command_args[x]);
+// 			x++;
+// 		}
+// 		printf("\n");
+// 		current = current->next;
+// 	}
+// }
 
 int	minishell_loop(t_data *data)
 {
-	// char    *working_dir = NULL;
 	char	*temp;
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	// data->pipes = 0;
-	// data->shell_input = NULL;
-	// working_dir = show_current_path(working_dir);
-	// data->shell_input = readline(working_dir);
 	data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
 	// free(working_dir);
 	temp = ft_strtrim(data->shell_input, " ");
@@ -249,8 +305,30 @@ int	minishell_loop(t_data *data)
 		return (ft_error(1, data));
 	data->commands = gen_cmd_lst(data);
 	print_cmd_lst(data->commands);
+	clear_lexer_nodes(&data->lexer_list);
 	printf("\x1b[33mexecuting command...\x1b[0m\n");
+	// printf("data->pwd: %s\n", data->pwd);
+	// printf("data->old_pwd: %s\n", data->old_pwd);
 	reset_data(data);
+	return (1);
+}
+
+
+int	extract_pwd(t_data *data)
+{
+	int	x;
+
+	x = 0;
+	while (data->envp[x])
+	{
+		if (!ft_strncmp(data->envp[x], "PWD=", 4))
+			data->pwd = ft_substr(data->envp[x],
+					4, ft_strlen(data->envp[x]) - 4);
+		if (!ft_strncmp(data->envp[x], "OLDPWD=", 7))
+			data->old_pwd = ft_substr(data->envp[x],
+					7, ft_strlen(data->envp[x]) - 7);
+		x++;
+	}
 	return (1);
 }
 
@@ -305,8 +383,8 @@ int	main(int argc, char **argv, char **envp)
 		exit(0);
 	}
 	initialize_data(&data);
-	//find_pwd(&tools);
 	data.envp = dup_env(envp);
+	extract_pwd(&data);
 	handle_envp(&data);
 	minishell_loop(&data);
 	return (0);

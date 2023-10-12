@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:14:34 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:22:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <signal.h>
+#include <stdint.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
@@ -90,6 +91,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_strncmp(const char *s1, const char *s2, size_t length);
 void	ft_bzero(void *s, size_t n);
+char	*ft_strjoin_2d(char *s1, char **s2, int s2_size);
 //void	expander(t_command_pipeline *pipeline, char **full_command);
 
 
@@ -116,7 +118,7 @@ typedef struct s_global
 	int	heredoc_mode;
 }	t_global;
 
-t_global	g_global;
+// t_global	g_global;
 
 
 int	reset_data(t_data *data);

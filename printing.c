@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:50:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:14:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:40:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,32 @@
 // 	printf("pipes present in the pipeline: %d\n", data->pipes);
 // }
 
-void print_token_type(t_tokens token)
-{
-	if (token == 0)
-		printf("token is a \x1b[36mWORD\x1b[0m\n");
-	if (token == 1)
-		printf("token is a \x1b[36mINPUT\x1b[0m\n");
-	if (token == 2)
-		printf("token is a \x1b[36mOUTPUT\x1b[0m\n");
-	if (token == 3)
-		printf("token is a \x1b[36mAPPEND\x1b[0m\n");
-	if (token == 4)
-		printf("token is a \x1b[36mHEREDOC\x1b[0m\n");
-	if (token == 5)
-		printf("token is a \x1b[36mPIPE\x1b[0m\n");
-}
+// void print_token_type(t_tokens token)
+// {
+// 	if (token == 0)
+// 		printf("token is a \x1b[36mWORD\x1b[0m\n");
+// 	if (token == 1)
+// 		printf("token is a \x1b[36mINPUT\x1b[0m\n");
+// 	if (token == 2)
+// 		printf("token is a \x1b[36mOUTPUT\x1b[0m\n");
+// 	if (token == 3)
+// 		printf("token is a \x1b[36mAPPEND\x1b[0m\n");
+// 	if (token == 4)
+// 		printf("token is a \x1b[36mHEREDOC\x1b[0m\n");
+// 	if (token == 5)
+// 		printf("token is a \x1b[36mPIPE\x1b[0m\n");
+// }
 
-void	print_tokens_list(t_data *data)
-{
-	t_lexer *current = data->lexer_list;
-	while(current)
-	{
-		printf("word is: \x1b[35m%s\x1b[0m and ", current->str);
-		print_token_type(current->token);
-		current = current->next;
-	}
-}
+// void	print_tokens_list(t_data *data)
+// {
+// 	t_lexer *current = data->lexer_list;
+// 	while(current)
+// 	{
+// 		printf("word is: \x1b[35m%s\x1b[0m and ", current->str);
+// 		print_token_type(current->token);
+// 		current = current->next;
+// 	}
+// }
 
 // void	print_commands(t_commands *command)
 // {
@@ -74,14 +74,14 @@ void	print_tokens_list(t_data *data)
 // 	//print_parser_data(parser_data);
 // }
 
-void print_lexer_list(t_lexer *list)
-{
-	t_lexer *current = list;
-	printf("redir list: \n");
-	while (current)
-	{
-		printf("str is (%s) and token is (%d)\n", current->str, current->token);
-		current = current->next;
-	} 
-}
+// void print_lexer_list(t_lexer *list)
+// {
+// 	t_lexer *current = list;
+// 	printf("redir list: \n");
+// 	while (current)
+// 	{
+// 		printf("str is (%s) and token is (%d)\n", current->str, current->token);
+// 		current = current->next;
+// 	} 
+// }
 

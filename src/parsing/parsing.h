@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/11 20:01:35 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:43:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,32 +61,20 @@ typedef struct s_data
 	t_lexer					*lexer_list;
 	char					*pwd;
 	char					*old_pwd;
-	// int						pipes;
+	int						pipes;
 	int						*pid;
 	int						heredoc;
 	int						reset;
-	// t_parser_data			*parser_data;
 }	t_data;
-
-// typedef struct s_commands
-// {
-// 	char					**str;
-// 	int						(*builtin)(t_data *, struct s_commands *);
-// 	int						number_of_redirections;
-// 	char					*heredoc_file;
-// 	t_lexer					*redirections;
-// 	struct s_commands		*next;
-// 	struct s_commands		*prev;
-// }	t_commands;
-
 
 typedef struct s_commands
 {
 	char					**command_args;
-	input_redirections i_redir;
-	output_redirections o_redir;
-	char* input_filename;
-	char* output_filename;
+	input_redirections		i_redir;
+	output_redirections		o_redir;
+	char*					input_filename;
+	char*					output_filename;
+	char					*heredoc;
 	struct s_commands		*next;
 }	t_commands;
 
