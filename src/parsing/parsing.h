@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 03:43:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 05:34:09 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_data
 	char					*shell_input;
 	char					**paths;
 	char					**envp;
+	char					**envp_arr;
 	struct s_commands		*commands;
 	t_lexer					*lexer_list;
 	char					*pwd;

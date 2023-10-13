@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 03:45:11 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 05:39:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	reset_data(t_data *data)
 	// free_arr(data->paths);
 	initialize_data(data);
 	data->reset = 1;
-	printf("Performing reset...\n");
+	// printf("Performing reset...\n");
 	return (1);
 }
 
@@ -155,12 +155,12 @@ void print_cmd_lst(t_commands* cmd) {
 	}
 }
 
-int getLinkedListLength(t_commands* head)
+int getLinkedListLength(t_env* head)
 {
     int length;
 	
 	length = 0;
-    t_commands* current = head;
+    t_env* current = head;
 
     while (current != NULL) {
         length++;
@@ -353,46 +353,64 @@ t_env* get_env(t_env* env, char* key)  {
 	return NULL;
 }
 
-// char* convert_env_to_vec(t_env* env) {
-// 	// Count the number of key-value pairs in the linked list.
-//     int count = 0;
-//     struct KeyValuePair* current = ;
-//     while (current != NULL) {
-//         count++;
-//         current = current->next;
-//     }
+char** convert_env_to_vec(t_env* env, int* size)
+{
+    int count = 0;
+    t_env* current = env;
+    
+    // Count the number of key-value pairs in the linked list.
+    while (current != NULL)
+	{
+        count++;
+        current = current->next;
+    }
 
-//     // Allocate memory for the char** array.
-//     char** array = (char**)malloc(sizeof(char*) * count);
+    // Allocate memory for the char** array.
+    char** array = malloc(sizeof(char*) * (count + 1));
+	array[count] = NULL;
+    if (array == NULL) {
+        // Handle memory allocation failure.
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
 
-//     if (array == NULL) {
-//         // Handle memory allocation failure.
-//         fprintf(stderr, "Memory allocation failed\n");
-//         exit(1);
-//     }
+    current = env;
+    int i = 0;
+    
+    // Traverse the linked list and convert key-value pairs to strings.
+    while (current != NULL)
+	{
+		int key_len = ft_strlen(current->key);
+        int value_len = ft_strlen(current->value);
+        int length = key_len + value_len + 2;  // +2 for '=' and null-terminator
+        array[i] = (char*)malloc(sizeof(char) * length);
 
-//     // Traverse the linked list and convert key-value pairs to strings.
-//     current = head;
-//     for (int i = 0; i < count; i++) {
-//         int length = strlen(current->key) + strlen(current->value) + 2;  // +2 for '=' and null-terminator
-//         array[i] = (char*)malloc(sizeof(char) * length);
+        if (!array[i])
+		{
+            // Handle memory allocation failure.
+            printf("Memory allocation failed\n");
+            exit(1);
+        }
+        // Copy the key and value into the string in the format "key=value."
+        ft_strncpy(array[i], current->key, key_len);
+        array[i][key_len] = '=';
+        ft_strncpy(array[i] + key_len + 1, current->value, value_len);
+        array[i][length - 1] = '\0';
 
-//         if (array[i] == NULL) {
-//             // Handle memory allocation failure.
-//             fprintf(stderr, "Memory allocation failed\n");
-//             exit(1);
-//         }
+        // Move to the next key-value pair.
+        current = current->next;
+        i++;
+    }
+    *size = count;  // Set the size of the char** array.
+    return array;
+}
 
-//         // Copy the key and value into the string in the format "key=value."
-//         snprintf(array[i], length, "%s=%s", current->key, current->value);
-
-//         // Move to the next key-value pair.
-//         current = current->next;
-//     }
-
-//     *size = count;  // Set the size of the char** array.
-//     return array;
-// }
+void print_char_array(char** array, int size)
+{
+	for (int i = 0; i < size; i++) {
+    	printf("%s\n", array[i]);
+	}
+}
 
 // remove_env (3la 9bl unset)
 // add_env (3la 9bl export)
@@ -417,7 +435,20 @@ char* get_cmd_abs_path(t_env* env, char* cmd) {
 	return NULL;
 }
 
-void minishell_execute(t_commands* cmd, t_env* env) {
+void minishell_execute(t_commands* cmd, t_env* env, t_data *data) {
+	int size = getLinkedListLength(env);
+	data->envp_arr = convert_env_to_vec(env, &size);
+    if (data->envp_arr)
+	{
+        // print_char_array(data->envp_arr, size);
+        // Don't forget to free the allocated memory for the array when done.
+        for (int i = 0; i < size; i++) {
+            free(data->envp_arr[i]);
+        }
+        free(data->envp_arr);
+    } else {
+        printf("Failed to create the array.\n");
+    }
 	while (cmd) {
 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 		if (!cmd_abs_path) {
@@ -432,7 +463,7 @@ void minishell_execute(t_commands* cmd, t_env* env) {
 		}
 		int child_pid = fork();
 		if (!child_pid) {
-			execve(cmd_abs_path, cmd->command_args, NULL);
+			execve(cmd_abs_path, cmd->command_args, data->envp);
 		}
 		wait(NULL);
 		cmd = cmd->next;
@@ -468,9 +499,10 @@ int	minishell_loop(t_data *data, t_env* env)
 	data->commands = gen_cmd_lst(data);
 	// print_cmd_lst(data->commands);
 	clear_lexer_nodes(&data->lexer_list);
-	minishell_execute(data->commands, env);
+	minishell_execute(data->commands, env, data);
 	// printf("data->pwd: %s\n", data->pwd);
 	// printf("data->old_pwd: %s\n", data->old_pwd);
+	
 	reset_data(data);
 	minishell_loop(data, env);
 	return (1);
@@ -549,7 +581,9 @@ int	main(int argc, char **argv, char **envp)
 	// extract_pwd(&data);
 	// handle_envp(&data);
 	t_env* env = parse_environment(dup_env(envp));
-	(void)env;
+	if (!env)
+		printf("no env\n");
+	
 	minishell_loop(&data, env);
 	return (0);
 }
