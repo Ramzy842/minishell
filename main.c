@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 05:39:48 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 10:52:41 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,6 +449,9 @@ void minishell_execute(t_commands* cmd, t_env* env, t_data *data) {
     } else {
         printf("Failed to create the array.\n");
     }
+	int save_fd = dup(STDIN_FILENO);
+	int child_pid;
+	int x = 0;
 	while (cmd) {
 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 		if (!cmd_abs_path) {
@@ -461,13 +464,41 @@ void minishell_execute(t_commands* cmd, t_env* env, t_data *data) {
 			cmd = cmd->next;
 			continue;
 		}
-		int child_pid = fork();
+		/*
+			- here where we start the pipe process
+		*/
+		int	pipe_fd[2];
+		if (cmd->next)
+			pipe(pipe_fd);
+		child_pid = fork();
 		if (!child_pid) {
+			if (cmd->next) {
+				if (x == 0) {
+					dup2(pipe_fd[1], STDOUT_FILENO); 
+				}
+				else if (!cmd->next) {
+					dup2(pipe_fd[0], STDIN_FILENO);
+				}
+				else if (cmd->next && x > 0) {
+					dup2(pipe_fd[1], STDOUT_FILENO);
+				}
+				close(pipe_fd[0]);
+				close(pipe_fd[1]);
+			}
 			execve(cmd_abs_path, cmd->command_args, data->envp);
+		} else {
+			if (cmd && x > 0) {
+				close(pipe_fd[1]);
+				if (cmd->next)
+					dup2(pipe_fd[0], STDIN_FILENO);
+					close(pipe_fd[0]);
+			}
+			x++;
 		}
-		wait(NULL);
 		cmd = cmd->next;
 	}
+	dup2(save_fd, STDIN_FILENO);
+	waitpid(child_pid, NULL, 0);
 }
 
 int	minishell_loop(t_data *data, t_env* env)

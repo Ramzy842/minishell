@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:10:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/02 10:42:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 10:57:06 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_tokens	extract_token(char c)
 	return (0);
 }
 
-int	handle_words(int x, char *str, t_lexer **lexer_list)
+int	handle_words(int x, char *str, t_lexer **lexer_list) // had function fiha le3ba 
+/// test case ||echo hello | tr "$" "o" | cat -e
 {
 	int		y;
 	char	*word;
