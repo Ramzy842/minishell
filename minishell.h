@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/12 20:22:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 03:17:02 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
 # include "./src/parsing/parsing.h"
-
 // enum redirection_types
 // {
 // 	INPUT,

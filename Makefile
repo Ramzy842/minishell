@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
+#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/13 01:34:24 by mbouderr         ###   ########.fr        #
+#    Updated: 2023/10/13 02:30:19 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 CC = cc
 
 # Define the flags to pass to the compiler
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 # Define the source files for the so_long executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
 	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \

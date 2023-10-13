@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 02:04:51 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 03:45:11 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@ char **dup_env(char **envp)
 		}
 		x++;
 	}
+	ptr[x] = NULL;
 	return (ptr);
 }
 
-int	minishell_loop(t_data *data);
+int	minishell_loop(t_data *data, t_env* env);
 
 void clear_command_nodes(t_commands **list)
 {
@@ -78,8 +79,8 @@ void clear_command_nodes(t_commands **list)
 
 int	reset_data(t_data *data)
 {
-	if (data->commands)
-	 	clear_command_nodes(&data->commands);
+	// if (data->commands)
+	//  	clear_command_nodes(&data->commands);
 	// free(data->shell_input);
 	// if (data->pid)
 	// 	free(data->pid);
@@ -87,7 +88,6 @@ int	reset_data(t_data *data)
 	initialize_data(data);
 	data->reset = 1;
 	printf("Performing reset...\n");
-	minishell_loop(data);
 	return (1);
 }
 
@@ -344,7 +344,102 @@ t_env* parse_environment(char **env) {
     return env_list;
 }
 
-int	minishell_loop(t_data *data)
+t_env* get_env(t_env* env, char* key)  {
+	while (env) {
+		if (!ft_strcmp(env->key, key))
+			return env;		
+		env = env->next;
+	}
+	return NULL;
+}
+
+// char* convert_env_to_vec(t_env* env) {
+// 	// Count the number of key-value pairs in the linked list.
+//     int count = 0;
+//     struct KeyValuePair* current = ;
+//     while (current != NULL) {
+//         count++;
+//         current = current->next;
+//     }
+
+//     // Allocate memory for the char** array.
+//     char** array = (char**)malloc(sizeof(char*) * count);
+
+//     if (array == NULL) {
+//         // Handle memory allocation failure.
+//         fprintf(stderr, "Memory allocation failed\n");
+//         exit(1);
+//     }
+
+//     // Traverse the linked list and convert key-value pairs to strings.
+//     current = head;
+//     for (int i = 0; i < count; i++) {
+//         int length = strlen(current->key) + strlen(current->value) + 2;  // +2 for '=' and null-terminator
+//         array[i] = (char*)malloc(sizeof(char) * length);
+
+//         if (array[i] == NULL) {
+//             // Handle memory allocation failure.
+//             fprintf(stderr, "Memory allocation failed\n");
+//             exit(1);
+//         }
+
+//         // Copy the key and value into the string in the format "key=value."
+//         snprintf(array[i], length, "%s=%s", current->key, current->value);
+
+//         // Move to the next key-value pair.
+//         current = current->next;
+//     }
+
+//     *size = count;  // Set the size of the char** array.
+//     return array;
+// }
+
+// remove_env (3la 9bl unset)
+// add_env (3la 9bl export)
+
+char* get_cmd_abs_path(t_env* env, char* cmd) {
+	t_env* path = get_env(env, "PATH");
+	if (!path)
+		return NULL;
+	char** path_spl = ft_split(path->value, ':');
+	if (!path_spl)
+		return NULL;
+	int i = 0;
+	while (path_spl[i]) {
+		char* tmp1 = ft_strjoin(path_spl[i], "/");
+		char* tmp2 = ft_strjoin(tmp1, cmd);
+		free(tmp1);
+		if (!access(tmp2, F_OK)) {
+			return tmp2;
+		}
+		i++;
+	}
+	return NULL;
+}
+
+void minishell_execute(t_commands* cmd, t_env* env) {
+	while (cmd) {
+		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
+		if (!cmd_abs_path) {
+			printf("msh: %s: command not found\n", cmd->command_args[0]);
+			cmd = cmd->next;
+			continue;
+		}
+		if (access(cmd_abs_path, X_OK) < 0) {
+			printf("msh: %s: permission denied\n", cmd->command_args[0]);
+			cmd = cmd->next;
+			continue;
+		}
+		int child_pid = fork();
+		if (!child_pid) {
+			execve(cmd_abs_path, cmd->command_args, NULL);
+		}
+		wait(NULL);
+		cmd = cmd->next;
+	}
+}
+
+int	minishell_loop(t_data *data, t_env* env)
 {
 	char	*temp;
 	data->commands = NULL;
@@ -371,17 +466,13 @@ int	minishell_loop(t_data *data)
 	if (!tokens_reader(data))
 		return (ft_error(1, data));
 	data->commands = gen_cmd_lst(data);
-	t_env* current = parse_environment(data->envp);
-    while (current != NULL) {
-        printf("%s=%s\n", current->key, current->value);
-        current = current->next;
-    }
-	print_cmd_lst(data->commands);
+	// print_cmd_lst(data->commands);
 	clear_lexer_nodes(&data->lexer_list);
-	printf("\x1b[33mexecuting command...\x1b[0m\n");
+	minishell_execute(data->commands, env);
 	// printf("data->pwd: %s\n", data->pwd);
 	// printf("data->old_pwd: %s\n", data->old_pwd);
 	reset_data(data);
+	minishell_loop(data, env);
 	return (1);
 }
 
@@ -414,7 +505,7 @@ char *extract_path(char **envp)
 	while (envp[x])
 	{
 		if (!ft_strncmp(envp[x], "PATH=", 5))
-			return (ft_substr(envp[x], 5, ft_strlen(envp[x])));
+			return (ft_substr(ft_strdup(envp[x]), 5, ft_strlen(envp[x]) - 5));
 		x++;
 	}
 	empty_str = ft_strdup("\0");
@@ -455,9 +546,10 @@ int	main(int argc, char **argv, char **envp)
 		exit(0);
 	}
 	initialize_data(&data);
-	data.envp = dup_env(envp);
-	extract_pwd(&data);
-	handle_envp(&data);
-	minishell_loop(&data);
+	// extract_pwd(&data);
+	// handle_envp(&data);
+	t_env* env = parse_environment(dup_env(envp));
+	(void)env;
+	minishell_loop(&data, env);
 	return (0);
 }
