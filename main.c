@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/12 20:36:22 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 01:43:48 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,38 +170,49 @@ int getLinkedListLength(t_commands* head)
     return length;
 }
 
+char** realloc_arr(char** old_arr, int increment) {
+	int i = 0;
+	while (old_arr[i])
+		i++;
+	char** new_arr = malloc(sizeof(char*) * (i + increment));
+	ft_memset(new_arr, 0, sizeof(char*) * (i + increment));
+	i = 0;
+	while (old_arr[i])
+	{
+		new_arr[i] = ft_strdup(old_arr[i]);
+		i++;
+	}
+	new_arr[i] = NULL;
+	i = 0;
+	while (old_arr[i]) {
+		free(old_arr[i]);
+		i++;
+	}
+	free(old_arr);
+	return new_arr;
+}
+
 t_commands* gen_cmd_lst(t_data* data) {
 	t_commands* head = gen_cmd_node();
 	t_commands* tmp = head;
 	int i = 0;
-	int initial_len = getLinkedListLength(head);
-	int current_len = initial_len;
-	int args_unfilled = 0;
 	while (data->lexer_list)
 	{
-		if ((initial_len == 1 && !args_unfilled) || current_len != initial_len )
-		{
-			// printf("initial len: %d\n", initial_len);
-			tmp->command_args = malloc(sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
-			ft_memset(tmp->command_args, 0, sizeof(char*) * calc_argv_sz(data->lexer_list) + 10);
+		if (!tmp->command_args) {
+			tmp->command_args = malloc(sizeof(char*) * 2);
+			ft_memset(tmp->command_args, 0, sizeof(char*) * 2);
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
 		{
+			tmp->command_args = realloc_arr(tmp->command_args, 2);
 			tmp->command_args[i] = ft_strdup(data->lexer_list->str);
 			data->lexer_list = data->lexer_list->next;
 			i++;
 		}
 		while (data->lexer_list && is_metachar(data->lexer_list->str)) {
-			if (is_metachar(data->lexer_list->next->str))
-			{
-				printf("double token error\n");
-				return NULL;
-			}
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|")) {
 				tmp->next = gen_cmd_node();
-				current_len++;
-				initial_len = -1;
-				// args_unfilled = 0;
+				i = 0;
 				data->lexer_list = data->lexer_list->next;
 				tmp = tmp->next;
 				continue;
@@ -239,21 +250,11 @@ t_commands* gen_cmd_lst(t_data* data) {
 				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
 				tmp->o_redir = IO_OUTPUT;
 				data->lexer_list = data->lexer_list->next;
-				// if (data->lexer_list)
-				// {
-				// 	data->lexer_list = data->lexer_list->next;
-				// 	while (data->lexer_list && !is_metachar(data->lexer_list->str))
-				// 	{
-				// 		ft_strjoin_2d(data->lexer_list->str, data->commands->command_args, ft_strlen(data->lexer_list->str));
-				// 		if (data->lexer_list)
-				// 			data->lexer_list = data->lexer_list->next;
-				// 	}
-				// }
-				if (data->lexer_list)
+				if (data->lexer_list) {
 					data->lexer_list = data->lexer_list->next;
+				}
 			}
 		}
-		i = 0;
 	}
 	return head;
 }

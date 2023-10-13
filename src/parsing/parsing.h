@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/12 18:43:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/13 01:46:53 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ typedef struct s_data
 	int						heredoc;
 	int						reset;
 }	t_data;
+
+typedef struct s_env {
+	char* key;
+	char* value;
+	struct s_env* next;
+} t_env;
 
 typedef struct s_commands
 {
