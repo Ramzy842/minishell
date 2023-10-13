@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 01:43:48 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/13 02:04:51 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,72 @@ t_commands* gen_cmd_lst(t_data* data) {
 // 	}
 // }
 
+
+t_env* add_env(t_env* list, const char* key, const char* value) {
+    t_env* new_env = malloc(sizeof(t_env));
+    if (new_env == NULL) {
+        perror("malloc");
+        exit(1);
+    }
+    new_env->key = strdup(key);
+    new_env->value = strdup(value);
+    new_env->next = list;
+    return new_env;
+}
+
+void free_env_list(t_env* list) {
+    while (list != NULL) {
+        t_env* current = list;
+        list = list->next;
+        free(current->key);
+        free(current->value);
+        free(current);
+    }
+}
+
+
+char* ft_strncpy(char* dest, const char* src, size_t n) {
+    char* original_dest = dest;
+
+    while (n > 0 && *src != '\0') {
+        *dest++ = *src++;
+        n--;
+    }
+
+    // Fill the remaining space with null bytes if necessary
+    while (n > 0) {
+        *dest++ = '\0';
+        n--;
+    }
+
+    return original_dest;
+}
+
+t_env* parse_environment(char **env) {
+    t_env* env_list = NULL;
+    
+    int i = 0;
+    while (env[i] != NULL) {
+        // char* env_var = env[i];
+        
+        // Split the environment variable into key and value
+        char* equals = ft_strchr(env[i], '=');
+        if (equals != NULL) {
+            size_t key_len = equals - env[i];
+            char key[key_len + 1];
+            ft_strncpy(key, env[i], key_len);
+            key[key_len] = '\0';
+            char* value = equals + 1;
+            
+            // Add the key-value pair to the linked list
+            env_list = add_env(env_list, key, value);
+        }
+        i++;
+    }
+    
+    return env_list;
+}
+
 int	minishell_loop(t_data *data)
 {
 	char	*temp;
@@ -305,6 +371,11 @@ int	minishell_loop(t_data *data)
 	if (!tokens_reader(data))
 		return (ft_error(1, data));
 	data->commands = gen_cmd_lst(data);
+	t_env* current = parse_environment(data->envp);
+    while (current != NULL) {
+        printf("%s=%s\n", current->key, current->value);
+        current = current->next;
+    }
 	print_cmd_lst(data->commands);
 	clear_lexer_nodes(&data->lexer_list);
 	printf("\x1b[33mexecuting command...\x1b[0m\n");
