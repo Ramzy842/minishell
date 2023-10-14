@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 05:34:09 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/14 09:01:50 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,18 @@ void		lexer_error(int error, t_data *data);
 t_lexer		*free_lexer_node(t_lexer **lst);
 void		clear_lexer_nodes(t_lexer **lst);
 int			ft_error(int error, t_data *data);
-// int		is_between_matching_quotes(char *str);
-// void    redirect_input(char **tokens, t_command_pipeline *pipeline, int *x);
-// void    redirect_output(char **tokens, t_command_pipeline *pipeline, int *x);
-// void    redirect_heredoc(char **tokens, t_command_pipeline *pipeline, int *x);
-// void    redirect_append(char **tokens, t_command_pipeline *pipeline, int *x);
-// void    default_input_parsing(char **tokens, t_command_pipeline *pipeline, int *x);
-// void    initialize_commands(t_command_pipeline *pipeline);
-// int		tokens_quotes_validation(char **tokens);
+t_lexer		*expand_lexer(t_lexer* lexer_list, t_env* env);
+
+
+
+// REDIRECTIONS
+
+void		redirect_append(t_commands* tmp, t_data *data);
+void		redirect_heredoc(t_commands* tmp, t_data *data);
+void		redirect_input(t_commands* tmp, t_data *data);
+void		redirect_output(t_commands* tmp, t_data *data);
+
+// COMMANDS
+t_commands* gen_cmd_node();
+
 #endif

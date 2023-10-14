@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 10:52:41 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/14 10:10:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,12 +156,12 @@ void print_cmd_lst(t_commands* cmd) {
 	}
 }
 
-int getLinkedListLength(t_env* head)
+int getLinkedListLength(t_commands* head)
 {
     int length;
 	
 	length = 0;
-    t_env* current = head;
+    t_commands* current = head;
 
     while (current != NULL) {
         length++;
@@ -171,7 +171,8 @@ int getLinkedListLength(t_env* head)
     return length;
 }
 
-char** realloc_arr(char** old_arr, int increment) {
+char** realloc_arr(char** old_arr, int increment)
+{
 	int i = 0;
 	while (old_arr[i])
 		i++;
@@ -193,94 +194,66 @@ char** realloc_arr(char** old_arr, int increment) {
 	return new_arr;
 }
 
-t_commands* gen_cmd_lst(t_data* data) {
-	t_commands* head = gen_cmd_node();
-	t_commands* tmp = head;
-	int i = 0;
+void	handle_args(t_commands *tmp, int *x, t_data *data)
+{
+	tmp->command_args = realloc_arr(tmp->command_args, 2);
+	tmp->command_args[*x] = ft_strdup(data->lexer_list->str);
+	data->lexer_list = data->lexer_list->next;
+	(*x)++;
+}
+
+void	handle_redirections(t_data *data, t_commands *tmp)
+{
+	while (data->lexer_list && is_metachar(data->lexer_list->str))
+	{
+		if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<"))
+			redirect_input(tmp, data);
+		else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<<"))
+			redirect_heredoc(tmp, data);
+		else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">>"))
+			redirect_append(tmp, data);
+		else if ((data->lexer_list && !ft_strcmp(data->lexer_list->str, ">"))
+				|| (!tmp->command_args && !ft_strcmp(data->lexer_list->str,">"))) 
+			redirect_output(tmp, data);
+	}
+}
+
+t_commands* gen_cmd_lst(t_data* data)
+{
+	t_commands*	head;
+	t_commands*	tmp;
+	int			x;
+
+	head = gen_cmd_node();
+	tmp = head;
+	x = 0;
 	while (data->lexer_list)
 	{
-		if (!tmp->command_args) {
+		if (!tmp->command_args)
+		{
 			tmp->command_args = malloc(sizeof(char*) * 2);
 			ft_memset(tmp->command_args, 0, sizeof(char*) * 2);
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
+			handle_args(tmp, &x, data);
+		while (data->lexer_list && is_metachar(data->lexer_list->str))
 		{
-			tmp->command_args = realloc_arr(tmp->command_args, 2);
-			tmp->command_args[i] = ft_strdup(data->lexer_list->str);
-			data->lexer_list = data->lexer_list->next;
-			i++;
-		}
-		while (data->lexer_list && is_metachar(data->lexer_list->str)) {
-			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|")) {
+			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
+			{
 				tmp->next = gen_cmd_node();
-				i = 0;
+				x = 0;
 				data->lexer_list = data->lexer_list->next;
 				tmp = tmp->next;
 				continue;
 			}
-			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<")) {
-				if (tmp->input_filename)
-					free(tmp->input_filename);
-				tmp->input_filename = ft_strdup(data->lexer_list->next->str);
-				tmp->i_redir = IO_INPUT;
-				data->lexer_list = data->lexer_list->next;
-				if (data->lexer_list)
-					data->lexer_list = data->lexer_list->next;
-			}
-			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "<<")) {
-				if (tmp->input_filename)
-					free(tmp->input_filename);
-				tmp->input_filename = ft_strdup(data->lexer_list->next->str);
-				tmp->i_redir = IO_HEREDOC;
-				data->lexer_list = data->lexer_list->next;
-				if (data->lexer_list)
-					data->lexer_list = data->lexer_list->next;
-			}
-			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">>")) {
-				if (tmp->output_filename)
-					free(tmp->output_filename);
-				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
-				tmp->o_redir = IO_APPEND;
-				data->lexer_list = data->lexer_list->next;
-				if (data->lexer_list)
-					data->lexer_list = data->lexer_list->next;
-			}
-			else if (data->lexer_list && !ft_strcmp(data->lexer_list->str, ">")) {
-				if (tmp->output_filename)
-					free(tmp->output_filename);
-				tmp->output_filename = ft_strdup(data->lexer_list->next->str);
-				tmp->o_redir = IO_OUTPUT;
-				data->lexer_list = data->lexer_list->next;
-				if (data->lexer_list) {
-					data->lexer_list = data->lexer_list->next;
-				}
-			}
+			handle_redirections(data, tmp);
 		}
 	}
-	return head;
+	return (head);
 }
 
-
-// void print_dollar_vars(t_commands *cmd)
-// {
-// 	int x = 0;
-// 	t_commands *current = cmd;
-// 	while (current)
-// 	{
-// 		x = 0;
-// 		while (current->command_args[x])
-// 		{
-// 			if (ft_strtrim(current->command_args[x], "\"")[0] == '$')
-// 				printf("%s", current->command_args[x]);
-// 			x++;
-// 		}
-// 		printf("\n");
-// 		current = current->next;
-// 	}
-// }
-
-
-t_env* add_env(t_env* list, const char* key, const char* value) {
+t_env* add_env(t_env* list, const char* key, const char* value)
+{
     t_env* new_env = malloc(sizeof(t_env));
     if (new_env == NULL) {
         perror("malloc");
@@ -292,8 +265,10 @@ t_env* add_env(t_env* list, const char* key, const char* value) {
     return new_env;
 }
 
-void free_env_list(t_env* list) {
-    while (list != NULL) {
+void free_env_list(t_env* list)
+{
+    while (list != NULL)
+	{
         t_env* current = list;
         list = list->next;
         free(current->key);
@@ -303,10 +278,12 @@ void free_env_list(t_env* list) {
 }
 
 
-char* ft_strncpy(char* dest, const char* src, size_t n) {
+char* ft_strncpy(char* dest, const char* src, size_t n)
+{
     char* original_dest = dest;
 
-    while (n > 0 && *src != '\0') {
+    while (n > 0 && *src != '\0')
+	{
         *dest++ = *src++;
         n--;
     }
@@ -437,61 +414,77 @@ char* get_cmd_abs_path(t_env* env, char* cmd) {
 
 void minishell_execute(t_commands* cmd, t_env* env) {
 	int child_pid;
+	// int	flag = getLinkedListLength(cmd) == 1 && !cmd->command_args[0];
 	int pipefd[2] = {-1, -1};
 	while (cmd) {
 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
-		if (!cmd_abs_path) {
+		if (!cmd_abs_path && cmd->command_args[0]) {
 			printf("msh: %s: command not found\n", cmd->command_args[0]);
 			cmd = cmd->next;
 			continue;
 		}
-		if (access(cmd_abs_path, X_OK) < 0) {
+		if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0])
+		{
 			printf("msh: %s: permission denied\n", cmd->command_args[0]);
 			cmd = cmd->next;
 			continue;
 		}
 		// we have a pipe
-		if (cmd->next) {
+		if (cmd->next)
+		{
 			pipe(pipefd);
 			cmd->out = pipefd[1];
 			cmd->next->in = pipefd[0];
 		}
 		// check for redirections
-		if (cmd->i_redir == IO_INPUT) {
+		if (cmd->i_redir == IO_INPUT)
+		{
 			int fd = open(cmd->input_filename, O_RDONLY);
 			cmd->in = fd;
 		}
-		if (cmd->o_redir == IO_OUTPUT) {
+		if (cmd->o_redir == IO_OUTPUT)
+		{
 			// its not necessary to pass O_CREAT to open since the parser should have created the file
 			int fd = open(cmd->output_filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 			close(pipefd[1]);
 			cmd->out = fd;
 		}
-		if (cmd->o_redir == IO_APPEND) {
+		if (cmd->o_redir == IO_APPEND)
+		{
 			int fd = open(cmd->output_filename, O_CREAT | O_APPEND | O_WRONLY);
 			cmd->out = fd;
 		}
-		child_pid = fork();
-		if (!child_pid) {
-			if (cmd->out != 1) {
-				dup2(cmd->out, 1);
-				// 1 is now pointing at cmd->out, cmd->out is not needed anymore
+		// if (cmd && cmd->command_args)
+		// {
+			child_pid = fork();
+			if (!child_pid)
+			{
+				if (cmd->out != 1)
+				{
+					dup2(cmd->out, 1);
+					// 1 is now pointing at cmd->out, cmd->out is not needed anymore
+					close(cmd->out);
+				}
+				if (cmd->in != 0)
+				{
+					dup2(cmd->in, 0);
+					// same thing above, cmd->in is not needed anymore
+					close(cmd->in);
+				}
+				execve(cmd_abs_path, cmd->command_args, convert_env_to_vec(env));
+			}
+			if (cmd->out != 1)
 				close(cmd->out);
-			}
-			if (cmd->in != 0) {
-				dup2(cmd->in, 0);
-				// same thing above, cmd->in is not needed anymore
+			if (cmd->in != 0)
 				close(cmd->in);
-			}
-			execve(cmd_abs_path, cmd->command_args, convert_env_to_vec(env));
-		}
-		if (cmd->out != 1)
-			close(cmd->out);
-		if (cmd->in != 0)
-			close(cmd->in);
-		cmd = cmd->next;
+		// }
+		// if (cmd->next)
+			cmd = cmd->next;
+		// else
+		// 	break;
 	}
-	waitpid(child_pid, NULL, 0);
+	// if (!flag)
+		waitpid(child_pid, NULL, 0);
 }
 
 int	minishell_loop(t_data *data, t_env* env)
@@ -499,8 +492,8 @@ int	minishell_loop(t_data *data, t_env* env)
 	char	*temp;
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
-	// free(working_dir);
+	// data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
+	data->shell_input = readline("Minishell-> ");
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
 	data->shell_input = temp;
@@ -520,13 +513,11 @@ int	minishell_loop(t_data *data, t_env* env)
 	}
 	if (!tokens_reader(data))
 		return (ft_error(1, data));
+	data->lexer_list = expand_lexer(data->lexer_list, env);
 	data->commands = gen_cmd_lst(data);
 	// print_cmd_lst(data->commands);
 	clear_lexer_nodes(&data->lexer_list);
 	minishell_execute(data->commands, env);
-	// printf("data->pwd: %s\n", data->pwd);
-	// printf("data->old_pwd: %s\n", data->old_pwd);
-	
 	reset_data(data);
 	minishell_loop(data, env);
 	return (1);

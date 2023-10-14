@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:10:52 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/25 02:17:30 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/14 07:33:09 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	int     x;
 	int     y;
 
+	if (!s1 || !s2)
+		return (NULL);
 	ptr = malloc(((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char)) + 1);
 	if (ptr == 0)
 		return (ptr);
