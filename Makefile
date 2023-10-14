@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/14 08:59:36 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/14 11:33:19 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC = cc
 
 # Define the flags to pass to the compiler
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-# Define the source files for the so_long executable
+
+# Define the source files for the minishell executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
 	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
 	./src/parsing/redirections/redirect_output.c \
@@ -34,17 +35,21 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
 	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
 	./src/utils/ft_memmove.c ./src/utils/ft_memcpy.c ./src/utils/ft_calloc.c ./src/utils/ft_bzero.c \
-	./src/utils/ft_strncmp.c ./src/utils/ft_strjoin_2d.c
-# Define the object files for the so_long executable, generated from the source files
+	./src/utils/ft_strncmp.c ./src/utils/ft_strjoin_2d.c ./src/parsing/env/convert_env_to_arr.c ./src/parsing/env/dup_envp.c \
+	./src/parsing/env/extract_path.c ./src/parsing/env/get_env.c ./src/parsing/env/parse_env.c ./src/parsing/parser/utils/gen_cmd_node.c \
+	./src/parsing/parser/utils/get_list_length.c ./src/parsing/parser/utils/handle_args.c ./src/parsing/parser/utils/realloc_arr.c \
+	./src/utils/ft_strncpy.c ./src/parsing/env/operations.c ./src/parsing/utils/commands/freeing.c src/utils/ft_memset.c \
+	./src/parsing/redirections/handle_redirections.c ./src/parsing/redirections/utils/is_metachar.c ./src/parsing/redirections/utils/is_redir_op.c \
+# Define the object files for the minishell executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 
-# Define the name of the so_long executable to be generated
+# Define the name of the minishell executable to be generated
 NAME = minishell
 
 # Define the default target to be built
 all: $(NAME)
 
-# Rule to generate the so_long executable from the object files
+# Rule to generate the minishell executable from the object files
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -lreadline 
 

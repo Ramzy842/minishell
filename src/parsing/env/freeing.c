@@ -1,0 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   freeing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/14 11:09:04 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/14 11:09:11 by rchahban         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../../minishell.h"
+
+void free_env_list(t_env* list)
+{
+    while (list != NULL)
+	{
+        t_env* current = list;
+        list = list->next;
+        free(current->key);
+        free(current->value);
+        free(current);
+    }
+}
