@@ -111,6 +111,7 @@ void ft_memset(void* addr, unsigned char data, int len) {
 t_commands* gen_cmd_node() {
 	t_commands* ret = malloc(sizeof(t_commands));
 	ft_memset(ret, 0, sizeof(t_commands));
+	ret->out = 1;
 	return ret;
 }
 
@@ -353,7 +354,7 @@ t_env* get_env(t_env* env, char* key)  {
 	return NULL;
 }
 
-char** convert_env_to_vec(t_env* env, int* size)
+char** convert_env_to_vec(t_env* env)
 {
     int count = 0;
     t_env* current = env;
@@ -401,7 +402,6 @@ char** convert_env_to_vec(t_env* env, int* size)
         current = current->next;
         i++;
     }
-    *size = count;  // Set the size of the char** array.
     return array;
 }
 
@@ -435,23 +435,9 @@ char* get_cmd_abs_path(t_env* env, char* cmd) {
 	return NULL;
 }
 
-void minishell_execute(t_commands* cmd, t_env* env, t_data *data) {
-	int size = getLinkedListLength(env);
-	data->envp_arr = convert_env_to_vec(env, &size);
-    if (data->envp_arr)
-	{
-        // print_char_array(data->envp_arr, size);
-        // Don't forget to free the allocated memory for the array when done.
-        for (int i = 0; i < size; i++) {
-            free(data->envp_arr[i]);
-        }
-        free(data->envp_arr);
-    } else {
-        printf("Failed to create the array.\n");
-    }
-	int save_fd = dup(STDIN_FILENO);
+void minishell_execute(t_commands* cmd, t_env* env) {
 	int child_pid;
-	int x = 0;
+	int pipefd[2] = {-1, -1};
 	while (cmd) {
 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 		if (!cmd_abs_path) {
@@ -464,40 +450,47 @@ void minishell_execute(t_commands* cmd, t_env* env, t_data *data) {
 			cmd = cmd->next;
 			continue;
 		}
-		/*
-			- here where we start the pipe process
-		*/
-		int	pipe_fd[2];
-		if (cmd->next)
-			pipe(pipe_fd);
+		// we have a pipe
+		if (cmd->next) {
+			pipe(pipefd);
+			cmd->out = pipefd[1];
+			cmd->next->in = pipefd[0];
+		}
+		// check for redirections
+		if (cmd->i_redir == IO_INPUT) {
+			int fd = open(cmd->input_filename, O_RDONLY);
+			cmd->in = fd;
+		}
+		if (cmd->o_redir == IO_OUTPUT) {
+			// its not necessary to pass O_CREAT to open since the parser should have created the file
+			int fd = open(cmd->output_filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			close(pipefd[1]);
+			cmd->out = fd;
+		}
+		if (cmd->o_redir == IO_APPEND) {
+			int fd = open(cmd->output_filename, O_CREAT | O_APPEND | O_WRONLY);
+			cmd->out = fd;
+		}
 		child_pid = fork();
 		if (!child_pid) {
-			if (cmd->next) {
-				if (x == 0) {
-					dup2(pipe_fd[1], STDOUT_FILENO); 
-				}
-				else if (!cmd->next) {
-					dup2(pipe_fd[0], STDIN_FILENO);
-				}
-				else if (cmd->next && x > 0) {
-					dup2(pipe_fd[1], STDOUT_FILENO);
-				}
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
+			if (cmd->out != 1) {
+				dup2(cmd->out, 1);
+				// 1 is now pointing at cmd->out, cmd->out is not needed anymore
+				close(cmd->out);
 			}
-			execve(cmd_abs_path, cmd->command_args, data->envp);
-		} else {
-			if (cmd && x > 0) {
-				close(pipe_fd[1]);
-				if (cmd->next)
-					dup2(pipe_fd[0], STDIN_FILENO);
-					close(pipe_fd[0]);
+			if (cmd->in != 0) {
+				dup2(cmd->in, 0);
+				// same thing above, cmd->in is not needed anymore
+				close(cmd->in);
 			}
-			x++;
+			execve(cmd_abs_path, cmd->command_args, convert_env_to_vec(env));
 		}
+		if (cmd->out != 1)
+			close(cmd->out);
+		if (cmd->in != 0)
+			close(cmd->in);
 		cmd = cmd->next;
 	}
-	dup2(save_fd, STDIN_FILENO);
 	waitpid(child_pid, NULL, 0);
 }
 
@@ -530,7 +523,7 @@ int	minishell_loop(t_data *data, t_env* env)
 	data->commands = gen_cmd_lst(data);
 	// print_cmd_lst(data->commands);
 	clear_lexer_nodes(&data->lexer_list);
-	minishell_execute(data->commands, env, data);
+	minishell_execute(data->commands, env);
 	// printf("data->pwd: %s\n", data->pwd);
 	// printf("data->old_pwd: %s\n", data->old_pwd);
 	

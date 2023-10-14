@@ -82,6 +82,8 @@ typedef struct s_commands
 	char*					input_filename;
 	char*					output_filename;
 	char					*heredoc;
+	int in;
+	int out;
 	struct s_commands		*next;
 }	t_commands;
 

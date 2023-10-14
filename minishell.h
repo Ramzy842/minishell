@@ -19,6 +19,7 @@
 # include <string.h>
 # include <signal.h>
 #include <stdint.h>
+#include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
