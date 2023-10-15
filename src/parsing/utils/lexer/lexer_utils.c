@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:10:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/02 15:56:39 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 12:10:05 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	handle_words(int x, char *str, t_lexer **lexer_list)
 	{
 		y += handle_quotes(x + y, str, '"');
 		y += handle_quotes(x + y, str, '\'');
-		if ((str[x + y] == ' ' || (str[x + y] > 8 && str[x + y] < 14)))
+		if (str && (str[x + y] == ' ' || (str[x + y] > 8 && str[x + y] < 14)))
 			break ;
 		else
 			y++;

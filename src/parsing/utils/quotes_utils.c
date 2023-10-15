@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 08:30:07 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/30 14:01:16 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:07:42 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,43 @@ int find_matching_quote(char *line, int x, int *num_del, char del)
         *num_del = *num_del + 1;
     return (y - x);
 }
+
+// static int	check_quotes_loop(char *line)
+// {
+// 	int		i;
+// 	int		sq;
+// 	int		dq;
+
+// 	i = 0;
+// 	sq = 0;
+// 	dq = 0;
+// 	while (line[i])
+// 	{
+// 		if (line[i] == '\'' && !dq)
+// 			sq = !sq;
+// 		if (line[i] == '\"' && !sq)
+// 			dq = !dq;
+// 		i++;
+// 	}
+// 	return (sq || dq);
+// }
+
+// int    quotes_are_matching(char *line)
+// {
+// 	while (line)
+// 	{
+// 		if (check_quotes_loop(line))
+// 		{
+// 			ft_putstr_fd("mish: Warning: quotes not closed\n", 2);
+// 			return (free(line), 1);
+// 		}
+// 		if (!line)
+// 			break ;
+// 		else
+// 			line++;
+// 	}
+// 	return (0);
+// }
 
 int quotes_are_matching(char *line)
 {

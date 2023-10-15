@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:28:46 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 07:43:41 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,6 @@ typedef struct s_global
 // t_global	g_global;
 
 
-int	reset_data(t_data *data);
+int	reset_data(t_data *data, t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 07:54:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 04:40:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:52:47 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ char* find_env_var(t_env* env, char* key)
     return NULL;
 }
 
+int count_dollar_signs(char *str)
+{
+	int	count;
+	int	x;
+
+	count = 0;
+	x = 0;
+	while (str[x])
+	{
+		if (str[x] == '$')
+			count++;
+		x++;
+	}
+	return (count);
+}
+
 t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
 {
     t_lexer* current = lexer_list;
@@ -31,6 +47,7 @@ t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
     t_lexer* updated_list_tail = NULL;
     char* dollar_sign;
 
+	dollar_sign = NULL;
     while (current != NULL)
 	{
         t_lexer* new_node = malloc(sizeof(t_lexer));
@@ -46,18 +63,40 @@ t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
             updated_list_tail->next = new_node;
             updated_list_tail = new_node;
         }
-		dollar_sign = ft_strchr(current->str, '$');
-        if (dollar_sign)
+		// if dollar signs > 1
+		if (count_dollar_signs(current->str) > 1)
 		{
-            char* var_name = dollar_sign + 1;
-            char* var_value = find_env_var(env, var_name);
-            if (var_value)
-                new_node->str = ft_strdup(var_value);
+			int x = 0;
+			char **spl = ft_split(current->str, '$');
+			char *joined = malloc(1);
+			joined[0] = '\0';
+			while (spl[x])
+			{
+				char* var_name = spl[x];
+				char* var_value = find_env_var(env, var_name);
+				if (var_value)
+        	    	joined = ft_strjoin(joined, var_value);
+				else
+        	    	joined = ft_strjoin(joined, "");
+				x++;
+			}
+			new_node->str = joined;
+		}
+		else // if dollar signs == 1
+		{
+			dollar_sign = ft_strchr(current->str, '$');
+        	if (dollar_sign)
+			{ 
+				char* var_name = dollar_sign + 1;
+				char* var_value = find_env_var(env, var_name);
+				if (var_value)
+        	    	new_node->str = ft_strdup(var_value);
+				else
+        	    	new_node->str = ft_strdup("");
+        	}
 			else
-                new_node->str = ft_strdup("");
-        }
-		else
-            new_node->str = ft_strdup(current->str);
+        	    new_node->str = ft_strdup(current->str);
+		}
         current = current->next;
     }
     if (updated_list_tail)

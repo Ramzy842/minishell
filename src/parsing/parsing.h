@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:29:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 08:07:54 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,11 @@ void		delete_first_lexer_node(t_lexer **lst);
 void		lexer_error(int error, t_data *data);
 t_lexer		*free_lexer_node(t_lexer **lst);
 void		clear_lexer_nodes(t_lexer **lst);
-int			ft_error(int error, t_data *data);
+int			ft_error(int error, t_data *data, t_env *env);
 t_lexer		*expand_lexer(t_lexer* lexer_list, t_env* env);
 void		handle_args(t_commands *tmp, int *x, t_data *data);
 char		**realloc_arr(char** old_arr, int increment);
-int			get_list_length(t_commands *head);
-t_commands	*gen_cmd_node();
+int			get_list_length(void *head);
 
 // REDIRECTIONS
 void		redirect_append(t_commands* tmp, t_data *data);

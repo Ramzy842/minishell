@@ -6,11 +6,11 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 08:30:07 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/02 15:58:12 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 08:12:07 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../parsing.h"
+#include "../../../../minishell.h"
 
 int find_matching_quote(char *line, int x, int *num_del, char del)
 {
