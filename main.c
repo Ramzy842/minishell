@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:43:14 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 02:37:19 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char* get_cmd_abs_path(t_env* env, char* cmd)
 			return tmp2;
 		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 
 void minishell_execute(t_commands* cmd, t_env* env)
@@ -100,6 +100,10 @@ void minishell_execute(t_commands* cmd, t_env* env)
 	int pipefd[2] = {-1, -1};
 	while (cmd)
 	{
+		if (!cmd->command_args[0]) {
+			cmd = cmd->next;
+			continue;
+		}
 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 		if (!cmd_abs_path && cmd->command_args[0])
 		{
