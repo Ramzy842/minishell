@@ -6,12 +6,11 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/13 03:38:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 02:45:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
 
 static int	f_count(char *s, char c)
 {

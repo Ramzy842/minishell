@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 07:39:17 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/25 07:47:22 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 02:42:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char **tok_w_no_quotes(char **args)
+char	**tok_w_no_quotes(char **args)
 {
 	char	**tokens;
 	int		x;

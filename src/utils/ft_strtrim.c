@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 07:10:58 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/30 10:30:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 02:42:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_strtrim(char  *s1, char  *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	char	*ptr;
 	size_t	x;
