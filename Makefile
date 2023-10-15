@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/14 11:33:19 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/15 02:55:55 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
 	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
 	./src/utils/ft_memmove.c ./src/utils/ft_memcpy.c ./src/utils/ft_calloc.c ./src/utils/ft_bzero.c \
-	./src/utils/ft_strncmp.c ./src/utils/ft_strjoin_2d.c ./src/parsing/env/convert_env_to_arr.c ./src/parsing/env/dup_envp.c \
+	./src/utils/ft_strncmp.c ./src/parsing/env/convert_env_to_arr.c ./src/parsing/env/dup_envp.c \
 	./src/parsing/env/extract_path.c ./src/parsing/env/get_env.c ./src/parsing/env/parse_env.c ./src/parsing/parser/utils/gen_cmd_node.c \
 	./src/parsing/parser/utils/get_list_length.c ./src/parsing/parser/utils/handle_args.c ./src/parsing/parser/utils/realloc_arr.c \
 	./src/utils/ft_strncpy.c ./src/parsing/env/operations.c ./src/parsing/utils/commands/freeing.c src/utils/ft_memset.c \
