@@ -6,13 +6,11 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 02:37:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 02:40:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	minishell_loop(t_data *data, t_env* env);
 
 int	reset_data(t_data *data)
 {
@@ -204,7 +202,6 @@ int	minishell_loop(t_data *data, t_env* env)
 	return (1);
 }
 
-
 int	extract_pwd(t_data *data)
 {
 	int	x;
@@ -226,6 +223,7 @@ int	extract_pwd(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+
 	if (argc != 1 || argv[1])
 	{
 		printf("\x1b[31mMinishell does not accept arguments.\n");
