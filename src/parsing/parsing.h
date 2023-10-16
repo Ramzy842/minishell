@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:29:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 08:09:57 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct s_commands
 	output_redirections		o_redir;
 	char*					input_filename;
 	char*					output_filename;
+//  int						(*builtin)(t_data *, struct s_commands *);
+
 	char					*heredoc;
 	int in;
 	int out;

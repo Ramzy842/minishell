@@ -3,113 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   echo_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 20:46:21 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 04:19:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 08:41:35 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-char    *extract_echo_args(char *input, int start)
+void	print_lines(int i, char **str, int out)
 {
-    char    *str;
-    int     idx;
-
-    str = malloc(sizeof(char) * (ft_strlen(input) - start) + 1);
-    idx = 0;
-    while (input[start])
-    {
-        str[idx] = input[start];
-        start++;
-        idx++;
-    }
-    str[idx] = '\0';
-    return str;
+	while (str[i])
+	{
+		ft_putstr_fd(str[i++], out);
+		if (str[i])
+			ft_putchar_fd(' ', out);
+	}
 }
 
-// int is_between_quotes(char *str)
-// {
-//     if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
-//         return (1);
-//     return (0);
-// }
-
-int     count_double_quotes(char *str)
+int	bult_echo(t_data *data, t_commands *cmd)
 {
-    int x = 0;
-    int count = 0;
+	int		i;
+	int		j;
+	bool	n_option;
 
-    while (str[x])
-    {
-        if (str[x] == '\"')
-            count++;
-        x++;
-    }
-    return (count);
-}
-
-char    *remove_double_quotes(char *str)
-{
-    int     x;
-    int     idx;
-    char    *ptr;
-    
-    x = 0;
-    idx = 0;
-    ptr = malloc(ft_strlen(str) * sizeof(char) + 1);
-    while (str[x])
-    {
-        if (str[x] != '\"')
-        {
-            ptr[idx] = str[x];
-            idx++;
-        }
-        x++;
-    }
-    ptr[idx] = '\0';
-    return (ptr);
-}
-
-void    echo_option_n(char **args)
-{
-    int x;
-
-    if (args[1])
-    {
-        x = 1;
-        while (args[x + 1])
-        {
-            printf("%s ", args[x]);
-            x++;
-        }
-        printf("%s", args[x]);
-    }
-}
-
-void    echo_without_option_n(char **args, char *input)
-{
-    int x;
-
-    x = 0;
-    if (count_double_quotes(extract_echo_args(input, 5)) != 0)
-    {
-        char *str = remove_double_quotes(extract_echo_args(input, 5));
-        while (str[x])
-        {
-            printf("%c", str[x]);
-            x++;
-        }
-        printf("\n");
-    }
-    else
-    {
-        while (args[x + 1])
-        {
-            printf("%s ", args[x]);
-            x++;
-        }
-        printf("%s\n", args[x]);
-    }  
+	i = 1;
+	n_option = false;
+	(void) data;
+	while (cmd->command_args[i] && cmd->command_args[i][0] == '-'
+		&& cmd->command_args[i][1] == 'n')
+	{
+		j = 1;
+		while (cmd->command_args[i][j] == 'n')
+			j++;
+		if (cmd->command_args[i][j] == '\0')
+			n_option = true;
+		else
+			break ;
+		i++;
+	}
+	print_lines(i, cmd->command_args, STDOUT_FILENO);
+	if (n_option == false)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }

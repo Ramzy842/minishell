@@ -3,37 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:52:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 04:27:02 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 06:10:36 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../parsing/parsing.h" 
 #ifndef BUILTINS_H
-# define BUILTINS_H
-# include <stdio.h>
-# include <limits.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include <signal.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+#define BUILTINS_H
 
-int     handle_cd(char **args);
-char    *print_current_dir();
-int     visit_home_dir();
-int     apply_hybrid_cd(char *path);
-// void    echo_without_option_n(char **args);
-void    echo_option_n(char **args);
-char    *remove_double_quotes(char *str);
-// void    handle_echo(char **args);
-void    handle_echo(char **args, char *input);
-void    echo_without_option_n(char **args, char *input);
-char    *extract_echo_args(char *input, int start);
-int     count_double_quotes(char *str);
+#include <stdlib.h>
+#include <unistd.h>
+
+
+
+
+
+
+
+
+size_t	equal_sign(char *str);
+int	ft_isdigit(int c);
+char	*delete_quotes_value(char *str);
+int	check_valid_identifier(char c);
+char	*delete_quotes(char *str, char c);
+char	*find_path_ret(char *str, t_data *data);
+void	change_path(t_data *data);
+int	specific_path(t_data *data, char *str);
+void	add_path_to_env(t_data *data);
+int	buit_cd(t_data *data, t_commands *cmd); ////
+///   
+void print_lines(int i, char **str, int out);
+int bult_echo(t_data *data, t_commands *cmd);////
+////
+int	ft_pwd(void);////
+
+///  
+int buit_cd(t_data *data, t_commands *cmd);
+void determine_exit_code(char **str);
+int	is_str_digit(char *str);
+void	free_tools(t_data *data);
+int bult_exit(t_data *data, t_commands *cmd);/////
+
+///
+char	**whileloop_var(char **arr, char **rtn, char *str);
+char	**var(char **arr, char *str);
+int	unset_error(t_commands *cmd);
+int	bult_unset(t_data *data, t_commands *cmd);////
+
+///
+int	variable_exist(t_data *data, char *str);
+int	check_parameter(char *str);
+int	export_error(char *c);
+char	**whileloop_add_var(char **arr, char **rtn, char *str);
+char	**add_var(char **arr, char *str);
+int	bult_export(t_data *data, t_commands *cmd);
+int	bult_env(t_data *data, t_commands *cmd);
+
 
 #endif

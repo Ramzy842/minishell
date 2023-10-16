@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:29:31 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/05 12:58:33 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:11:35 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_error(int error, t_data *data)
 	else if (error == 6)
 		ft_putstr_fd("outfile: Error\n", STDERR_FILENO);
 	else if (error == 7)
-		ft_putstr_fd("infile: No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd("infile: No such mama or directory\n", STDERR_FILENO);
 	else if (error == 8)
 		ft_putendl_fd("Path does not exist", STDERR_FILENO);
 	reset_data(data);
