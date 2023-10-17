@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 03:57:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 08:31:02 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 18:22:54 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	redirect_output(t_commands* tmp, t_data *data)
 		free(tmp->output_filename);
 	if (data->lexer_list->next)
 	{
-		tmp->output_filename = ft_strdup(data->lexer_list->next->str);
+		tmp->output_filename = ft_strdup(remove_quotes(data->lexer_list->next->str));
 		data->lexer_list = data->lexer_list->next;
 	}
 	tmp->o_redir = IO_OUTPUT;

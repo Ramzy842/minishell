@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 13:07:55 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 18:19:21 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	reset_data(t_data *data, t_env *env)
 	return (1);
 }
 
-char	*show_current_path(char *working_dir)
-{
-	working_dir = print_current_dir();
-	working_dir = ft_strjoin("\x1b[32mMinishell:\x1b[36m",working_dir);
-	working_dir = ft_strjoin(working_dir, "$ \x1b[0m");
-	return (working_dir);
-}
+// char	*show_current_path(char *working_dir)
+// {
+// 	working_dir = print_current_dir();
+// 	working_dir = ft_strjoin("\x1b[32mMinishell:\x1b[36m",working_dir);
+// 	working_dir = ft_strjoin(working_dir, "$ \x1b[0m");
+// 	return (working_dir);
+// }
 
 t_commands* gen_cmd_lst(t_data* data)
 {
@@ -171,8 +171,6 @@ void minishell_execute(t_commands* cmd, t_env* env)
 	waitpid(child_pid, NULL, 0);
 }
 
-
-
 static char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*res;
@@ -229,21 +227,37 @@ char	*remove_quotes(char *cmd)
 // 	return (0);
 // }
 
-
 int syntaxer(t_lexer *lexer)
 {
 	t_lexer *tmp = lexer;
-	if ((tmp->token >= INPUT && tmp->token <= PIPE) && get_list_length((t_lexer*)lexer) == 1)
+	if ((tmp->token >= INPUT && tmp->token <= PIPE)
+		&& get_list_length((t_lexer*)lexer) == 1)
 		return (0);
 	while (tmp)
 	{
-		if (tmp->token >= INPUT && tmp->token <= PIPE && tmp->next->token >= INPUT && tmp->next->token <= PIPE)
+		if (tmp->token >= INPUT && tmp->token <= PIPE
+			&& tmp->next->token >= INPUT && tmp->next->token <= PIPE)
 			return (0);
 		tmp = tmp->next;
 	}
 	return (1);
 }
 
+char* remove_quotes(char* input);
+
+t_lexer *quotes_remover(t_lexer *lexer)
+{
+	t_lexer *tmp = lexer;
+	while (tmp)
+	{
+		printf("%s", remove_quotes(tmp->str));
+		if (tmp->next)
+			printf(", ");
+		tmp = tmp->next;
+	}
+	printf("\n");
+	return (NULL);	
+}
 
 int	minishell_loop(t_data *data, t_env* env)
 {
@@ -280,6 +294,7 @@ int	minishell_loop(t_data *data, t_env* env)
 	if (data->lexer_list)
 	{	
 		data->lexer_list = expand_lexer(data->lexer_list, env);
+		// quotes_remover(data->lexer_list);
 		data->commands = gen_cmd_lst(data);
 		minishell_execute(data->commands, env);
 	}
@@ -306,6 +321,12 @@ int	extract_pwd(t_data *data)
 	return (1);
 }
 
+
+
+// if word is surrounded by quotes ---> remove quotes outer quotes
+// Q: WHEN?
+// A: after assigning the command args and redirs
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -327,6 +348,7 @@ int	main(int argc, char **argv, char **envp)
 	t_env* env = parse_environment(dup_env(envp));
 	if (!env)
 		printf("no env\n");
+	// printf("quotes removal: %s\n", remove_quotes("'l'''\"s\" -l"));
 	minishell_loop(&data, env);
 	return (0);
 }

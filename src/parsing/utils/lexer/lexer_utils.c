@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:10:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 12:10:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:55:37 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,6 @@ int	handle_token(char *str, int x, t_lexer **lexer_list)
 				return -1;
 		}
 		return (1);
-	}	
+	}
 	return (0);
 }

@@ -6,13 +6,14 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 07:43:41 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 18:18:19 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <stdio.h>
+#include <stdbool.h>
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -26,6 +27,8 @@
 # include <readline/history.h>
 # include "./src/builtins/builtins.h"
 # include "./src/parsing/parsing.h"
+# include "./src/execution/execution.h"
+
 // enum redirection_types
 // {
 // 	INPUT,
@@ -95,6 +98,7 @@ char	*ft_strjoin_2d(char *s1, char **s2, int s2_size);
 void	ft_memset(void *addr, unsigned char data, int len);
 char	*ft_strncpy(char* dest, const char* src, size_t n);
 void	free_arr(char **arr);
+int		ft_atoi(const char *str);
 //void	expander(t_command_pipeline *pipeline, char **full_command);
 
 
@@ -124,6 +128,6 @@ typedef struct s_global
 // t_global	g_global;
 
 
-int	reset_data(t_data *data, t_env *env);
-
+int		reset_data(t_data *data, t_env *env);
+char	*remove_quotes(char *cmd);
 #endif

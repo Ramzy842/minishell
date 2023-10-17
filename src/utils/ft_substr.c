@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:17 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/19 02:11:47 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:11:01 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_substr(char *s, unsigned int start, int len)
 {
-	int     x;
+	int		x;
 	char	*substr;
 
 	x = 0;

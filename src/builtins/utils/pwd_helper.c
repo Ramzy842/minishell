@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   pwd_helper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/08 23:09:15 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 12:16:25 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/15 06:43:11 by mbouderr          #+#    #+#             */
+/*   Updated: 2023/10/16 06:11:03 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
 
-int	ft_strlen(char *str)
+#include "../../../minishell.h"
+
+int	ft_pwd(void)
 {
-	int	x;
+	char	*pwd;
 
-	x = 0;
-	while (str[x])
-		x++;
-	return (x);
+	pwd = getcwd(NULL, 0);
+	ft_putendl_fd(pwd, 1);
+	free(pwd);
+	return (0);
 }

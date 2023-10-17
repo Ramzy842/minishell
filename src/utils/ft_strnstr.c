@@ -6,15 +6,15 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:01:40 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/17 00:02:09 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:12:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strnstr( char *haystack, char *needle, int len)
 {
-	int x;
-	int y;
-	int z;
+	int	x;
+	int	y;
+	int	z;
 
 	x = 0;
 	if (!haystack && len == 0)

@@ -6,16 +6,18 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:08:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/09/19 04:08:17 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/16 12:15:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int ft_strlen_2d(char **tab)
+int	ft_strlen_2d(char **tab)
 {
-    int x = 0;
-    while (tab[x])
-        x++;
-    return (x);
+	int	x;
+
+	x = 0;
+	while (tab[x])
+		x++;
+	return (x);
 }
