@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:08:37 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 12:49:12 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:39:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*find_path_ret(char *str, t_data *data)
 	}
 	return (NULL);
 }
-
 void	change_path(t_data *data)
 {
 	char	*tmp;
@@ -38,6 +37,7 @@ void	change_path(t_data *data)
 	free(data->pwd);
 	data->pwd = getcwd(NULL, sizeof(NULL));
 }
+
 
 int	specific_path(t_data *data, char *str)
 {
@@ -106,10 +106,9 @@ int	bult_cd(t_data *data, t_commands *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int buit_cd(t_data *data, t_commands *cmd)
-{
-	(void) data;
-	printf("kakaka\n");
+
+int buit_cd( t_commands *cmd) {
+ 
     if (cmd->command_args[1] == NULL) {
         // Handle "cd" without arguments (cd to home directory)
         const char* home_dir = getenv("HOME");
@@ -126,12 +125,11 @@ int buit_cd(t_data *data, t_commands *cmd)
         }
     } else {
         // Handle "cd" with a directory argument
-        if (chdir(cmd->command_args[1]) != 0)
-		{
+        if (chdir(cmd->command_args[1]) != 0) {
             perror("cd");
             return 1; // Return a non-zero value for failure
         }
     }
-	printf("successs\n");
+	printf("xitting\n");
     return 0; // Return 0 for success
 }

@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 20:46:21 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 08:41:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/17 07:13:09 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_lines(int i, char **str, int out)
 	}
 }
 
-int	bult_echo(t_data *data, t_commands *cmd)
+int	bult_echo( t_commands *cmd)
 {
 	int		i;
 	int		j;
@@ -30,7 +30,7 @@ int	bult_echo(t_data *data, t_commands *cmd)
 
 	i = 1;
 	n_option = false;
-	(void) data;
+ 
 	while (cmd->command_args[i] && cmd->command_args[i][0] == '-'
 		&& cmd->command_args[i][1] == 'n')
 	{

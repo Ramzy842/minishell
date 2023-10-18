@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 10:23:18 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 10:23:53 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:58:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../../minishell.h"
 
-void clear_command_nodes(t_commands **list)
+void	clear_command_nodes(t_commands **list)
 {
 	t_commands	*tmp;
 

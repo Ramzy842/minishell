@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strjoinget.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/21 15:56:30 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 19:28:45 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/16 19:44:57 by mbouderr          #+#    #+#             */
+/*   Updated: 2023/10/18 05:01:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strjoinget(char *s1, char *s2)
 {
-	char	*str;
-	char	*p;
-	int		x;
+	int		lenth1;
+	int		lenth2;
+	char	*result;
 
-	x = 0;
-	while (s1[x])
-		x++;
-	str = malloc(x + 1);
-	if (str == 0)
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup((char *)s2));
+	if (!s2)
+		return (ft_strdup((char *)s1));
+	lenth1 = ft_strlen(s1);
+	lenth2 = ft_strlen(s2);
+	result = ft_calloc(lenth1 + lenth2 + 1, 1);
+	if (result)
 	{
-		return (str);
+		ft_memmove(result, s1, lenth1);
+		ft_memmove(result + lenth1, s2, lenth2);
 	}
-	p = str;
-	x = 0;
-	while (s1[x])
-	{
-		p[x] = s1[x];
-		x++;
-	}
-	p[x] = '\0';
-	return (str);
+	return (result);
 }

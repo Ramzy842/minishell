@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 08:07:54 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/18 05:23:27 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef enum s_tokens
 	HEREDOC = 4,
 	PIPE = 5,
 } t_tokens;
-
 
 typedef enum {
 	INPUT_NONE,
@@ -87,7 +86,6 @@ typedef struct s_commands
 	struct s_commands		*next;
 }	t_commands;
 
-
 int			initialize_data(t_data *data);
 int			quotes_are_matching(char *line);
 int			tokens_reader(t_data *data);
@@ -118,11 +116,16 @@ char		**realloc_arr(char** old_arr, int increment);
 int			get_list_length(void *head);
 
 // REDIRECTIONS
-void		redirect_append(t_commands* tmp, t_data *data);
+// void		redirect_append(t_commands* tmp, t_data *data);
+int	redirect_append(t_commands* tmp, t_data *data);
 void		redirect_heredoc(t_commands* tmp, t_data *data);
-void		redirect_input(t_commands* tmp, t_data *data);
-void		redirect_output(t_commands* tmp, t_data *data);
-void		handle_redirections(t_data *data, t_commands *tmp);
+// void		redirect_input(t_commands* tmp, t_data *data);
+int	redirect_input(t_commands* tmp, t_data *data);
+// void		redirect_output(t_commands* tmp, t_data *data);
+int	redirect_output(t_commands* tmp, t_data *data);
+// void		handle_redirections(t_data *data, t_commands *tmp);
+int	handle_redirections(t_data *data, t_commands *tmp);
+char		*ft_get_heredoc(char *heredoc);
 
 // REDIRECTIONS UTILS
 int			is_metachar(char *str);

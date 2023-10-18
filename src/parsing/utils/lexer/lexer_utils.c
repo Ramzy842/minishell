@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:10:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 16:55:37 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/18 03:37:35 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,26 @@ int	handle_words(int x, char *str, t_lexer **lexer_list)
 	return (y);
 }
 
+// int	handle_basic_tokens(t_tokens token, t_lexer **lexer_list)
+// {
+// 	if (token == INPUT)
+// 	{
+// 		if (!add_node(ft_strdup("<"), INPUT, lexer_list))
+// 			return (-1);
+// 	}
+// 	if (token == OUTPUT)
+// 	{
+// 		if (!add_node(ft_strdup(">"), OUTPUT, lexer_list))
+// 			return (-1);
+// 	}
+// 	if (token == PIPE)
+// 	{
+// 		if (!add_node(ft_strdup("|"), PIPE, lexer_list))
+// 			return (-1);
+// 	}
+// 	return (1);
+// }
+
 int	handle_token(char *str, int x, t_lexer **lexer_list)
 {
 	t_tokens	token;
@@ -63,19 +83,23 @@ int	handle_token(char *str, int x, t_lexer **lexer_list)
 	}
 	else if (token)
 	{
-		if (token == 1) {
+		if (token == INPUT)
+		{
 			if (!add_node(ft_strdup("<"), INPUT, lexer_list))
-				return -1;
+				return (-1);
 		}
-		if (token == 2) {
+		if (token == OUTPUT)
+		{
 			if (!add_node(ft_strdup(">"), OUTPUT, lexer_list))
-				return -1;
+				return (-1);
 		}
-		if (token == PIPE) {
+		if (token == PIPE)
+		{
 			if (!add_node(ft_strdup("|"), PIPE, lexer_list))
-				return -1;
+				return (-1);
 		}
 		return (1);
+	// handle_basic_tokens(token, lexer_list);
 	}
 	return (0);
 }

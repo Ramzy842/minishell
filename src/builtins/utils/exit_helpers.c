@@ -3,90 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 06:18:05 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/16 11:58:56 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 02:06:09 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
 
-// void	ft_simple_cmdsclear(t_commands **list)
-// {
-// 	t_commands	*tmp;
-// 	t_lexer			*redirections_tmp;
-
-// 	if (!*list)
-// 		return ;
-// 	while (*list)
-// 	{
-// 		tmp = (*list)->next;
-// 		redirections_tmp = (*list)->;
-// 		ft_lexerclear(&redirections_tmp);
-// 		if ((*list)->str)
-// 			free_arr((*list)->str);
-// 		if ((*list)->hd_file_name)
-// 			free((*list)->hd_file_name);
-// 		free(*list);
-// 		*list = tmp;
-// 	}
-// 	*list = NULL;
-// }
-
-
-void	free_tools(t_data *data)
+int	ft_errors(char *cmd, char *error)
 {
-
-	if (data->pipes)
-		free(data->pid);
-}
-
-int	is_str_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(error, STDERR_FILENO);
 	return (1);
 }
 
-void	determine_exit_code(char **str)
+static int	check_the_number(char *str)
 {
-	int	exit_code;
-
-	if (!str[1])
-		exit_code = 0;
-	else if (is_str_digit(str[1]))
-		exit_code = ft_atoi(str[1]);
-	else
+	if (!str)
+		return (0);
+	if (*str && ft_strchr("-+", *str))
+		str++;
+	while (*str)
 	{
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(str[1], STDERR_FILENO);
-		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		exit_code = 255;
+		if (!ft_isdigit(*str))
+			return (1);
+		str++;
 	}
-	free_arr(str);
-	exit(exit_code);
+	return (0);
 }
 
-int	bult_exit(t_data *data, t_commands *cmd)
+int	bult_exit(char **args)
 {
-	char	**str;
-	(void) *data;
-	ft_putendl_fd("exit", STDERR_FILENO);
-	if (cmd->command_args[1] && cmd->command_args[2])
+
+	if (args[1] && args[2])
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		ft_errors("exit", "too many arguments");
+		return (1);
 	}
-	str = dup_env(cmd->command_args);
-	determine_exit_code(str);
-	return (EXIT_SUCCESS);
+	if (check_the_number(args[1]))
+	{
+		ft_errors (args[0], "numeric argument required");
+		exit(255);
+	}
+	if (args[1])
+		exit(ft_atoi(args[1]));
+	exit(0);
+	return (0);
 }
+

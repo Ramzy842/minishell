@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/16 18:35:53 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/17 23:24:56 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 
 # Define the source files for the minishell executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
-	./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
+	./src/utils/ft_strjoinget.c ./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
 	./src/parsing/redirections/redirect_output.c ./src/utils/ft_split_spaces.c ./src/utils/spaces.c \
 	./src/utils/ft_strcmp.c ./src/utils/ft_atoi.c ./src/utils/ft_strchr.c ./src/parsing/lexer/lexer.c \
 	./src/utils/ft_strtrim.c ./src/utils/ft_putendl_fd.c ./src/utils/ft_putchar_fd.c \
@@ -35,8 +35,9 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/parsing/parser/utils/get_list_length.c ./src/parsing/parser/utils/handle_args.c ./src/parsing/parser/utils/realloc_arr.c \
 	./src/utils/ft_strncpy.c ./src/parsing/env/operations.c ./src/parsing/utils/commands/freeing.c src/utils/ft_memset.c \
 	./src/parsing/redirections/handle_redirections.c ./src/execution/commandes.c ./src/parsing/redirections/utils/is_metachar.c ./src/parsing/redirections/utils/is_redir_op.c \
-	#./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
-	
+	./src/builtins/utils/tools.c  \
+	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
+	./src/utils/ft_strlcpy.c
 # Define the object files for the minishell executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 

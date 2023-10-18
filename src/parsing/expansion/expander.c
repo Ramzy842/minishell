@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 07:54:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 13:52:47 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/18 05:53:24 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
     t_lexer* updated_list = NULL;
     t_lexer* updated_list_tail = NULL;
     char* dollar_sign;
+	char *removed_quotes_str = NULL;
 
 	dollar_sign = NULL;
     while (current != NULL)
@@ -67,11 +68,12 @@ t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
 		if (count_dollar_signs(current->str) > 1)
 		{
 			int x = 0;
-			char **spl = ft_split(current->str, '$');
+			removed_quotes_str = remove_quotes(current->str);
+			char **spl = ft_split(removed_quotes_str, '$');
 			char *joined = malloc(1);
 			joined[0] = '\0';
 			while (spl[x])
-			{
+			{	
 				char* var_name = spl[x];
 				char* var_value = find_env_var(env, var_name);
 				if (var_value)
@@ -84,7 +86,9 @@ t_lexer *expand_lexer(t_lexer* lexer_list, t_env* env)
 		}
 		else // if dollar signs == 1
 		{
-			dollar_sign = ft_strchr(current->str, '$');
+			removed_quotes_str = remove_quotes(current->str);
+			dollar_sign = ft_strchr(removed_quotes_str, '$');
+			free(removed_quotes_str);
         	if (dollar_sign)
 			{ 
 				char* var_name = dollar_sign + 1;

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 18:18:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/18 01:10:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,10 @@ void	ft_memset(void *addr, unsigned char data, int len);
 char	*ft_strncpy(char* dest, const char* src, size_t n);
 void	free_arr(char **arr);
 int		ft_atoi(const char *str);
+int		minishell_execute(t_commands *cmd, t_env *env, t_data *data);
 //void	expander(t_command_pipeline *pipeline, char **full_command);
-
-
+size_t	ft_strlcpy(char *dst,  char *src, size_t dstsize);
+char	*ft_strjoinget(char *s1, char *s2);
 // printing
 void printer(t_data *data, t_commands *command);
 void	print_tokens_list(t_data *data);
@@ -130,4 +131,5 @@ typedef struct s_global
 
 int		reset_data(t_data *data, t_env *env);
 char	*remove_quotes(char *cmd);
+
 #endif

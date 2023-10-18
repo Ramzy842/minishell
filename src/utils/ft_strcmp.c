@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:09 by rchahban          #+#    #+#             */
-/*   Updated: 2023/08/19 03:07:21 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:29:12 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	int			x;
+	int				x;
 	unsigned char	*str1;
 	unsigned char	*str2;
 

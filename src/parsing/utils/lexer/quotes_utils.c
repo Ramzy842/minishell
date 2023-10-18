@@ -6,47 +6,48 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 08:30:07 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 08:12:07 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 20:12:56 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../minishell.h"
+#include "../../parsing.h"
 
-int find_matching_quote(char *line, int x, int *num_del, char del)
+int	find_matching_quote(char *line, int x, int *num_del, char del)
 {
 	int	y;
 
-    y = x + 1;
-    *num_del = *num_del + 1;
-
-    while (line[y] != '\0' && line[y] != del)
-        y++;
-    if (line[y] == del)
-        *num_del = *num_del + 1;
-    return (y - x);
+	y = x + 1;
+	*num_del = *num_del + 1;
+	while (line[y] != '\0' && line[y] != del)
+		y++;
+	if (line[y] == del)
+		*num_del = *num_del + 1;
+	return (y - x);
 }
 
-int quotes_are_matching(char *line)
+int	quotes_are_matching(char *line)
 {
-    int	index; 
-    int	single_quotes;
-    int	double_quotes;
+	int	index;
+	int	single_quotes;
+	int	double_quotes;
 
 	index = 0;
 	single_quotes = 0;
 	double_quotes = 0;
-    while (line[index] != '\0')
+	while (line[index] != '\0')
 	{
-        if (line[index] == '"')
-            index = index + find_matching_quote(line, index, &double_quotes, '"');
-        if (line[index] == '\'')
-            index = index + find_matching_quote(line, index, &single_quotes, '\'');
-        index++;
-    }
-    if ((double_quotes > 0 && double_quotes % 2 != 0)
+		if (line[index] == '"')
+			index = index
+				+ find_matching_quote(line, index, &double_quotes, '"');
+		if (line[index] == '\'')
+			index = index
+				+ find_matching_quote(line, index, &single_quotes, '\'');
+		index++;
+	}
+	if ((double_quotes > 0 && double_quotes % 2 != 0)
 		|| (single_quotes > 0 && single_quotes % 2 != 0))
-        return (0);
-    return (1);
+		return (0);
+	return (1);
 }
 
 int	handle_quotes(int x, char *str, char del)

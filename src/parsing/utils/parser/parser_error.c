@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:29:31 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 08:09:03 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:37:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	parser_double_token_error(t_data *data, t_lexer *lexer_list,
 	ft_putstr_fd("minishell: syntax error\n",
 		STDERR_FILENO);
 	clear_lexer_nodes(&lexer_list);
-	// reset_data(data);
 	return (EXIT_FAILURE);
 }
 
@@ -79,5 +78,4 @@ void	parser_error(int error, t_data *data, t_lexer *lexer_list)
 	clear_lexer_nodes(&lexer_list);
 	(void) data;
 	(void) error;
-	// ft_error(error, data, );
 }

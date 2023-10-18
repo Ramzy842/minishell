@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:20:48 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/16 15:28:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/15 08:41:35 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "../../../minishell.h"
+
 
 int	export_error(char *c)
 {
