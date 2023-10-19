@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:08:37 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 18:39:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:01:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ int buit_cd( t_commands *cmd) {
             return 1; // Return a non-zero value for failure
         }
     }
-	printf("xitting\n");
+	// printf("xitting\n");
     return 0; // Return 0 for success
 }

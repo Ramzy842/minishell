@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/18 01:10:16 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:22:27 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,9 @@ void print_commands_list(t_commands *list);
 void	clear_command_nodes(t_commands **lst);
 void build_commands_list(t_lexer **lexer_list, t_data *data);
 // void build_commands_list(t_lexer **tokens, t_data *data);
+void	print_cmd_lst(t_commands* cmd);
+char* expand_variables(char* input, t_env *env);
+void free_env_list(t_env* list);
 
 // ----------------------------------------------------------------------------------
 //								NEW CODE											|

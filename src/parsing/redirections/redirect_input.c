@@ -6,17 +6,19 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 03:57:56 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/18 04:13:41 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 09:57:15 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int	redirect_input(t_commands* tmp, t_data *data)
+int	redirect_input(t_commands* tmp, t_data *data, t_env *env)
 {
+	(void)env;
 	if (tmp->input_filename)
 		free(tmp->input_filename);
-	tmp->input_filename = ft_strdup(remove_quotes(data->lexer_list->next->str));
+	// tmp->input_filename = ft_strdup(remove_quotes(data->lexer_list->next->str));
+	tmp->input_filename = ft_strdup(expand_variables(remove_quotes(data->lexer_list->next->str), env));
 	tmp->i_redir = IO_INPUT;
     if(open(tmp->input_filename, O_RDONLY) == -1)
 	{

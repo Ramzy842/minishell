@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/18 04:22:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 12:44:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	reset_data(t_data *data, t_env *env)
 // 	return (working_dir);
 // }
 
-t_commands* gen_cmd_lst(t_data* data)
+t_commands* gen_cmd_lst(t_data* data, t_env *env)
 {
 	t_commands*	head;
 	t_commands*	tmp;
@@ -56,7 +56,7 @@ t_commands* gen_cmd_lst(t_data* data)
 			ft_memset(tmp->command_args, 0, sizeof(char*) * 2);
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
-			handle_args(tmp, &x, data);
+			handle_args(tmp, &x, data, env);
 		while (data->lexer_list && is_metachar(data->lexer_list->str))
 		{
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
@@ -67,10 +67,8 @@ t_commands* gen_cmd_lst(t_data* data)
 				tmp = tmp->next;
 				continue;
 			}
-			if (!handle_redirections(data, tmp))
+			if (!handle_redirections(data, tmp, env))
 			{
-				// redir_err = 1;
-				// break ;
 				return (NULL);
 			}
 		}
@@ -118,13 +116,13 @@ t_commands* gen_cmd_lst(t_data* data)
 // // 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 // // 		if (!cmd_abs_path && cmd->command_args[0])
 // // 		{
-// // 			printf("msh: %s: command not found\n", cmd->command_args[0]);
+// // 			printf("minishell: %s: command not found\n", cmd->command_args[0]);
 // // 			cmd = cmd->next;
 // // 			continue;
 // // 		}
 // // 		if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0])
 // // 		{
-// // 			printf("msh: %s: permission denied\n", cmd->command_args[0]);
+// // 			printf("minishell: %s: permission denied\n", cmd->command_args[0]);
 // // 			cmd = cmd->next;
 // // 			continue;
 // // 		}
@@ -238,6 +236,9 @@ char	*remove_quotes(char *cmd)
 int syntaxer(t_lexer *lexer)
 {
 	t_lexer *tmp = lexer;
+	if ((tmp->token == PIPE)
+		&& get_list_length((t_lexer*)lexer) > 1 && (!(tmp->next->token >= INPUT && tmp->next->token <= PIPE)) )
+		return (0);
 	if ((tmp->token >= INPUT && tmp->token <= PIPE)
 		&& get_list_length((t_lexer*)lexer) == 1)
 		return (0);
@@ -245,7 +246,10 @@ int syntaxer(t_lexer *lexer)
 	{
 		if (tmp->token >= INPUT && tmp->token <= PIPE
 			&& tmp->next->token >= INPUT && tmp->next->token <= PIPE)
-			return (0);
+			{
+				clear_lexer_nodes(&tmp);
+				return (0);
+			}
 		tmp = tmp->next;
 	}
 	return (1);
@@ -272,11 +276,11 @@ int	minishell_loop(t_data *data, t_env* env)
 	char	*temp = NULL;
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	// data->shell_input = readline("\x1b[32mminishell-> \x1b[0m");
 	data->shell_input = readline("Minishell-> ");
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
 	data->shell_input = ft_strdup(temp);
+	free(temp);
 	if (!data->shell_input)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
@@ -302,14 +306,15 @@ int	minishell_loop(t_data *data, t_env* env)
 	// puts("heh");
 	if (data->lexer_list)
 	{	
-		data->lexer_list = expand_lexer(data->lexer_list, env);
+		// data->lexer_list = expand_lexer(data->lexer_list, env); // working but I wanna try expanding commands list so i can ignore heredoc expansion
 		// quotes_remover(data->lexer_list);
-		data->commands = gen_cmd_lst(data);
+		data->commands = gen_cmd_lst(data, env);
 		
 		if (!data->commands)
 			reset_data(data, env);
 		else 
 		{
+			// print_cmd_lst(data->commands);
 			minishell_execute(data->commands, env ,data);
 			reset_data(data, env);
 		}
@@ -352,19 +357,13 @@ int	main(int argc, char **argv, char **envp)
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
-	// char	*cmd;
-	// char	*res;
-
-	// cmd = ft_strdup("l\"s\" echo");
-	// res = remove_quotes(cmd);
-	// printf("%s\n", res);
 	initialize_data(&data);
-	// extract_pwd(&data);
-	// handle_envp(&data);
 	t_env* env = parse_environment(dup_env(envp));
 	if (!env)
-		printf("no env\n");
-	// printf("quotes removal: %s\n", remove_quotes("'l'''\"s\" -l"));
+		return (0);
 	minishell_loop(&data, env);
+	free_env_list(env);
+	free_arr(data.envp);
+	free_arr(data.envp_arr);
 	return (0);
 }

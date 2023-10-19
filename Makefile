@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/17 23:24:56 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/19 11:22:50 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/parsing/parser/utils/get_list_length.c ./src/parsing/parser/utils/handle_args.c ./src/parsing/parser/utils/realloc_arr.c \
 	./src/utils/ft_strncpy.c ./src/parsing/env/operations.c ./src/parsing/utils/commands/freeing.c src/utils/ft_memset.c \
 	./src/parsing/redirections/handle_redirections.c ./src/execution/commandes.c ./src/parsing/redirections/utils/is_metachar.c ./src/parsing/redirections/utils/is_redir_op.c \
-	./src/builtins/utils/tools.c  \
+	./src/builtins/utils/tools.c  src/parsing/env/freeing.c \
 	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
 	./src/utils/ft_strlcpy.c
 # Define the object files for the minishell executable, generated from the source files

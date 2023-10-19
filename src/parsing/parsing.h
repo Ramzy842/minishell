@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/18 05:23:27 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:02:08 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,21 +111,26 @@ t_lexer		*free_lexer_node(t_lexer **lst);
 void		clear_lexer_nodes(t_lexer **lst);
 int			ft_error(int error, t_data *data, t_env *env);
 t_lexer		*expand_lexer(t_lexer* lexer_list, t_env* env);
-void		handle_args(t_commands *tmp, int *x, t_data *data);
+// void		handle_args(t_commands *tmp, int *x, t_data *data);
+void	handle_args(t_commands *tmp, int *x, t_data *data, t_env *env);
 char		**realloc_arr(char** old_arr, int increment);
 int			get_list_length(void *head);
 
 // REDIRECTIONS
 // void		redirect_append(t_commands* tmp, t_data *data);
-int	redirect_append(t_commands* tmp, t_data *data);
-void		redirect_heredoc(t_commands* tmp, t_data *data);
+// int	redirect_append(t_commands* tmp, t_data *data);
+int	redirect_append(t_commands* tmp, t_data *data, t_env *env);
+void		redirect_heredoc(t_commands* tmp, t_data *data, t_env *env);
 // void		redirect_input(t_commands* tmp, t_data *data);
-int	redirect_input(t_commands* tmp, t_data *data);
+// int	redirect_input(t_commands* tmp, t_data *data);
+int	redirect_input(t_commands* tmp, t_data *data, t_env *env);
 // void		redirect_output(t_commands* tmp, t_data *data);
-int	redirect_output(t_commands* tmp, t_data *data);
+// int	redirect_output(t_commands* tmp, t_data *data);
+int	redirect_output(t_commands* tmp, t_data *data, t_env *env);
 // void		handle_redirections(t_data *data, t_commands *tmp);
-int	handle_redirections(t_data *data, t_commands *tmp);
-char		*ft_get_heredoc(char *heredoc);
+// int	handle_redirections(t_data *data, t_commands *tmp);
+int	handle_redirections(t_data *data, t_commands *tmp, t_env *env);
+char		*ft_get_heredoc(char *heredoc, t_env *env);
 
 // REDIRECTIONS UTILS
 int			is_metachar(char *str);
@@ -139,6 +144,7 @@ char		*extract_path(char **envp);
 void		handle_envp(t_data *data);
 t_env*		add_env(t_env* list, const char* key, const char* value);
 t_env*		parse_environment(char **env);
+char*		find_env_key(t_env* env, char* value);
 
 // COMMANDS
 t_commands	*gen_cmd_node();
