@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 17:00:47 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:15:28 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_and_handle_command(t_commands *cmd, t_env *env)
 	cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 	if (cmd->command_args[0] && !cmd_abs_path && !check_is_builting(cmd))
 	{
-		printf("msh: %s: command not found\n", cmd->command_args[0]);
+		//printf("msh: %s: command not found\n", cmd->command_args[0]);
 		cmd = cmd->next;
 		return (0);
 	}
@@ -147,7 +147,13 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 					exec_builtin_commands(cmd, env);
 				else
 				{
-					execve(get_cmd_abs_path(env, cmd->command_args[0]),
+					if ((cmd->command_args[0][0] == '.' && cmd->command_args[0][0] == '/')|| cmd->command_args[0][0] == '/')
+					{
+						path = cmd->command_args[0];
+					}
+					else 
+						path = get_cmd_abs_path(env, cmd->command_args[0]);
+					execve(path,
 						cmd->command_args, convert_env_to_arr(env));
 					exit(1);
 				}
