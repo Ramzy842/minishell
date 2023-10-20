@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 07:54:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/19 12:35:45 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:02:08 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char* find_env_var(t_env* env, char* key)
 	{
         if (ft_strcmp(current->key, key) == 0)
 		{
-			free_env_list(current);
-			free(key);
+			// free_env_list(current);
+			// free(key);
 			return current->value;
 		}
         current = current->next;
     }
-	free_env_list(current);
-	free(key);
+	// free_env_list(current);
+	// free(key);
     return (NULL);
 }
 
@@ -111,8 +111,8 @@ char* expand_variables(char	*str, t_env *env)
     	    	str = ft_strdup(var_value);
 			else
     	    	str = ft_strdup("");
-			free(var_name);
-			free(var_value);
+			// free(var_name);
+			// free(var_value);
     	}
 		else
     	    str = ft_strdup(str);

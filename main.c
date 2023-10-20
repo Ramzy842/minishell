@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/19 12:44:59 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:09:25 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	reset_data(t_data *data, t_env *env)
 		clear_lexer_nodes(&data->lexer_list);
 	if (data->commands)
 	 	clear_command_nodes(&data->commands);
-	free(data->shell_input);
+	if (data->shell_input)
+		free(data->shell_input);
 	// if (data->pid)
 	// 	free(data->pid);
 	// free_arr(data->paths);
@@ -222,22 +223,12 @@ char	*remove_quotes(char *cmd)
 	return (res);
 }
 
-// // int	main(void)
-// // {
-// // 	char	*cmd;
-// // 	char	*res;
-// //
-// // 	cmd = ft_strdup("echo \"hello world\"");
-// // 	res = remove_quotes(cmd);
-// // 	printf("%s\n", res);
-// // 	return (0);
-// // }
-
 int syntaxer(t_lexer *lexer)
 {
 	t_lexer *tmp = lexer;
 	if ((tmp->token == PIPE)
-		&& get_list_length((t_lexer*)lexer) > 1 && (!(tmp->next->token >= INPUT && tmp->next->token <= PIPE)) )
+		&& get_list_length((t_lexer*)lexer) > 1
+		&& (!(tmp->next->token >= INPUT && tmp->next->token <= PIPE)))
 		return (0);
 	if ((tmp->token >= INPUT && tmp->token <= PIPE)
 		&& get_list_length((t_lexer*)lexer) == 1)
@@ -246,10 +237,7 @@ int syntaxer(t_lexer *lexer)
 	{
 		if (tmp->token >= INPUT && tmp->token <= PIPE
 			&& tmp->next->token >= INPUT && tmp->next->token <= PIPE)
-			{
-				clear_lexer_nodes(&tmp);
 				return (0);
-			}
 		tmp = tmp->next;
 	}
 	return (1);
@@ -257,25 +245,26 @@ int syntaxer(t_lexer *lexer)
 
 char* remove_quotes(char* input);
 
-t_lexer *quotes_remover(t_lexer *lexer)
-{
-	t_lexer *tmp = lexer;
-	while (tmp)
-	{
-		printf("%s", remove_quotes(tmp->str));
-		if (tmp->next)
-			printf(", ");
-		tmp = tmp->next;
-	}
-	printf("\n");
-	return (NULL);	
-}
+// t_lexer *quotes_remover(t_lexer *lexer)
+// {
+// 	t_lexer *tmp = lexer;
+// 	while (tmp)
+// 	{
+// 		printf("%s", remove_quotes(tmp->str));
+// 		if (tmp->next)
+// 			printf(", ");
+// 		tmp = tmp->next;
+// 	}
+// 	printf("\n");
+// 	return (NULL);	
+// }
 
 int	minishell_loop(t_data *data, t_env* env)
 {
 	char	*temp = NULL;
 	data->commands = NULL;
 	data->lexer_list = NULL;
+
 	data->shell_input = readline("Minishell-> ");
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
@@ -362,8 +351,8 @@ int	main(int argc, char **argv, char **envp)
 	if (!env)
 		return (0);
 	minishell_loop(&data, env);
-	free_env_list(env);
-	free_arr(data.envp);
-	free_arr(data.envp_arr);
+	// free_env_list(env);
+	// free_arr(data.envp);
+	// free_arr(data.envp_arr);
 	return (0);
 }

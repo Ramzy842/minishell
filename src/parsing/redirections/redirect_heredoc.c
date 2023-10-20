@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 09:47:53 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/19 10:11:21 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:09:52 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 		}
 		// expand line (expansion function used in expansion parsing)
 		temp = ft_strjoinget(temp , expand_variables(line, env));
+		// printf("hna");
 		temp =  ft_strjoinget(temp, "\n");
 		if(line)
 			free(line);
@@ -50,7 +51,6 @@ void	redirect_heredoc(t_commands* tmp, t_data *data, t_env *env)
 	(void)env;
 	if (tmp->input_filename)
 		free(tmp->input_filename);
-	// printf("(%s)\n", find_env_key(env , data->lexer_list->next->str));
 	tmp->input_filename = ft_strdup(remove_quotes(data->lexer_list->next->str)
 	);
 	tmp->i_redir = IO_HEREDOC;

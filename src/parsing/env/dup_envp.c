@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:14:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:15:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:00:58 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	**dup_env(char **envp)
 		ptr[x] = ft_strdup(envp[x]);
 		if (!ptr[x])
 		{
-			free_arr(ptr);
+			// free_arr(ptr);
 			return (NULL);
 		}
 		x++;

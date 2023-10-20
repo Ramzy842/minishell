@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/19 12:26:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:00:26 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,18 @@ int check_and_handle_command(t_commands *cmd, t_env *env)
 	if (!cmd_abs_path && cmd->command_args[0])
 	{
 		printf("minishell: %s: command not found\n", cmd->command_args[0]);
-		free(cmd_abs_path);
+		// free(cmd_abs_path);
 		cmd = cmd->next;
 		return 0;
 	}
 	if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0])
 	{
 		printf("minishell: %s: permission denied\n", cmd->command_args[0]);
-		free(cmd_abs_path);
+		// free(cmd_abs_path);
 		cmd = cmd->next;
 		return 0;
 	}
-	free(cmd_abs_path);
+	// free(cmd_abs_path);
 	return 1;
 }
 
@@ -136,7 +136,8 @@ int minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 				return (0);
 			tmp = tmp->next;
 		}
-    	exit(0);
+    	// exit(0);
+		return (0);
     }
 	// end working version
 
@@ -245,7 +246,7 @@ int minishell_execute(t_commands *cmd, t_env *env, t_data *data)
     // Restore original file descriptors after execution
     dup2(original_fd[0], 0);
     dup2(original_fd[1], 1);
-	free_arr(env_arr);
+	// free_arr(env_arr);
     // Wait for all child processes to finish
     while (wait(NULL) > 0);
     return 0;

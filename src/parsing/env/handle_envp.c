@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:06:49 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 15:24:53 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:01:17 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void handle_envp(t_data *data)
 			"/", 1) != 0)
 		{
 			temp = ft_strjoin(data->paths[x], "/");
-			free(data->paths[x]);
+			// free(data->paths[x]);
 			data->paths[x] = temp;
 		}
 		x++;

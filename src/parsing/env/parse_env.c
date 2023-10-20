@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:02:27 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:03:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:10:08 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_env* parse_environment(char **env)
             ft_strncpy(key, env[i], key_len);
             key[key_len] = '\0';
             char* value = equals + 1;
+			// free(equals);
             // Add the key-value pair to the linked list
             env_list = add_env(env_list, key, value);
         }
