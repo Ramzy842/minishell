@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:08:37 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 12:56:29 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:03:24 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,61 +81,42 @@ void	add_path_to_env(t_data *data)
 	}
 }
 
-int	bult_cd(t_data *data, t_commands *cmd)
+int	change_to_home_directory(void)
 {
-	int	ret;
+	const char	*home_dir;
 
-	if (!cmd->command_args[1])
-		ret = specific_path(data, "HOME=");
-	else if (ft_strncmp(cmd->command_args[1], "-", 1) == 0)
-		ret = specific_path(data, "OLDPWD=");
-	else
+	home_dir = getenv("HOME");
+	if (home_dir == NULL)
 	{
-		ret = chdir(cmd->command_args[1]);
-		if (ret != 0)
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->command_args[1], STDERR_FILENO);
-			perror(" ");
-		}
+		ft_errors("HOME directory not set in the environment.",
+			strerror(errno));
+		return (1);
 	}
-	if (ret != 0)
-		return (EXIT_FAILURE);
-	change_path(data);
-	add_path_to_env(data);
-	return (EXIT_SUCCESS);
+	if (chdir(home_dir) != 0)
+	{
+		perror("cd");
+		return (1);
+	}
+	return (0);
+}
+
+int	change_directory_to_path(const char *path)
+{
+	if (chdir(path) != 0)
+	{
+		perror("cd");
+		return (1);
+	}
+	return (0);
 }
 
 int	buit_cd(t_commands *cmd)
 {
-	const char	*home_dir;
-
 	if (cmd->command_args[1] == NULL)
 	{
-		home_dir = getenv("HOME");
-		if (home_dir != NULL)
-		{
-			if (chdir(home_dir) != 0)
-			{
-				printf("error\n");
-				perror("cd");
-				return (1);
-			}
-		}
-		else
-		{
-			ft_errors("HOME directory not set in the environment.\n",
-				strerror(errno));
-			return (1);
-		}
+		return (change_to_home_directory());
 	}
 	else
-	{
-		if (chdir(cmd->command_args[1]) != 0)
-		{
-			perror("cd");
-			return (1);
-		}
-	}
-	return (0);
+		return (change_directory_to_path(cmd->command_args[1]));
+ 
 }
