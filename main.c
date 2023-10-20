@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/18 04:22:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/19 00:28:50 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,106 +79,6 @@ t_commands* gen_cmd_lst(t_data* data)
 	}
 	return (head);
 }
-
-// // remove_env (3la 9bl unset)
-// // add_env (3la 9bl export)
-
-// // char* get_cmd_abs_path(t_env* env, char* cmd)
-// // {
-// // 	t_env* path = get_env(env, "PATH");
-// // 	if (!path)
-// // 		return NULL;
-// // 	char** path_spl = ft_split(path->value, ':');
-// // 	if (!path_spl)
-// // 		return NULL;
-// // 	int i = 0;
-// // 	while (path_spl[i])
-// // 	{
-// // 		char* tmp1 = ft_strjoin(path_spl[i], "/");
-// // 		char* tmp2 = ft_strjoin(tmp1, cmd);
-// // 		free(tmp1);
-// // 		if (!access(tmp2, F_OK))
-// // 			return tmp2;
-// // 		i++;
-// // 	}
-// // 	return (NULL);
-// // }
-
-// // void minishell_execute(t_commands* cmd, t_env* env)
-// // {
-// // 	int child_pid;
-// // 	int pipefd[2] = {-1, -1};
-// // 	while (cmd)
-// // 	{
-// // 		if (!cmd->command_args[0])
-// // 		{
-// // 			cmd = cmd->next;
-// // 			continue;
-// // 		}
-// // 		char* cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
-// // 		if (!cmd_abs_path && cmd->command_args[0])
-// // 		{
-// // 			printf("msh: %s: command not found\n", cmd->command_args[0]);
-// // 			cmd = cmd->next;
-// // 			continue;
-// // 		}
-// // 		if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0])
-// // 		{
-// // 			printf("msh: %s: permission denied\n", cmd->command_args[0]);
-// // 			cmd = cmd->next;
-// // 			continue;
-// // 		}
-// // 		// we have a pipe
-// // 		if (cmd->next)
-// // 		{
-// // 			pipe(pipefd);
-// // 			cmd->out = pipefd[1];
-// // 			cmd->next->in = pipefd[0];
-// // 		}
-// // 		// check for redirections
-// // 		if (cmd->i_redir == IO_INPUT)
-// // 		{
-// // 			int fd = open(cmd->input_filename, O_RDONLY);
-// // 			cmd->in = fd;
-// // 		}
-// // 		if (cmd->o_redir == IO_OUTPUT)
-// // 		{
-// // 			// its not necessary to pass O_CREAT to open since the parser should have created the file
-// // 			int fd = open(cmd->output_filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-// // 			close(pipefd[1]);
-// // 			cmd->out = fd;
-// // 		}
-// // 		if (cmd->o_redir == IO_APPEND)
-// // 		{
-// // 			int fd = open(cmd->output_filename, O_CREAT | O_APPEND | O_WRONLY, 0666);
-// // 			cmd->out = fd;
-// // 		}
-// // 		child_pid = fork();
-// // 		if (!child_pid)
-// // 		{
-// // 			if (cmd->out != 1)
-// // 			{
-// // 				dup2(cmd->out, 1);
-// // 				// 1 is now pointing at cmd->out, cmd->out is not needed anymore
-// // 				close(cmd->out);
-// // 			}
-// // 			if (cmd->in != 0)
-// // 			{
-// // 				dup2(cmd->in, 0);
-// // 				// same thing above, cmd->in is not needed anymore
-// // 				close(cmd->in);
-// // 			}
-// // 			execve(cmd_abs_path, cmd->command_args, convert_env_to_arr(env));
-// // 		}
-// // 		if (cmd->out != 1)
-// // 			close(cmd->out);
-// // 		if (cmd->in != 0)
-// // 			close(cmd->in);
-// // 		cmd = cmd->next;
-// // 	}
-// // 	waitpid(child_pid, NULL, 0);
-// // }
-
 static char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*res;
@@ -223,17 +123,6 @@ char	*remove_quotes(char *cmd)
 	}
 	return (res);
 }
-
-// // int	main(void)
-// // {
-// // 	char	*cmd;
-// // 	char	*res;
-// //
-// // 	cmd = ft_strdup("echo \"hello world\"");
-// // 	res = remove_quotes(cmd);
-// // 	printf("%s\n", res);
-// // 	return (0);
-// // }
 
 int syntaxer(t_lexer *lexer)
 {
@@ -364,7 +253,6 @@ int	main(int argc, char **argv, char **envp)
 	t_env* env = parse_environment(dup_env(envp));
 	if (!env)
 		printf("no env\n");
-	// printf("quotes removal: %s\n", remove_quotes("'l'''\"s\" -l"));
 	minishell_loop(&data, env);
 	return (0);
 }

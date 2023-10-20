@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
+#    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/17 23:24:56 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/19 06:08:48 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/utils/ft_strdup.c ./src/utils/ft_strlen.c ./src/utils/ft_strjoin.c ./src/utils/handle_args.c \
 	./src/builtins/utils/cd_helpers.c ./src/parsing/expansion/expander.c \
 	./src/execution/execution.c ./src/utils/tok_w_no_quotes.c ./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
-	./src/parsing/utils/lexer/quotes_utils.c ./src/parsing/utils/lexer/lexer_utils.c \
+	./src/parsing/utils/lexer/quotes_utils.c  ./src/builtins/utils/env_helper.c ./src/parsing/utils/lexer/lexer_utils.c \
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
 	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
 	./src/utils/ft_memmove.c ./src/utils/ft_memcpy.c ./src/utils/ft_calloc.c ./src/utils/ft_bzero.c \

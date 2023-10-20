@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:19:04 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/15 08:41:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/19 06:11:14 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,22 @@ char	*delete_quotes(char *str, char c)
 	return (str);
 }
 
-int	ft_isdigit(int c)
+ int	ft_isdigit(int c)
 {
 	if (c > 47 && c < 58)
 		return (1);
 	return (0);
 }
-int	bult_env(t_data *data, t_commands *cmd)
-{
-	int		i;
+//   int	bult_env(t_data *data, t_commands *cmd)
+// {
+// 	int		i;
 
-	(void) cmd;
-	i = 0;
-	while (data->envp[i])
-	{
-		ft_putendl_fd(data->envp[i], STDOUT_FILENO);
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
+// 	(void) cmd;
+// 	i = 0;
+// 	while (data->envp[i])
+// 	{
+// 		ft_putendl_fd(data->envp[i], STDOUT_FILENO);
+// 		i++;
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
