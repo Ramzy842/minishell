@@ -10,24 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../../minishell.h"
 
-int bult_env(t_env *env)
+int	bult_env(t_env *env)
 {
-    t_env *tmp = env;
+	t_env	*tmp;
+	char	*env_var;
+	char	*env_var_with_value;
 
-    while (tmp)
-    {
-        if (tmp->key && tmp->value)
-        {
-            char *env_var = ft_strjoin(tmp->key, "=");
-            char *env_var_with_value = ft_strjoin(env_var, tmp->value);
-            ft_putendl_fd(env_var_with_value, 1);
-            free(env_var);
-            free(env_var_with_value);
-        }
-        tmp = tmp->next;
-    }
-    return 0;
+	tmp = env;
+	while (tmp)
+	{
+		if (tmp->key && tmp->value)
+		{
+			env_var = ft_strjoin(tmp->key, "=");
+			env_var_with_value = ft_strjoin(env_var, tmp->value);
+			ft_putendl_fd(env_var_with_value, 1);
+			free(env_var);
+			free(env_var_with_value);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }

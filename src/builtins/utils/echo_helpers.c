@@ -22,7 +22,7 @@ void	print_lines(int i, char **str, int out)
 	}
 }
 
-int	bult_echo( t_commands *cmd)
+int	bult_echo(t_commands *cmd)
 {
 	int		i;
 	int		j;
@@ -30,7 +30,6 @@ int	bult_echo( t_commands *cmd)
 
 	i = 1;
 	n_option = false;
- 
 	while (cmd->command_args[i] && cmd->command_args[i][0] == '-'
 		&& cmd->command_args[i][1] == 'n')
 	{

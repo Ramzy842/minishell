@@ -6,12 +6,11 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 06:18:05 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/19 07:10:09 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:00:16 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
 
 int	ft_errors(char *cmd, char *error)
 {
@@ -21,6 +20,7 @@ int	ft_errors(char *cmd, char *error)
 	ft_putendl_fd(error, STDERR_FILENO);
 	return (1);
 }
+
 void	ft_lstadd_back(t_env **env, t_env *new)
 {
 	t_env	*current;
@@ -42,6 +42,7 @@ void	ft_lstadd_back(t_env **env, t_env *new)
 		}
 	}
 }
+
 static int	ft_search_set(char *new, char *var, t_env *tmp_env)
 {
 	while (tmp_env)
@@ -65,6 +66,7 @@ static int	ft_search_set(char *new, char *var, t_env *tmp_env)
 	}
 	return (1);
 }
+
 t_env	*ft_lstnew(void *key)
 {
 	t_env	*ptr;
@@ -115,9 +117,8 @@ static int	check_the_number(char *str)
 	return (0);
 }
 
-int	 bult_exit(char **args)
+int	bult_exit(char **args)
 {
-
 	if (args[1] && args[2])
 	{
 		ft_errors("exit", "too many arguments");
@@ -125,13 +126,11 @@ int	 bult_exit(char **args)
 	}
 	if (check_the_number(args[1]))
 	{
-		ft_errors (args[0], "numeric argument required");
+		ft_errors(args[0], "numeric argument required");
 		exit(255);
 	}
 	if (args[1])
 		exit(ft_atoi(args[1]));
-		//write(1,"exit\n",5);
 	exit(0);
 	return (0);
 }
-

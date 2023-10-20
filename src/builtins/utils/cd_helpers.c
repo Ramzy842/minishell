@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helpers.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:08:37 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 18:39:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:56:29 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtins.h"
 #include "../../../minishell.h"
+#include "../builtins.h"
 
 char	*find_path_ret(char *str, t_data *data)
 {
@@ -27,17 +27,17 @@ char	*find_path_ret(char *str, t_data *data)
 	}
 	return (NULL);
 }
+
 void	change_path(t_data *data)
 {
 	char	*tmp;
 
 	tmp = ft_strdup(data->pwd);
- 	free(data->old_pwd);
+	free(data->old_pwd);
 	data->old_pwd = tmp;
 	free(data->pwd);
 	data->pwd = getcwd(NULL, sizeof(NULL));
 }
-
 
 int	specific_path(t_data *data, char *str)
 {
@@ -83,7 +83,7 @@ void	add_path_to_env(t_data *data)
 
 int	bult_cd(t_data *data, t_commands *cmd)
 {
-	int		ret;
+	int	ret;
 
 	if (!cmd->command_args[1])
 		ret = specific_path(data, "HOME=");
@@ -106,30 +106,36 @@ int	bult_cd(t_data *data, t_commands *cmd)
 	return (EXIT_SUCCESS);
 }
 
+int	buit_cd(t_commands *cmd)
+{
+	const char	*home_dir;
 
-int buit_cd( t_commands *cmd) {
- 
-    if (cmd->command_args[1] == NULL) {
-        // Handle "cd" without arguments (cd to home directory)
-        const char* home_dir = getenv("HOME");
-        if (home_dir != NULL) {
-            if (chdir(home_dir) != 0) {
+	if (cmd->command_args[1] == NULL)
+	{
+		home_dir = getenv("HOME");
+		if (home_dir != NULL)
+		{
+			if (chdir(home_dir) != 0)
+			{
 				printf("error\n");
-                perror("cd");
-                return 1; // Return a non-zero value for failure
-            }
-        } else {
-            printf("HOME directory not set in the environment.\n");
-			printf("error\n");
-            return 1; // Return a non-zero value for failure
-        }
-    } else {
-        // Handle "cd" with a directory argument
-        if (chdir(cmd->command_args[1]) != 0) {
-            perror("cd");
-            return 1; // Return a non-zero value for failure
-        }
-    }
-	printf("xitting\n");
-    return 0; // Return 0 for success
+				perror("cd");
+				return (1);
+			}
+		}
+		else
+		{
+			ft_errors("HOME directory not set in the environment.\n",
+				strerror(errno));
+			return (1);
+		}
+	}
+	else
+	{
+		if (chdir(cmd->command_args[1]) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
+	}
+	return (0);
 }
