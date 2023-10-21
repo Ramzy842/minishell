@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 18:33:06 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/21 21:53:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	exec_builtin_commands(t_commands *cmd, t_env *env)
 int	check_and_handle_command(t_commands *cmd, t_env *env)
 {
 	char	*cmd_abs_path;
-	// printf("%s\n", ft_split(cmd->command_args[0], ' ')[0]);
-	cmd_abs_path = get_cmd_abs_path(env, ft_split(cmd->command_args[0], ' ')[0]);
+	cmd_abs_path = get_cmd_abs_path(env, *ft_split(cmd->command_args[0], ' '));
 	if ((cmd->command_args[0] && !cmd_abs_path && !check_is_builting(cmd) ))
 	{
 		printf("msh: %s: command not found\n", cmd->command_args[0]);
@@ -91,7 +90,8 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 
 	(void)*data;
 	tmp_fd = -1;
-
+	if (!cmd || !cmd->command_args || !cmd->command_args[0])
+		return (0);
 	check_and_handle_command(cmd, env);
 	original_fd[0] = dup(0);
 	original_fd[1] = dup(1);
