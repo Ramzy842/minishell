@@ -6,13 +6,13 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 23:44:56 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 00:55:54 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <sys/types.h>
 #include <dirent.h>
+#include <sys/types.h>
 
 int	exec_builtin_commands(t_commands *cmd, t_env *env)
 {
@@ -57,7 +57,7 @@ int	check_and_handle_command(t_commands *cmd, t_env *env)
 	if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0]
 		&& !check_is_builting(cmd))
 	{
-		ft_errors(cmd->command_args[0] ,"permission denied" );
+		ft_errors(cmd->command_args[0], "permission denied");
 		cmd = cmd->next;
 		return (0);
 	}
@@ -83,24 +83,24 @@ int	check_is_builting(t_commands *cmd)
 	return (0);
 }
 
-char *check_abs_path(char *cmd)
-	{
-		char *path;
-				if ((cmd[0] == '.'&& cmd[0] == '/')|| cmd[0] == '/')
-					return (path = &cmd[0]);
-					else 
-						return NULL;
-				
-	}
+char	*check_abs_path(char *cmd)
+{
+	char	*path;
+
+	if ((cmd[0] == '.' && cmd[0] == '/') || cmd[0] == '/')
+		return (path = &cmd[0]);
+	else
+		return (NULL);
+}
 
 int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 {
-	int	original_fd[2];
-	int	tmp_fd;
-	int	pid;
+	int original_fd[2];
+	int tmp_fd;
+	int pid;
 	char *path;
 	int status;
-	int	i;
+	int i;
 	int pipefd[2];
 
 	(void)*data;
@@ -159,13 +159,15 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 					exec_builtin_commands(cmd, env);
 				else
 				{
-					if ((cmd->command_args[0][0] == '.' && cmd->command_args[0][0] == '/')|| cmd->command_args[0][0] == '/')
+					if ((cmd->command_args[0][0] == '.'
+							&& cmd->command_args[0][0] == '/')
+						|| cmd->command_args[0][0] == '/')
 					{
 						path = cmd->command_args[0];
 					}
-					else 
+					else
 						path = get_cmd_abs_path(env, cmd->command_args[0]);
-					execve(path,cmd->command_args, convert_env_to_arr(env));
+					execve(path, cmd->command_args, convert_env_to_arr(env));
 					exit(1);
 				}
 				exit(1);
