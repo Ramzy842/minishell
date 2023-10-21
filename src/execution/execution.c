@@ -6,11 +6,13 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 21:49:33 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 23:44:56 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <sys/types.h>
+#include <dirent.h>
 
 int	exec_builtin_commands(t_commands *cmd, t_env *env)
 {
@@ -33,18 +35,29 @@ int	exec_builtin_commands(t_commands *cmd, t_env *env)
 int	check_and_handle_command(t_commands *cmd, t_env *env)
 {
 	char	*cmd_abs_path;
+	DIR		*dir;
 
-	cmd_abs_path = get_cmd_abs_path(env, *ft_split(cmd->command_args[0], ' '));
+	if ((*cmd->command_args[0] == '.' || *cmd->command_args[0] == '/'))
+	{
+		dir = opendir(cmd->command_args[0]);
+		if (dir)
+		{
+			ft_errors(cmd->command_args[0], "is directory");
+			cmd = cmd->next;
+			return (0);
+		}
+	}
+	cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 	if ((cmd->command_args[0] && !cmd_abs_path && !check_is_builting(cmd)))
 	{
-		printf("msh: %s: command not found\n", cmd->command_args[0]);
+		ft_errors(cmd->command_args[0], "command not found");
 		cmd = cmd->next;
 		return (0);
 	}
 	if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0]
 		&& !check_is_builting(cmd))
 	{
-		printf("msh: %s: permission denied\n", cmd->command_args[0]);
+		ft_errors(cmd->command_args[0] ,"permission denied" );
 		cmd = cmd->next;
 		return (0);
 	}
@@ -79,6 +92,7 @@ char *check_abs_path(char *cmd)
 						return NULL;
 				
 	}
+
 int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 {
 	int	original_fd[2];
@@ -91,9 +105,9 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 
 	(void)*data;
 	tmp_fd = -1;
-		if (!cmd || !cmd->command_args || !cmd->command_args[0])
+	if (!cmd || !cmd->command_args || !cmd->command_args[0])
 		return (0);
-		check_and_handle_command(cmd, env);
+	check_and_handle_command(cmd, env);
 	original_fd[0] = dup(0);
 	original_fd[1] = dup(1);
 	if (!cmd->next && !ft_redir(cmd))
@@ -105,11 +119,9 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 			pid = fork();
 			if (pid == 0)
 			{
-				if ((cmd->command_args[0][0] == '.' && cmd->command_args[0][0] == '/')|| cmd->command_args[0][0] == '/')
-					path = cmd->command_args[0];
-				else
-					path = get_cmd_abs_path(env, ft_split(cmd->command_args[0], ' ')[0]);
+				path = get_cmd_abs_path(env, cmd->command_args[0]);
 				execve(path, cmd->command_args, convert_env_to_arr(env));
+				exit(EXIT_FAILURE);
 			}
 			else if (pid < 0)
 			{

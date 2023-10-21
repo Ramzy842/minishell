@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:59:25 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 20:54:32 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 23:56:03 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,37 +63,4 @@ int	ft_redir(t_commands *cmd)
 	if (cmd->o_redir != OUTPUT_NONE)
 		ft_out_redir(cmd);
 	return (0);
-}
-
-char	*get_cmd_abs_path(t_env *env, char *cmd)
-{
-	t_env	*path;
-	char	**path_spl;
-	char	*tmp1;
-	char	*tmp2;
-	int		i;
-
-	path = get_env(env, "PATH");
-	if (!path)
-		return (NULL);
-	if ((cmd[0] == '.' && cmd[1] == '/') || cmd[0] == '/')
-	{
-		tmp2 = cmd;
-		if (!access(tmp2, F_OK))
-			return (tmp2);
-	}
-	path_spl = ft_split(path->value, ':');
-	if (!path_spl)
-		return (NULL);
-	i = 0;
-	while (path_spl[i])
-	{
-		tmp1 = ft_strjoin(path_spl[i], "/");
-		tmp2 = ft_strjoin(tmp1, cmd);
-		free(tmp1);
-		if (!access(tmp2, F_OK))
-			return (tmp2);
-		i++;
-	}
-	return (NULL);
 }
