@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 20:46:21 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 13:53:55 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:48:03 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	print_lines(int i, char **str, int out)
 
 int	bult_echo(t_commands *cmd)
 {
+	bool	n_option;
 	int		i;
 	int		j;
-	bool	n_option;
 
 	i = 1;
 	n_option = false;

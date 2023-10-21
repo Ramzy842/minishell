@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commandes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:59:25 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 17:51:54 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:54:32 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,17 @@ char	*get_cmd_abs_path(t_env *env, char *cmd)
 	char	**path_spl;
 	char	*tmp1;
 	char	*tmp2;
-
 	int		i;
 
 	path = get_env(env, "PATH");
 	if (!path)
 		return (NULL);
-		if ((cmd[0] == '.'&& cmd[1] == '/')|| cmd[0] == '/')
-		{
-				tmp2 = cmd;
-			if (!access(tmp2, F_OK))
+	if ((cmd[0] == '.' && cmd[1] == '/') || cmd[0] == '/')
+	{
+		tmp2 = cmd;
+		if (!access(tmp2, F_OK))
 			return (tmp2);
-		}
+	}
 	path_spl = ft_split(path->value, ':');
 	if (!path_spl)
 		return (NULL);

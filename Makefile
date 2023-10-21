@@ -3,18 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
+#    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/21 14:06:51 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/21 21:43:39 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #Define the compiler
+
 CC = cc
 
 # Define the flags to pass to the compiler
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=address
 
 # Define the source files for the minishell executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
@@ -53,7 +54,7 @@ $(NAME): $(OBJ)
 
 # Rule to generate the object files from the source files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(patsubst %.c,%.o,$<)
+	$(CC) $(CFLAGS) -c $< -o $(patsubst %.c,%.o,$<) 
 
 # Clean target to remove generated files
 clean:

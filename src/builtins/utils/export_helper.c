@@ -26,21 +26,23 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-static int check_var(char *var)
+static int	check_var(char *var)
 {
-    if (!var || !*var) {
-        return (1);
-    }
-    if (!ft_isalpha(*var) && *var != '_') {
-        return (1);
-    }
-    while (*var && *var != '=')
-    {
-        if (!ft_isalnum(*var) && *var != '_')
-            return (1);
-        var++;
-    }
-    return (0);
+	if (!var || !*var)
+	{
+		return (1);
+	}
+	if (!ft_isalpha(*var) && *var != '_')
+	{
+		return (1);
+	}
+	while (*var && *var != '=')
+	{
+		if (!ft_isalnum(*var) && *var != '_')
+			return (1);
+		var++;
+	}
+	return (0);
 }
 
 t_env	*create_env_variable(char *var, char *value)
@@ -106,53 +108,57 @@ static void	set_env_variable(char *var, char *value, t_env *env)
 	env = create_and_insert_env_variable(var, value, env, prev);
 }
 
-static int ft_print_export(t_env *env)
+static int	ft_print_export(t_env *env)
 {
-    t_env *tmp = env;
-    while (tmp)
-    {
-        if (tmp->key && tmp->value)
-        {
-            ft_putstr_fd("declare -x ", 1);
-            ft_putstr_fd(tmp->key, 1);
-            ft_putstr_fd("=\"", 1);
-            ft_putstr_fd(tmp->value, 1);
-            ft_putstr_fd("\"\n", 1);
-        }else if (tmp->key){
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (tmp->key && tmp->value)
+		{
 			ft_putstr_fd("declare -x ", 1);
-            ft_putstr_fd(tmp->key, 1);
-            ft_putstr_fd("\n", 1);
+			ft_putstr_fd(tmp->key, 1);
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(tmp->value, 1);
+			ft_putstr_fd("\"\n", 1);
 		}
-        tmp = tmp->next;
-    }
-    return (0);
+		else if (tmp->key)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(tmp->key, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
-int process_export_args(char *arg, t_env *env)
+int	process_export_args(char *arg, t_env *env)
 {
-    char *var;
-    char *value;
+	char	*var;
+	char	*value;
 
-    if (ft_strchr(arg, '='))
-    {
-        var = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
-        value = ft_strchr(arg, '=') + 1;
-        if (ft_strlen(value) >= 0)
-        {
-            set_env_variable(var, value, env);
-        }
-        free(var);
-    }
-    else
-    {
-        if (check_var(arg))
-        {
-            ft_errors("export", "not a valid identifier");
-            return (1);
-        }
-        set_env_variable(arg, NULL, env);
-    }
-    return (0);
+	if (ft_strchr(arg, '='))
+	{
+		var = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+		value = ft_strchr(arg, '=') + 1;
+		if (ft_strlen(value) >= 0)
+		{
+			set_env_variable(var, value, env);
+		}
+		free(var);
+	}
+	else
+	{
+		if (check_var(arg))
+		{
+			ft_errors("export", "not a valid identifier");
+			return (1);
+		}
+		set_env_variable(arg, NULL, env);
+	}
+	return (0);
 }
 
 int	bult_export(t_commands *cmd, t_env *env)
