@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/19 00:28:50 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 02:56:04 by yel-hadr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,30 @@ int	extract_pwd(t_data *data)
 // if word is surrounded by quotes ---> remove quotes outer quotes
 // Q: WHEN?
 // A: after assigning the command args and redirs
+void	ft_handler(int sig)
+{
+	// zid globel var
+	// in parcing g_sig == -1
+	// in exec g_sig == 1
+	(void)sig;
+	if (g_sig > 0)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+	else
+	{
+		if (g_sig == -1)
+		{
+			close(STDIN_FILENO);
+			g_sig = -2;
+		}
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -241,6 +265,8 @@ int	main(int argc, char **argv, char **envp)
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
+	// signal(SIGINT, ft_handler);
+	signal(SIGQUIT, SIG_IGN);
 	// char	*cmd;
 	// char	*res;
 
