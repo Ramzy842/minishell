@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 03:09:35 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 03:36:17 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:48:50 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	skip_spaces(char *str, int x)
 		y++;
 	return (y);
 }
-
 
 int	tokens_reader(t_data *data)
 {

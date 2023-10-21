@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:07:45 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:07:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:33:51 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-char *extract_path(char **envp)
+char	*extract_path(char **envp)
 {
 	int		x;
 	char	*empty_str;

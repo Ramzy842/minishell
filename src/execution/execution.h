@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:05 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 15:36:14 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 13:51:40 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int minishell_execute(t_commands *cmd, t_env *env, t_data *data);
 char*   get_cmd_abs_path(t_env* env, char* cmd);
 int check_is_builting(  t_commands *cmd);
 void	free_tools(t_data *data);
-int exec_builtin_commands( t_commands *cmd);
+// int exec_builtin_commands( t_commands *cmd);
+int	exec_builtin_commands(t_commands *cmd, t_env *env);
 int ft_redir(t_commands *cmd);
 // void parent_proc(int pipefd[2], int tmp_fd, t_commands* cmd);
 // int child_proc(t_commands* cmd, t_env* env, int tmp_fd, t_data* data);

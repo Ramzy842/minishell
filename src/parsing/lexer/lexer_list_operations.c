@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:22:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/09 13:44:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:48:38 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_lexer	*create_lexer_node(char *str, int token)
 
 void	append_node(t_lexer	**list, t_lexer *new_node)
 {
-	t_lexer *temp;
+	t_lexer	*temp;
 
 	if (*list == NULL)
 	{
@@ -52,7 +52,6 @@ int	add_node(char *str, t_tokens token, t_lexer **lexer_list)
 	append_node(lexer_list, node);
 	return (1);
 }
-
 
 void	remove_lexer_node(t_lexer **lst, int key)
 {

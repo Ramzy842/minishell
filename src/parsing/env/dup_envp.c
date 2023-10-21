@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:14:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 11:00:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:34:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,17 @@ char	**dup_env(char **envp)
 
 	x = 0;
 	ptr = NULL;
-	// count number of strs
 	while (envp[x])
 		x++;
-	// allocate memo for strs
 	ptr = ft_calloc((x + 1), sizeof(char *));
 	if (!ptr)
 		return (NULL);
-	// dup each str in  the envp to the ptr
 	x = 0;
 	while (envp[x])
 	{
 		ptr[x] = ft_strdup(envp[x]);
 		if (!ptr[x])
-		{
-			// free_arr(ptr);
 			return (NULL);
-		}
 		x++;
 	}
 	ptr[x] = NULL;

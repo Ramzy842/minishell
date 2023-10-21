@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:12:39 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 10:38:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/20 22:46:37 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	get_list_length(void *head)
 {
-    int			length;
-    t_lexer*	current;
+	int		length;
+	t_lexer	*current;
 
 	length = 0;
 	current = head;
-    while (current != NULL)
+	while (current != NULL)
 	{
-        length++;
-        current = current->next;
-    }
+		length++;
+		current = current->next;
+	}
 	clear_lexer_nodes(&current);
-    return (length);
+	return (length);
 }

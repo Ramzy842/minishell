@@ -3,96 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   unset_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 06:50:57 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/15 08:41:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 14:01:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../../minishell.h"
-char	**whileloop_var(char **arr, char **rtn, char *str)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	j = 0;
-	while (arr[i] != NULL)
+static int	ft_check_if_var(char *str)
+{
+	if (!ft_isalpha(*str) && *str != '_')
+		return (1);
+	while (*str)
 	{
-		if (!(ft_strncmp(arr[i], str, equal_sign(arr[i]) - 1) == 0
-				&& str[equal_sign(arr[i])] == '\0'
-				&& arr[i][ft_strlen(str)] == '='))
-		{
-			rtn[j] = ft_strdup(arr[i]);
-			if (rtn[j] == NULL)
-			{
-				free_arr(rtn);
-				return (rtn);
-			}
-			j++;
-		}	
-		i++;
+		if (!ft_isalnum(*str) && *str != '_')
+			return (1);
+		str++;
 	}
-	return (rtn);
+	return (0);
 }
 
-char	**var(char **arr, char *str)
+static int	env_varcmp(void *content, void *data_ref)
 {
-	char	**rtn;
-	size_t	i;
+	t_env	*env_var;
+	char	*var_name;
 
-	i = 0;
-	while (arr[i] != NULL)
-		i++;
-	rtn = ft_calloc(sizeof(char *), i + 1);
-	if (!rtn)
-		return (NULL);
-	rtn = whileloop_var(arr, rtn, str);
-	return (rtn);
+	env_var = (t_env *)content;
+	var_name = (char *)data_ref;
+	return (ft_strcmp(env_var->key, var_name));
 }
 
-int	unset_error(t_commands *cmd)
+static int	remove_node(t_env **env, t_env *prev, t_env *tmp)
 {
-	int		i;
-
-	i = 0;
-	if (!cmd->command_args[1])
+	if (prev)
 	{
-		ft_putendl_fd("minishell: unset: not enough arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		prev->next = tmp->next;
 	}
-	while (cmd->command_args[1][i])
-	{
-		if (cmd->command_args[1][i++] == '/')
-		{
-			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
-			ft_putstr_fd(cmd->command_args[1], STDERR_FILENO);
-			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
-	}
-	if (equal_sign(cmd->command_args[1]) != 0)
-	{
-		ft_putendl_fd("minishell: unset: not a valid identifier",
-			STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	bult_unset(t_data *data, t_commands *cmd)
-{
-	char	**tmp;
-
-	if (unset_error(cmd) == 1)
-		return (EXIT_FAILURE);
 	else
 	{
-		tmp = var(data->envp, cmd->command_args[1]);
-		free_arr(data->envp);
-		data->envp = tmp;
+		*env = tmp->next;
 	}
-	return (EXIT_SUCCESS);
+	free(tmp->key);
+	free(tmp->value);
+	free(tmp);
+	return (1);
+}
+
+int	ft_lstremove_if(t_env **env, char *var_name)
+{
+	t_env	*tmp;
+	t_env	*prev;
+
+	tmp = *env;
+	prev = NULL;
+	while (tmp)
+	{
+		if (env_varcmp(tmp, var_name) == 0)
+		{
+			return (remove_node(env, prev, tmp));
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	bult_unset(t_commands *cmd, t_env *env)
+{
+	int	i;
+
+	i = 1;
+	while (cmd->command_args[i])
+	{
+		if (ft_check_if_var(cmd->command_args[i]))
+			ft_errors("unset", "not a valid identifier");
+		else
+			ft_lstremove_if(&env, cmd->command_args[i]);
+		i++;
+	}
+	return (0);
 }

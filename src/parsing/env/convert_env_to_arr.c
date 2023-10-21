@@ -6,49 +6,119 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:04:11 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/14 11:04:42 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/21 13:26:54 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-char** convert_env_to_arr(t_env* env)
+// char	**convert_env_to_arr(t_env *env)
+// {
+// 	int		count;
+// 	t_env	*current;
+// 	int		x;
+// 	int		key_len;
+// 	int		value_len;
+// 	int		length;
+// 	char	**array;
+
+// 	count = 0;
+// 	current = env;
+// 	while (current != NULL)
+// 	{
+// 		count++;
+// 		current = current->next;
+// 	}
+// 	array = malloc(sizeof(char *) * (count + 1));
+// 	array[count] = NULL;
+// 	if (!array)
+// 		return (NULL);
+// 	current = env;
+// 	x = 0;
+// 	while (current != NULL)
+// 	{
+// 		key_len = ft_strlen(current->key);
+// 		value_len = ft_strlen(current->value);
+// 		length = key_len + value_len + 2;
+// 		array[x] = malloc(sizeof(char) * length);
+// 		if (!array[x])
+// 			return (NULL);
+// 		ft_strncpy(array[x], current->key, key_len);
+// 		array[x][key_len] = '=';
+// 		ft_strncpy(array[x] + key_len + 1, current->value, value_len);
+// 		array[x][length - 1] = '\0';
+// 		current = current->next;
+// 		x++;
+// 	}
+// 	return (array);
+// }
+
+int	count_env_elements(t_env *env)
 {
-    int count = 0;
-    t_env* current = env;
-    
-    // Count the number of key-value pairs in the linked list.
-    while (current != NULL)
+	t_env	*current;
+	int		count;
+
+	count = 0;
+	current = env;
+	while (current != NULL)
 	{
-        count++;
-        current = current->next;
-    }
-    // Allocate memory for the char** array.
-    char** array = malloc(sizeof(char*) * (count + 1));
-	array[count] = NULL;
-    if (!array)
+		count++;
+		current = current->next;
+	}
+	return (count);
+}
+
+char	**allocate_env_array(int count)
+{
+	char	**array;
+
+	array = malloc(sizeof(char *) * (count + 1));
+	if (!array)
 		return (NULL);
-    current = env;
-    int i = 0;
-    // Traverse the linked list and convert key-value pairs to strings.
-    while (current != NULL)
+	array[count] = NULL;
+	return (array);
+}
+
+char	*copy_env_to_array(char *key, char *value)
+{
+	int		key_len;
+	int		value_len;
+	int		length;
+	char	*env_str;
+
+	value_len = ft_strlen(value);
+	key_len = ft_strlen(key);
+	length = key_len + value_len + 2;
+	env_str = malloc(sizeof(char) * length);
+	if (!env_str)
+		return (NULL);
+	ft_strncpy(env_str, key, key_len);
+	env_str[key_len] = '=';
+	ft_strncpy(env_str + key_len + 1, value, value_len);
+	env_str[length - 1] = '\0';
+	return (env_str);
+}
+
+char	**convert_env_to_arr(t_env *env)
+{
+	int		count;
+	char	**array;
+	int		x;
+	t_env	*current;
+
+	current = env;
+	x = 0;
+	count = count_env_elements(env);
+	array = allocate_env_array(count);
+	if (!array)
+		return (NULL);
+	while (current != NULL)
 	{
-		int key_len = ft_strlen(current->key);
-        int value_len = ft_strlen(current->value);
-        int length = key_len + value_len + 2;  // +2 for '=' and null-terminator
-        array[i] = (char*)malloc(sizeof(char) * length);
-
-        if (!array[i])
+		array[x] = copy_env_to_array(current->key, current->value);
+		if (!array[x])
 			return (NULL);
-        // Copy the key and value into the string in the format "key=value."
-        ft_strncpy(array[i], current->key, key_len);
-        array[i][key_len] = '=';
-        ft_strncpy(array[i] + key_len + 1, current->value, value_len);
-        array[i][length - 1] = '\0';
-
-        // Move to the next key-value pair.
-        current = current->next;
-        i++;
-    }
-    return (array);
+		current = current->next;
+		x++;
+	}
+	return (array);
 }
