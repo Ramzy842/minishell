@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 09:47:53 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 18:32:35 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/21 02:33:45 by yel-hadr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	redirect_heredoc(t_commands* tmp, t_data *data)
 	data->lexer_list = data->lexer_list->next;
 	if (data->lexer_list)
 		data->lexer_list = data->lexer_list->next;
-		tmp->heredoc = ft_get_heredoc(tmp->input_filename);/////// added this line
+	tmp->heredoc = ft_get_heredoc(tmp->input_filename);/////// added this line
 		
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:20:48 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 00:14:46 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/21 02:49:24 by yel-hadr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static void	set_env_variable(char *var, char *value, t_env *env)
 
 	tmp = env;
 	prev = NULL;
+	
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, var) == 0)
@@ -119,6 +120,12 @@ static int ft_print_export(t_env *env)
             ft_putstr_fd(tmp->value, 1);
             ft_putstr_fd("\"\n", 1);
         }
+		else if (tmp->key)
+		{
+			ft_putstr_fd("declare -x ", 1);
+            ft_putstr_fd(tmp->key, 1);
+            ft_putstr_fd("\n", 1);
+		}
         tmp = tmp->next;
     }
     return (0);
@@ -146,10 +153,12 @@ int process_export_args(char *arg, t_env *env)
             ft_errors("export", "not a valid identifier");
             return (1);
         }
-        set_env_variable(arg, "", env);
+        set_env_variable(arg, NULL, env);
     }
     return (0);
 }
+
+#include <stdio.h>
 
 int	bult_export(t_commands *cmd, t_env *env)
 {
@@ -160,6 +169,7 @@ int	bult_export(t_commands *cmd, t_env *env)
 		return (ft_print_export(env));
 	while (cmd->command_args[i])
 	{
+		printf("cmd var :%s\n", cmd->command_args[i]);
 		if (process_export_args(cmd->command_args[i], env) != 0)
 			return (1);
 		i++;
