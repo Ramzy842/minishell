@@ -16,53 +16,59 @@
 
 int	exec_builtin_commands(t_commands *cmd, t_env *env)
 {
-	if (strcmp(cmd->command_args[0], "cd") == 0)
-		buit_cd(cmd);
-	if (strcmp(cmd->command_args[0], "pwd") == 0)
-		ft_pwd();
-	if (strcmp(cmd->command_args[0], "echo") == 0)
-		bult_echo(cmd);
-	if (strcmp(cmd->command_args[0], "export") == 0)
-		bult_export(cmd, env);
-	if (strcmp(cmd->command_args[0], "unset") == 0)
-		bult_unset(cmd, env);
-	if (strcmp(cmd->command_args[0], "env") == 0)
-		bult_env(env);
-	if (strcmp(cmd->command_args[0], "exit") == 0)
-		bult_exit(cmd->command_args);
+	if (ft_strcmp(cmd->command_args[0], "cd") == 0)
+		return (buit_cd(cmd));
+	if (ft_strcmp(cmd->command_args[0], "pwd") == 0)
+		return (ft_pwd());
+	if (ft_strcmp(cmd->command_args[0], "echo") == 0)
+		return (bult_echo(cmd));
+	if (ft_strcmp(cmd->command_args[0], "export") == 0)
+		return (bult_export(cmd, env));
+	if (ft_strcmp(cmd->command_args[0], "unset") == 0)
+		return (bult_unset(cmd, env));
+	if (ft_strcmp(cmd->command_args[0], "env") == 0)
+		return (bult_env(env));
+	if (ft_strcmp(cmd->command_args[0], "exit") == 0)
+		return (bult_exit(cmd->command_args));
 	return (0);
+}
+
+int	check_if_its_a_directory(char *path)
+{
+	DIR	*dir;
+
+	dir = opendir(path);
+	if (dir)
+	{
+		closedir(dir);
+		ft_errors(path, "is directory");
+		return (0);
+	}
+	return (1);
 }
 
 int	check_and_handle_command(t_commands *cmd, t_env *env)
 {
 	char	*cmd_abs_path;
-	DIR		*dir;
 
 	if ((*cmd->command_args[0] == '.' || *cmd->command_args[0] == '/'))
-	{
-		dir = opendir(cmd->command_args[0]);
-		if (dir)
-		{
-			ft_errors(cmd->command_args[0], "is directory");
-			cmd = cmd->next;
-			return (0);
-		}
-	}
+		if (!check_if_its_a_directory(cmd->command_args[0]))
+			return (126);
 	cmd_abs_path = get_cmd_abs_path(env, cmd->command_args[0]);
 	if ((cmd->command_args[0] && !cmd_abs_path && !check_is_builting(cmd)))
 	{
 		ft_errors(cmd->command_args[0], "command not found");
 		cmd = cmd->next;
-		return (0);
+		return (127);
 	}
 	if (access(cmd_abs_path, X_OK) < 0 && cmd->command_args[0]
 		&& !check_is_builting(cmd))
 	{
 		ft_errors(cmd->command_args[0], "permission denied");
 		cmd = cmd->next;
-		return (0);
+		return (126);
 	}
-	return (1);
+	return (0);
 }
 
 int	check_is_builting(t_commands *cmd)
@@ -94,6 +100,18 @@ char	*check_abs_path(char *cmd)
 		return (NULL);
 }
 
+int ft_status(int status)
+{
+	int	sig_status;
+
+	if (WIFSIGNALED(status))
+	{
+		sig_status = status << 8;
+		return(WEXITSTATUS(sig_status) + 128);
+	}
+	return (status >> 8);
+}
+
 int	ft_exec_one(t_commands *cmd, t_env *env)
 {
 	int		pid;
@@ -102,12 +120,15 @@ int	ft_exec_one(t_commands *cmd, t_env *env)
 
 	ft_redir(cmd, NULL, 0);
 	if (check_is_builting(cmd))
-		exec_builtin_commands(cmd, env);
+		return(exec_builtin_commands(cmd, env));
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			status = check_and_handle_command(cmd, env);
+			if (status)
+				exit(status);
 			path = get_cmd_abs_path(env, cmd->command_args[0]);
 			execve(path, cmd->command_args, convert_env_to_arr(env));
 			exit(EXIT_FAILURE);
@@ -119,7 +140,27 @@ int	ft_exec_one(t_commands *cmd, t_env *env)
 		}
 		waitpid(pid, &status, 0);
 	}
-	return (status);
+	return (ft_status(status));
+}
+
+int	ft_child(t_commands *cmd, t_env *env, int *pipefd, int tmp_fd)
+{
+	char	*path;
+	int		status;
+	ft_redir(cmd, pipefd, tmp_fd);
+	if (check_is_builting(cmd))
+		exec_builtin_commands(cmd, env);
+	else
+	{
+		status = check_and_handle_command(cmd, env);
+		if (status)
+			exit(status);
+		path = get_cmd_abs_path(env, cmd->command_args[0]);
+		if (!path)
+			exit(127);
+		execve(path, cmd->command_args, convert_env_to_arr(env));
+	}
+	exit(EXIT_FAILURE);
 }
 
 int	ft_pipe(t_commands *cmd, t_env *env)
@@ -127,7 +168,6 @@ int	ft_pipe(t_commands *cmd, t_env *env)
 	int		pipefd[2];
 	int		pid;
 	int		tmp_fd;
-	char	*path;
 
 	tmp_fd = 0;
 	while (cmd)
@@ -135,18 +175,7 @@ int	ft_pipe(t_commands *cmd, t_env *env)
 		pipe(pipefd);
 		pid = fork();
 		if (pid == 0)
-		{
-			ft_redir(cmd, pipefd, tmp_fd);
-			check_and_handle_command(cmd, env);
-			if (check_is_builting(cmd))
-				exec_builtin_commands(cmd, env);
-			else
-			{
-				path = get_cmd_abs_path(env, cmd->command_args[0]);
-				execve(path, cmd->command_args, convert_env_to_arr(env));
-			}
-			exit(EXIT_FAILURE);
-		}
+			ft_child(cmd, env, pipefd, tmp_fd);
 		else if (pid > 0)
 		{
 			if (tmp_fd)
@@ -160,26 +189,37 @@ int	ft_pipe(t_commands *cmd, t_env *env)
 	return (pid);
 }
 
+int ft_wait_for_child(int pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	while (wait(NULL) > 0)
+		;
+	g_signal = 0;
+	return (ft_status(status));
+}
+
 int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 {
-	int original_fd[2];
-	// int pid;
+	int	original_fd[2];
+	int	pid;
+	int	status;
 
 	g_signal = 1;
 	(void)*data;
 	if (!cmd || !cmd->command_args || !cmd->command_args[0])
 		return (0);
-	check_and_handle_command(cmd, env);
 	ft_save_stdin_stdout(&original_fd[0], &original_fd[1]);
 	if (!cmd->next)
 	{
-		ft_exec_one(cmd, env);
+		status = ft_exec_one(cmd, env);
 		ft_reset_stdin_stdout(&original_fd[0], &original_fd[1]);
-		return (0);
+		printf("status = %d\n", status);
+		return (status);
 	}
-	ft_pipe(cmd, env);
+	pid = ft_pipe(cmd, env);
 	ft_reset_stdin_stdout(&original_fd[0], &original_fd[1]);
-	while (wait(NULL) > 0);
-	g_signal = 0;
-	return (0);
+	status = ft_wait_for_child(pid);
+	return (status);
 }
