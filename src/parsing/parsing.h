@@ -143,4 +143,7 @@ char		*find_env_key(t_env *env, char *value);
 // COMMANDS
 t_commands	*gen_cmd_node(void);
 void		clear_command_nodes(t_commands **list);
+
+int	ft_save_stdin_stdout(int *save_stdin, int *save_stdout);
+void ft_reset_stdin_stdout(int *save_stdin, int *save_stdout);
 #endif

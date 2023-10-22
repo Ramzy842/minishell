@@ -38,24 +38,13 @@ static char	*check_access(char *path)
 	return (NULL);
 }
 
-char	*get_cmd_abs_path(t_env *env, char *cmd)
+char *ft_search_path(char *cmd, char **path_spl)
 {
-	t_env	*path;
-	char	*abs_path;
-	char	**path_spl;
-	int		i;
-	char	*tmp1;
-	char	*tmp2;
+	char *abs_path;
+	char *tmp1;
+	char *tmp2;
+	int i;
 
-	path = get_env(env, "PATH");
-	if (!path)
-		return (NULL);
-	abs_path = check_relative_paths(cmd);
-	if (abs_path)
-		return (abs_path);
-	path_spl = ft_split(path->value, ':');
-	if (!path_spl)
-		return (NULL);
 	i = 0;
 	while (path_spl[i])
 	{
@@ -68,4 +57,23 @@ char	*get_cmd_abs_path(t_env *env, char *cmd)
 		i++;
 	}
 	return (NULL);
+}
+
+char	*get_cmd_abs_path(t_env *env, char *cmd)
+{
+	t_env	*path;
+	char	*abs_path;
+	char	**path_spl;
+
+	path = get_env(env, "PATH");
+	if (!path)
+		return (NULL);
+	abs_path = check_relative_paths(cmd);
+	if (abs_path)
+		return (abs_path);
+	path_spl = ft_split(path->value, ':');
+	if (!path_spl)
+		return (NULL);
+	abs_path = ft_search_path(cmd, path_spl);
+	return (abs_path);
 }

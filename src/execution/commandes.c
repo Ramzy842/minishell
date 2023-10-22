@@ -54,8 +54,17 @@ void	ft_out_redir(t_commands *cmd)
 		close(fd);
 }
 
-int	ft_redir(t_commands *cmd)
+int	ft_redir(t_commands *cmd, int *pipefd, int tmp_fd)
 {
+	if (pipefd)
+	{
+		if (cmd->next)
+			dup2(pipefd[1], 1);
+		if (tmp_fd)
+			dup2(tmp_fd, 0);
+		close (pipefd[0]);
+		close (pipefd[1]);
+	}
 	if (cmd->i_redir != INPUT_NONE)
 		ft_in_redir(cmd);
 	if (cmd->o_redir != OUTPUT_NONE)
