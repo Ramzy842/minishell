@@ -6,7 +6,7 @@
 #    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/22 19:14:46 by mbouderr         ###   ########.fr        #
+#    Updated: 2023/10/22 20:57:16 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/execution/commandes.c ./src/parsing/redirections/utils/is_metachar.c ./src/parsing/redirections/utils/is_redir_op.c \
 	./src/builtins/utils/tools.c  src/parsing/env/freeing.c ./src/parsing/redirections/handle_redirections.c \
 	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
-	./src/utils/ft_strlcpy.c ./src/builtins/utils/env_helper.c ./src/execution/help_function.c ./src/execution/ft_signal.c\
+	./src/utils/ft_strlcpy.c ./src/builtins/utils/env_helper.c ./src/execution/help_function.c ./src/execution/ft_signal.c ./src/builtins/utils/tools_export.c ./src/builtins/utils/tools2.c\
 # Define the object files for the minishell executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 

@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:20:48 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 13:59:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 20:58:23 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
-int	ft_isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
-
-int	ft_isalnum(int c)
-{
-	if (ft_isalpha(c) || ft_isdigit(c))
-		return (1);
-	return (0);
-}
-
-static int	check_var(char *var)
-{
-	if (!var || !*var)
-	{
-		return (1);
-	}
-	if (!ft_isalpha(*var) && *var != '_')
-	{
-		return (1);
-	}
-	while (*var && *var != '=')
-	{
-		if (!ft_isalnum(*var) && *var != '_')
-			return (1);
-		var++;
-	}
-	return (0);
-}
 
 t_env	*create_env_variable(char *var, char *value)
 {
@@ -82,33 +49,7 @@ t_env	*create_and_insert_env_variable(char *var, char *value, t_env *env,
 	return (env);
 }
 
-static void	set_env_variable(char *var, char *value, t_env *env)
-{
-	t_env	*tmp;
-	t_env	*prev;
-
-	tmp = env;
-	prev = NULL;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, var) == 0)
-		{
-			if (tmp->value)
-			{
-				free(tmp->value);
-				tmp->value = NULL;
-			}
-			if (value)
-				tmp->value = ft_strdup(value);
-			return ;
-		}
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	env = create_and_insert_env_variable(var, value, env, prev);
-}
-
-static int	ft_print_export(t_env *env)
+int	ft_print_export(t_env *env)
 {
 	t_env	*tmp;
 

@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 06:18:05 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 13:58:27 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 22:00:28 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
-int	ft_errors(char *cmd, char *error)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd(error, STDERR_FILENO);
-	return (1);
-}
 
 void	ft_lstadd_back(t_env **env, t_env *new)
 {
@@ -43,7 +34,7 @@ void	ft_lstadd_back(t_env **env, t_env *new)
 	}
 }
 
-static int	ft_search_set(char *new, char *var, t_env *tmp_env)
+int	ft_search_set(char *new, char *var, t_env *tmp_env)
 {
 	while (tmp_env)
 	{
@@ -77,44 +68,6 @@ t_env	*ft_lstnew(void *key)
 	ptr->key = key;
 	ptr->next = NULL;
 	return (ptr);
-}
-
-int	ft_setenv(char *var, char *value, t_env *env)
-{
-	char	*tmp;
-	char	*new;
-	t_env	*tmp_env;
-
-	if (!var)
-		return (0);
-	if (!value)
-		new = ft_strdup(var);
-	else
-	{
-		tmp = ft_strjoin(var, "=");
-		new = ft_strjoin(tmp, value);
-		free(tmp);
-	}
-	if (!ft_search_set(new, var, env))
-		return (0);
-	tmp_env = ft_lstnew(new);
-	ft_lstadd_back(&env, tmp_env);
-	return (0);
-}
-
-static int	check_the_number(char *str)
-{
-	if (!str)
-		return (0);
-	if (*str && ft_strchr("-+", *str))
-		str++;
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (1);
-		str++;
-	}
-	return (0);
 }
 
 int	bult_exit(char **args)

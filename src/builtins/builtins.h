@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:52:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 20:52:30 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 21:57:02 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,13 @@ int		bult_export(t_commands *cmd, t_env *env);
 int		ft_setenv(char *var, char *value, t_env *env);
 t_env	*ft_lstnew(void *key);
 int		bult_env(t_env *env);
+int		check_var(char *var);
+void	set_env_variable(char *var, char *value, t_env *env);
+int		ft_print_export(t_env *env);
+t_env	*create_and_insert_env_variable(char *var, char *value, t_env *env,
+			t_env *prev);
+int		check_the_number(char *str);
+int		ft_search_set(char *new, char *var, t_env *tmp_env);
+void	ft_lstadd_back(t_env **env, t_env *new);
 
 #endif
