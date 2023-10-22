@@ -13,6 +13,8 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+extern int g_signal;
+
 typedef enum s_tokens
 {
 	WORD = 0,

@@ -103,6 +103,7 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 	int i;
 	int pipefd[2];
 
+	g_signal = 1;
 	(void)*data;
 	tmp_fd = -1;
 	if (!cmd || !cmd->command_args || !cmd->command_args[0])
@@ -187,5 +188,6 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 	dup2(original_fd[0], 0);
 	dup2(original_fd[1], 1);
 	while (wait(NULL) > 0);
+	g_signal = 0;
 	return (0);
 }

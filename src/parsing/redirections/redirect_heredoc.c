@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 09:47:53 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 22:12:31 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 00:43:01 by yel-hadr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ static	char	*ft_getline_herdoc(char *heredoc, t_env *env)
 
 	line = NULL;
 	temp = NULL;
+	if (!heredoc || g_signal == -2)
+		return (NULL);
 	while (1)
 	{
 		line = readline("< ");
-		if (!line || !ft_strcmp(line, heredoc))
+		if (!line || !ft_strcmp(line, heredoc) || g_signal == -2)
 		{
-			free(line);
+			if (line)
+				free(line);
 			break ;
 		}
 		temp = ft_strjoinget(temp, expand_variables(line, env));

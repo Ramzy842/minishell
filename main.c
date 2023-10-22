@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 11:05:06 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 00:43:27 by yel-hadr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,33 @@ int	reset_data(t_data *data, t_env *env)
 // 	return (working_dir);
 // }
 
+int	ft_save_stdin_stdout(int *save_stdin, int *save_stdout)
+{
+	*save_stdin = dup(STDIN_FILENO);
+	*save_stdout = dup(STDOUT_FILENO);
+	return (1);
+}
+
+void ft_reset_stdin_stdout(int *save_stdin, int *save_stdout)
+{
+	dup2(*save_stdin, STDIN_FILENO);
+	dup2(*save_stdout, STDOUT_FILENO);
+	close(*save_stdin);
+	close(*save_stdout);
+}
+
 t_commands	*gen_cmd_lst(t_data *data, t_env *env)
 {
 	t_commands	*head;
 	t_commands	*tmp;
 	int			x;
+	int			fd[2];
 
 	head = gen_cmd_node();
 	tmp = head;
 	x = 0;
+	ft_save_stdin_stdout(&fd[0], &fd[1]);
+	g_signal = -1;
 	while (data->lexer_list)
 	{
 		if (!tmp->command_args)
@@ -68,6 +86,11 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env)
 				return (NULL);
 		}
 	}
+	if (g_signal == -1)
+	{
+		g_signal = 0;
+	}
+	ft_save_stdin_stdout(&fd[0], &fd[1]);
 	return (head);
 }
 
@@ -151,6 +174,11 @@ int	minishell_loop(t_data *data, t_env *env)
 	data->commands = NULL;
 	data->lexer_list = NULL;
 	data->shell_input = readline("Minishell-> ");
+	if (!data->shell_input)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
+	}
 	temp = ft_strtrim(data->shell_input, " ");
 	free(data->shell_input);
 	data->shell_input = ft_strdup(temp);
@@ -208,6 +236,30 @@ int	extract_pwd(t_data *data)
 	return (1);
 }
 
+int g_signal;
+
+void	ft_handler(int sig)
+{
+	(void)sig;
+	if (g_signal > 0)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+	else
+	{
+		if (g_signal == -1)
+		{
+			close(STDIN_FILENO);
+			g_signal = -2;
+		}
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -218,10 +270,13 @@ int	main(int argc, char **argv, char **envp)
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
+	signal(SIGINT, ft_handler);
+	signal(SIGQUIT, SIG_IGN);
+	g_signal = 0;
 	initialize_data(&data);
 	env = parse_environment(dup_env(envp));
 	if (!env)
-		return (0);
+		return (1);
 	minishell_loop(&data, env);
 	return (0);
 }

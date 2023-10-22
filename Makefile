@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
+#    By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/21 23:53:06 by mbouderr         ###   ########.fr        #
+#    Updated: 2023/10/22 00:40:26 by yel-hadr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 CC = cc
 
 # Define the flags to pass to the compiler
-CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address
 
 # Define the source files for the minishell executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \

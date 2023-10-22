@@ -21,7 +21,7 @@ int	ft_in_redir(t_commands *cmd)
 		fd[0] = open(cmd->input_filename, O_RDONLY);
 		if (fd[0] == -1)
 		{
-			printf("erro msg file not found\n");
+			ft_errors(cmd->input_filename, "No such file or directory");
 			return (EXIT_FAILURE);
 		}
 	}
@@ -57,9 +57,7 @@ void	ft_out_redir(t_commands *cmd)
 int	ft_redir(t_commands *cmd)
 {
 	if (cmd->i_redir != INPUT_NONE)
-	{
 		ft_in_redir(cmd);
-	}
 	if (cmd->o_redir != OUTPUT_NONE)
 		ft_out_redir(cmd);
 	return (0);
