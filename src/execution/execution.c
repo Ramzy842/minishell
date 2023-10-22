@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 22:25:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 00:02:26 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 
-int	exec_builtin_commands(t_commands *cmd, t_env *env)
-{
-	if (ft_strcmp(cmd->command_args[0], "cd") == 0)
-		return (buit_cd(cmd));
-	if (ft_strcmp(cmd->command_args[0], "pwd") == 0)
-		return (ft_pwd());
-	if (ft_strcmp(cmd->command_args[0], "echo") == 0)
-		return (bult_echo(cmd));
-	if (ft_strcmp(cmd->command_args[0], "export") == 0)
-		return (bult_export(cmd, env));
-	if (ft_strcmp(cmd->command_args[0], "unset") == 0)
-		return (bult_unset(cmd, env));
-	if (ft_strcmp(cmd->command_args[0], "env") == 0)
-		return (bult_env(env));
-	if (ft_strcmp(cmd->command_args[0], "exit") == 0)
-		return (bult_exit(cmd->command_args));
-	return (0);
-}
+
 
 int	check_if_its_a_directory(char *path)
 {
@@ -71,24 +54,7 @@ int	check_and_handle_command(t_commands *cmd, t_env *env)
 	return (0);
 }
 
-int	check_is_builting(t_commands *cmd)
-{
-	if (ft_strcmp(cmd->command_args[0], "cd") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "pwd") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "echo") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "env") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "export") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "unset") == 0)
-		return (1);
-	if (ft_strcmp(cmd->command_args[0], "exit") == 0)
-		return (1);
-	return (0);
-}
+
 
 char	*check_abs_path(char *cmd)
 {
@@ -100,14 +66,14 @@ char	*check_abs_path(char *cmd)
 		return (NULL);
 }
 
-int ft_status(int status)
+int	ft_status(int status)
 {
 	int	sig_status;
 
 	if (WIFSIGNALED(status))
 	{
 		sig_status = status << 8;
-		return(WEXITSTATUS(sig_status) + 128);
+		return (WEXITSTATUS(sig_status) + 128);
 	}
 	return (status >> 8);
 }
@@ -119,24 +85,21 @@ int	ft_exec_one(t_commands *cmd, t_env *env)
 	int		status;
 
 	ft_redir(cmd, NULL, 0);
-	if (check_is_builting(cmd))
-		return(exec_builtin_commands(cmd, env));
+	if (*cmd->command_args && check_is_builting(cmd))
+		return (exec_builtin_commands(cmd, env));
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			if (!*cmd->command_args)
+				exit(0);
 			status = check_and_handle_command(cmd, env);
 			if (status)
 				exit(status);
 			path = get_cmd_abs_path(env, cmd->command_args[0]);
 			execve(path, cmd->command_args, convert_env_to_arr(env));
 			exit(EXIT_FAILURE);
-		}
-		else if (pid < 0)
-		{
-			perror("fork");
-			exit(1);
 		}
 		waitpid(pid, &status, 0);
 	}
@@ -147,6 +110,7 @@ int	ft_child(t_commands *cmd, t_env *env, int *pipefd, int tmp_fd)
 {
 	char	*path;
 	int		status;
+
 	ft_redir(cmd, pipefd, tmp_fd);
 	if (check_is_builting(cmd))
 		exec_builtin_commands(cmd, env);
@@ -165,9 +129,9 @@ int	ft_child(t_commands *cmd, t_env *env, int *pipefd, int tmp_fd)
 
 int	ft_pipe(t_commands *cmd, t_env *env)
 {
-	int		pipefd[2];
-	int		pid;
-	int		tmp_fd;
+	int	pipefd[2];
+	int	pid;
+	int	tmp_fd;
 
 	tmp_fd = 0;
 	while (cmd)
@@ -189,7 +153,7 @@ int	ft_pipe(t_commands *cmd, t_env *env)
 	return (pid);
 }
 
-int ft_wait_for_child(int pid)
+int	ft_wait_for_child(int pid)
 {
 	int	status;
 

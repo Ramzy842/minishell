@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 23:52:39 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/22 00:53:53 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 23:00:26 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ static char	*check_access(char *path)
 	return (NULL);
 }
 
-char *ft_search_path(char *cmd, char **path_spl)
+char	*ft_search_path(char *cmd, char **path_spl)
 {
-	char *abs_path;
-	char *tmp1;
-	char *tmp2;
-	int i;
+	char	*abs_path;
+	char	*tmp1;
+	char	*tmp2;
+	int		i;
 
 	i = 0;
 	while (path_spl[i])

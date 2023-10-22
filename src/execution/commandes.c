@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:59:25 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/21 23:56:03 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 00:07:17 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	ft_in_redir(t_commands *cmd)
 	}
 	else if (cmd->i_redir == IO_HEREDOC)
 	{
+		if (!cmd->heredoc)
+			return 0;
 		pipe(fd);
 		write(fd[1], cmd->heredoc, ft_strlen(cmd->heredoc));
 		if (fd[0])
@@ -62,8 +64,8 @@ int	ft_redir(t_commands *cmd, int *pipefd, int tmp_fd)
 			dup2(pipefd[1], 1);
 		if (tmp_fd)
 			dup2(tmp_fd, 0);
-		close (pipefd[0]);
-		close (pipefd[1]);
+		close(pipefd[0]);
+		close(pipefd[1]);
 	}
 	if (cmd->i_redir != INPUT_NONE)
 		ft_in_redir(cmd);

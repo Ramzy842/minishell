@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:05 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 19:02:59 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 00:02:46 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	exec_builtin_commands(t_commands *cmd, t_env *env);
 int	ft_redir(t_commands *cmd, int *pipefd, int tmp_fd);
 char	*get_cmd_abs_path(t_env *env, char *cmd);
 void	ft_handler(int sig);
+int	exec_builtin_commands(t_commands *cmd, t_env *env);
+int	check_is_builting(t_commands *cmd);
 // void parent_proc(int pipefd[2], int tmp_fd, t_commands* cmd);
 // int child_proc(t_commands* cmd, t_env* env, int tmp_fd, t_data* data);
 //char	*is_cmd_exists(char **exe, t_env *env );

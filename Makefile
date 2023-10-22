@@ -6,7 +6,7 @@
 #    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/22 20:57:16 by mbouderr         ###   ########.fr        #
+#    Updated: 2023/10/22 23:59:39 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC = cc
 # Define the flags to pass to the compiler
 CFLAGS = -Werror -Wall -Wextra -I/Users/$(USER)/.brew/opt/readline/include
 
-FLAGS = -lreadline -lcurses -L/Users/$(USER)/.brew/opt/readline/lib  #-g -fsanitize=address
+FLAGS = -lreadline -lcurses -L/Users/$(USER)/.brew/opt/readline/lib  -g -fsanitize=address
 
 # Define the source files for the minishell executable
 SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
@@ -38,7 +38,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/parsing/parser/utils/get_list_length.c ./src/parsing/parser/utils/handle_args.c ./src/parsing/parser/utils/realloc_arr.c \
 	./src/utils/ft_strncpy.c ./src/parsing/env/operations.c ./src/parsing/utils/commands/freeing.c src/utils/ft_memset.c \
 	./src/execution/commandes.c ./src/parsing/redirections/utils/is_metachar.c ./src/parsing/redirections/utils/is_redir_op.c \
-	./src/builtins/utils/tools.c  src/parsing/env/freeing.c ./src/parsing/redirections/handle_redirections.c \
+	./src/builtins/utils/tools.c  src/parsing/env/freeing.c ./src/parsing/redirections/handle_redirections.c  ./src/execution/add_functions.c\
 	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
 	./src/utils/ft_strlcpy.c ./src/builtins/utils/env_helper.c ./src/execution/help_function.c ./src/execution/ft_signal.c ./src/builtins/utils/tools_export.c ./src/builtins/utils/tools2.c\
 # Define the object files for the minishell executable, generated from the source files

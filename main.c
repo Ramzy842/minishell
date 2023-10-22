@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 22:33:56 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 23:51:11 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
-	temp = ft_strtrim(data->shell_input, " ");
+	temp = ft_strtrim(data->shell_input, "\t");
 	free(data->shell_input);
 	data->shell_input = ft_strdup(temp);
 	free(temp);
