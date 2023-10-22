@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-hadr <yel-hadr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 00:43:27 by yel-hadr         ###   ########.fr       */
+/*   Updated: 2023/10/22 19:02:06 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int g_signal;
 int	minishell_loop(t_data *data, t_env *env);
 
 int	reset_data(t_data *data, t_env *env)
@@ -236,29 +237,29 @@ int	extract_pwd(t_data *data)
 	return (1);
 }
 
-int g_signal;
 
-void	ft_handler(int sig)
-{
-	(void)sig;
-	if (g_signal > 0)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-	}
-	else
-	{
-		if (g_signal == -1)
-		{
-			close(STDIN_FILENO);
-			g_signal = -2;
-		}
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
+
+// void	ft_handler(int sig)
+// {
+// 	(void)sig;
+// 	if (g_signal > 0)
+// 	{
+// 		rl_on_new_line();
+// 		rl_replace_line("", 0);
+// 	}
+// 	else
+// 	{
+// 		if (g_signal == -1)
+// 		{
+// 			close(STDIN_FILENO);
+// 			g_signal = -2;
+// 		}
+// 		printf("\n");
+// 		rl_on_new_line();
+// 		rl_replace_line("", 0);
+// 		rl_redisplay();
+// 	}
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
