@@ -6,16 +6,16 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 19:02:06 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 22:33:56 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_signal;
-int	minishell_loop(t_data *data, t_env *env);
+int	minishell_loop(t_data *data, t_env *env, int status);
 
-int	reset_data(t_data *data, t_env *env)
+int	reset_data(t_data *data, t_env *env, int status)
 {
 	if (data->lexer_list)
 		clear_lexer_nodes(&data->lexer_list);
@@ -25,7 +25,7 @@ int	reset_data(t_data *data, t_env *env)
 		free(data->shell_input);
 	initialize_data(data);
 	data->reset = 1;
-	minishell_loop(data, env);
+	minishell_loop(data, env, status);
 	return (1);
 }
 
@@ -167,13 +167,14 @@ int	syntaxer(t_lexer *lexer)
 	return (1);
 }
 
-int	minishell_loop(t_data *data, t_env *env)
+int	minishell_loop(t_data *data, t_env *env, int status)
 {
 	char	*temp;
 
 	temp = NULL;
 	data->commands = NULL;
 	data->lexer_list = NULL;
+	printf ("zaba : %d\n", status);
 	data->shell_input = readline("Minishell-> ");
 	if (!data->shell_input)
 	{
@@ -190,12 +191,12 @@ int	minishell_loop(t_data *data, t_env *env)
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_strlen(&data->shell_input[0]) == '\0')
-		return (reset_data(data, env));
+		return (reset_data(data, env, status));
 	add_history(data->shell_input);
 	if (!quotes_are_matching(data->shell_input))
 	{
 		ft_putendl_fd("Syntax error", STDOUT_FILENO);
-		reset_data(data, env);
+		reset_data(data, env, status);
 		return (EXIT_FAILURE);
 	}
 	if (!tokens_reader(data))
@@ -203,17 +204,17 @@ int	minishell_loop(t_data *data, t_env *env)
 	if (!syntaxer(data->lexer_list))
 	{
 		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
-		reset_data(data, env);
+		reset_data(data, env, status);
 	}
 	if (data->lexer_list)
 	{
 		data->commands = gen_cmd_lst(data, env);
 		if (!data->commands)
-			reset_data(data, env);
+			reset_data(data, env, status);
 		else
 		{
-			minishell_execute(data->commands, env, data);
-			reset_data(data, env);
+			status = minishell_execute(data->commands, env, data);
+			reset_data(data, env, status);
 		}
 	}
 	return (1);
@@ -278,6 +279,6 @@ int	main(int argc, char **argv, char **envp)
 	env = parse_environment(dup_env(envp));
 	if (!env)
 		return (1);
-	minishell_loop(&data, env);
+	minishell_loop(&data, env, 0);
 	return (0);
 }

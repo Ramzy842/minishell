@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 11:37:19 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 22:32:24 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_global
 	int	heredoc_mode;
 }	t_global;
 
-int		reset_data(t_data *data, t_env *env);
+int		reset_data(t_data *data, t_env *env, int status);
 char	*remove_quotes(char *cmd);
 
 #endif

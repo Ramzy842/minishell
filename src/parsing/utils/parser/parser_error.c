@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:29:31 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 19:37:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/22 22:35:01 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	parser_double_token_error(t_data *data, t_lexer *lexer_list,
 
 int	ft_error(int error, t_data *data, t_env *env)
 {
+	(void)env;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error == 0)
 		ft_putstr_fd("syntax error near unexpected token 'newline'\n",
@@ -68,7 +69,7 @@ int	ft_error(int error, t_data *data, t_env *env)
 		ft_putstr_fd("infile: No such file or directory\n", STDERR_FILENO);
 	else if (error == 8)
 		ft_putendl_fd("Path does not exist", STDERR_FILENO);
-	reset_data(data, env);
+	// reset_data(data, env,);
 	(void) data;
 	return (EXIT_FAILURE);
 }

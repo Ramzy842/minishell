@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 00:55:54 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/22 22:25:35 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,14 +208,13 @@ int	minishell_execute(t_commands *cmd, t_env *env, t_data *data)
 
 	g_signal = 1;
 	(void)*data;
-	if (!cmd || !cmd->command_args || !cmd->command_args[0])
+	if (!cmd || !cmd->command_args)
 		return (0);
 	ft_save_stdin_stdout(&original_fd[0], &original_fd[1]);
 	if (!cmd->next)
 	{
 		status = ft_exec_one(cmd, env);
 		ft_reset_stdin_stdout(&original_fd[0], &original_fd[1]);
-		printf("status = %d\n", status);
 		return (status);
 	}
 	pid = ft_pipe(cmd, env);
