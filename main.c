@@ -6,14 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 19:52:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:25:32 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_signal;
-int	minishell_loop(t_data *data, t_env *env, int status);
 
 int	reset_data(t_data *data, t_env *env, int status)
 {
@@ -44,262 +43,12 @@ void	ft_reset_stdin_stdout(int *save_stdin, int *save_stdout)
 	close(*save_stdout);
 }
 
-// void	handle_metacharacters(t_data *data, t_commands **tmp,
-// 			int *x, t_env *env, int status)
-// {
-// 	while (data->lexer_list && is_metachar(data->lexer_list->str))
-// 	{
-// 		if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
-// 		{
-// 			(*tmp)->next = gen_cmd_node();
-// 			*x = 0;
-// 			data->lexer_list = data->lexer_list->next;
-// 			*tmp = (*tmp)->next;
-// 		}
-// 		if (!handle_redirections(data, *tmp, env, status))
-//             return ;
-//     }
-// }
-
-// void	start_cmd_lst_extraction(t_data *data, t_env *env,
-// 			t_commands *tmp, int status)
-// {
-// 	while (data->lexer_list)
-// 	{
-// 		if (!tmp->command_args)
-// 		{
-// 			tmp->command_args = malloc(sizeof(char *) * 2);
-// 			ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
-// 		}
-// 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
-// 			handle_args(tmp, data, env, status);
-// 		while (data->lexer_list && is_metachar(data->lexer_list->str))
-// 		{
-// 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
-// 			{
-// 				tmp->next = gen_cmd_node();
-// 				data->x = 0;
-// 				data->lexer_list = data->lexer_list->next;
-// 				tmp = tmp->next;
-// 				continue ;
-// 			}
-// 			if (!handle_redirections(data, tmp, env, status))
-// 				return ;
-// 		}
-// 	}
-// }
-
-t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
+void	finalize_environment(int *fd)
 {
-	t_commands	*head;
-	t_commands	*tmp;
-	// int			x;
-	int			fd[2];
-
-	head = gen_cmd_node();
-	tmp = head;
-	// x = 0;
-	ft_save_stdin_stdout(&fd[0], &fd[1]);
-	g_signal = -1;
-	while (data->lexer_list)
-	{
-		if (!tmp->command_args)
-		{
-			tmp->command_args = malloc(sizeof(char *) * 2);
-			ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
-		}
-		while (data->lexer_list && !is_metachar(data->lexer_list->str))
-			// handle_args(tmp, &x, data, env, status);
-			handle_args(tmp, data, env, status);
-		while (data->lexer_list && is_metachar(data->lexer_list->str))
-		{
-			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
-			{
-				tmp->next = gen_cmd_node();
-				data->x = 0;
-				// data->x = 0;
-				data->lexer_list = data->lexer_list->next;
-				tmp = tmp->next;
-				continue ;
-			}
-			if (!handle_redirections(data, tmp, env, status))
-				return (NULL);
-		}
-	}
 	if (g_signal == -1)
 		g_signal = 0;
 	ft_save_stdin_stdout(&fd[0], &fd[1]);
-	return (head);
 }
-
-char	*ft_strjoin_char(char *s1, char c)
-{
-	char	*res;
-	int		x;
-
-	x = 0;
-	res = ft_calloc(ft_strlen(s1) + 2, sizeof(char));
-	if (!res)
-		return (NULL);
-	while (s1 && s1[x])
-	{
-		res[x] = s1[x];
-		x++;
-	}
-	res[x] = c;
-	free(s1);
-	return (res);
-}
-
-char	*remove_quotes(char *cmd)
-{
-	int		x;
-	int		dq;
-	int		sq;
-	char	*res;
-
-	x = 0;
-	dq = 0;
-	sq = 0;
-	res = ft_calloc(ft_strlen(cmd) + 1, sizeof(char));
-	if (!cmd)
-		return (NULL);
-	while (cmd[x])
-	{
-		if (cmd[x] == '\'' && !dq)
-			sq = !sq;
-		else if (cmd[x] == '\"' && !sq)
-			dq = !dq;
-		else
-			res = ft_strjoin_char(res, cmd[x]);
-		x++;
-	}
-	return (res);
-}
-
-int	syntaxer(t_lexer *lexer)
-{
-	t_lexer	*tmp;
-
-	tmp = lexer;
-	if (!(tmp->token >= INPUT && tmp->token <= PIPE)
-		&& get_list_length((t_lexer*)lexer) > 1
-		&& ((tmp->next->token >= INPUT && tmp->next->token <= PIPE))
-		&& !tmp->next->next)
-		return (0);
-	if ((tmp->token == PIPE)
-		&& get_list_length((t_lexer*)lexer) > 1
-		&& (!(tmp->next->token >= INPUT && tmp->next->token <= PIPE)))
-		return (0);
-	if ((tmp->token >= INPUT && tmp->token <= PIPE)
-		&& get_list_length((t_lexer*)lexer) == 1)
-		return (0);
-	while (tmp)
-	{
-		if ((tmp->token >= INPUT && tmp->token <= PIPE) && !tmp->next)
-			return (0);
-		if (tmp->token >= INPUT && tmp->token <= PIPE
-			&& tmp->next->token >= INPUT && tmp->next->token <= PIPE)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-void	gen_cmds_and_execute(t_data *data, t_env *env, int status)
-{
-	data->commands = gen_cmd_lst(data, env, status);
-	if (!data->commands)
-	{
-		status = 1;
-		reset_data(data, env, status);
-	}
-	else
-	{
-		status = minishell_execute(data->commands, env, data);
-		reset_data(data, env, status);
-	}
-}
-
-int	init_starting_props(char *temp, t_data *data)
-{
-	data->commands = NULL;
-	data->lexer_list = NULL;
-	data->shell_input = readline("Minishell-> ");
-	if (!data->shell_input)
-		return (EXIT_SUCCESS);
-	temp = ft_strtrim(data->shell_input, " \n\t");
-	free(data->shell_input);
-	data->shell_input = ft_strdup(temp);
-	free(temp);
-	return (1);
-}
-
-int	minishell_loop(t_data *data, t_env *env, int status)
-{
-	char	*temp;
-
-	temp = NULL;
-	// init_starting_props(temp, data);
-	data->commands = NULL;
-	data->lexer_list = NULL;
-	data->shell_input = readline("Minishell-> ");
-	if (!data->shell_input)
-		return (EXIT_SUCCESS);
-	temp = ft_strtrim(data->shell_input, " \n\t");
-	free(data->shell_input);
-	data->shell_input = ft_strdup(temp);
-	free(temp);
-	if (!data->shell_input)
-		return (EXIT_SUCCESS);
-	if (ft_strlen(&data->shell_input[0]) == '\0')
-		return (reset_data(data, env, status));
-	add_history(data->shell_input);
-	if (!quotes_are_matching(data->shell_input)
-		|| !tokens_reader(data)
-		|| !syntaxer(data->lexer_list))
-	{
-		ft_putendl_fd("minishell: syntax error", STDOUT_FILENO);
-		status = 1;
-		reset_data(data, env, status);
-		return (EXIT_FAILURE);
-	}
-	if (data->lexer_list)
-	{
-		data->commands = gen_cmd_lst(data, env, status);
-		if (!data->commands)
-		{
-			status = 1;
-			reset_data(data, env, status);
-		}
-		else
-		{
-			status = minishell_execute(data->commands, env, data);
-			reset_data(data, env, status);
-		}
-	}
-		// gen_cmds_and_execute(data, env, status);
-	return (1);
-}
-
-
-// int	extract_pwd(t_data *data)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	while (data->envp[x])
-// 	{
-// 		if (!ft_strncmp(data->envp[x], "PWD=", 4))
-// 			data->pwd = ft_substr(data->envp[x],
-// 					4, ft_strlen(data->envp[x]) - 4);
-// 		if (!ft_strncmp(data->envp[x], "OLDPWD=", 7))
-// 			data->old_pwd = ft_substr(data->envp[x],
-// 					7, ft_strlen(data->envp[x]) - 7);
-// 		x++;
-// 	}
-// 	return (1);
-// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -318,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	env = parse_environment(dup_env(envp));
 	if (!env)
 		return (1);
-	// minishell_loop(&data, env, 0);
 	minishell_loop(&data, env, 0);
 	return (0);
 }

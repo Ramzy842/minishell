@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 08:35:01 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 08:37:14 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 21:12:58 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*handle_one_sign(char *str, t_env *env, int status)
 	joined[0] = '\0';
 	var_value = NULL;
 	var_name = NULL;
-	join_before_sign(str, joined);
+	joined = join_before_sign(str, joined);
 	dollar_sign = ft_strchr(str, '$');
 	if (dollar_sign)
 	{

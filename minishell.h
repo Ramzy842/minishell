@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 05:11:56 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:24:39 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	**ft_split(char *s, char c);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
 char	*join_args(char **args);
-void	handle_env(char **envp, char **args);
 char	*remove_beg_end(char *str);
 char	*ft_strnstr( char *haystack, char *needle, int len);
 char	**ft_split_spaces(char *s);
@@ -63,26 +62,9 @@ size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 char	*ft_strjoinget(char *s1, char *s2);
 char	*ft_itoa(int n);
 
-// printing
-void	printer(t_data *data, t_commands *command);
-void	print_tokens_list(t_data *data);
-void	print_lexer_list(t_lexer *list);
-void	print_commands_list(t_commands *list);
-void	clear_command_nodes(t_commands **lst);
-void	build_commands_list(t_lexer **lexer_list, t_data *data);
-void	print_cmd_lst(t_commands *cmd);
-char	*expand_variables(char *str, t_env *env, int status);
-void	free_env_list(t_env *list);
-
-typedef struct s_global
-{
-	int	error_num;
-	int	stop_heredoc;
-	int	command_mode;
-	int	heredoc_mode;
-}	t_global;
-
 int		reset_data(t_data *data, t_env *env, int status);
 char	*remove_quotes(char *cmd);
+int		init_starting_props(char *temp, t_data *data);
+void	finalize_environment(int *fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:05 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 10:02:42 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:14:08 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_tools(t_data *data);
 int		exec_builtin_commands(t_commands *cmd, t_env *env);
 int		ft_redir(t_commands *cmd, int *pipefd, int tmp_fd);
 char	*get_cmd_abs_path(t_env *env, char *cmd);
-// void	ft_handler(int sig);
+void	ft_handler(int sig);
 int		exec_builtin_commands(t_commands *cmd, t_env *env);
 int		check_is_builting(t_commands *cmd);
 // void parent_proc(int pipefd[2], int tmp_fd, t_commands* cmd);

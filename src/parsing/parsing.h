@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 19:47:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:34:27 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ int			add_node(char *str, t_tokens token, t_lexer **lexer_list);
 int			launch_parser(t_data *data);
 void		update_pipes_count(t_data *data);
 t_commands	*parse_commands(t_data *data);
-void		parser_error(int error,
-				t_data *data, t_lexer *lexer_list);
 void		remove_lexer_node(t_lexer **lst, int key);
 int			parser_double_token_error(t_data *data,
 				t_lexer *lexer_list, t_tokens token);
@@ -118,9 +116,12 @@ int			ft_error(int error, t_data *data, t_env *env);
 t_lexer		*expand_lexer(t_lexer *lexer_list, t_env *env);
 // void		handle_args(t_commands *tmp,
 // 				int *x, t_data *data, t_env *env, int status);
-void	handle_args(t_commands *tmp, t_data *data, t_env *env, int status);
+void		handle_args(t_commands *tmp, t_data *data, t_env *env, int status);
 char		**realloc_arr(char	**old_arr, int increment);
 int			get_list_length(void *head);
+int			syntaxer(t_lexer *lexer);
+char		*remove_quotes(char *cmd);
+int			minishell_loop(t_data *data, t_env *env, int status);
 
 // REDIRECTIONS
 int			redirect_append(t_commands *tmp,
@@ -161,9 +162,10 @@ void		ft_reset_stdin_stdout(int *save_stdin,
 				int *save_stdout);
 
 // EXPANSION
+char		*expand_variables(char *str, t_env *env, int status);
 char		*find_env_var(t_env *env, char *key);
 int			count_dollar_signs(char *str);
-void		join_before_sign(char *str, char *joined);
+char		*join_before_sign(char *str, char *joined);
 char		*handle_status(char *joined, int status,
 				char *var_name);
 char		*handle_exp(char *joined, char *var_name,

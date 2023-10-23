@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/23 10:02:15 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/23 22:35:22 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CFLAGS = -Werror -Wall -Wextra
 FLAGS = -lreadline  -g -fsanitize=address
 
 # Define the source files for the minishell executable
-SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
+SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c ./src/parsing/minishell_loop.c \
 	./src/utils/ft_strjoinget.c ./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
 	./src/parsing/redirections/redirect_output.c ./src/utils/spaces.c \
 	./src/utils/ft_strcmp.c ./src/utils/ft_atoi.c ./src/utils/ft_strchr.c ./src/parsing/lexer/lexer.c \
@@ -30,7 +30,7 @@ SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c
 	./src/execution/execution.c ./src/utils/tok_w_no_quotes.c ./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
 	./src/parsing/utils/lexer/quotes_utils.c ./src/parsing/utils/lexer/lexer_utils.c \
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
-	./src/parsing/utils/parser/parser_error.c ./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
+	./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \
 	./src/utils/ft_memmove.c ./src/utils/ft_memcpy.c ./src/utils/ft_calloc.c ./src/utils/ft_bzero.c \
 	./src/utils/ft_strncmp.c ./src/parsing/env/convert_env_to_arr.c ./src/parsing/env/dup_envp.c \
 	./src/parsing/env/extract_path.c ./src/parsing/env/get_env.c ./src/parsing/env/parse_env.c ./src/parsing/parser/utils/gen_cmd_node.c \
