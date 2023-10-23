@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 05:11:48 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:49:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal;
+int	g_signal;
 int	minishell_loop(t_data *data, t_env *env, int status);
 
 int	reset_data(t_data *data, t_env *env, int status)
@@ -36,13 +36,58 @@ int	ft_save_stdin_stdout(int *save_stdin, int *save_stdout)
 	return (1);
 }
 
-void ft_reset_stdin_stdout(int *save_stdin, int *save_stdout)
+void	ft_reset_stdin_stdout(int *save_stdin, int *save_stdout)
 {
 	dup2(*save_stdin, STDIN_FILENO);
 	dup2(*save_stdout, STDOUT_FILENO);
 	close(*save_stdin);
 	close(*save_stdout);
 }
+
+// void	handle_metacharacters(t_data *data, t_commands **tmp,
+// 			int *x, t_env *env, int status)
+// {
+// 	while (data->lexer_list && is_metachar(data->lexer_list->str))
+// 	{
+// 		if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
+// 		{
+// 			(*tmp)->next = gen_cmd_node();
+// 			*x = 0;
+// 			data->lexer_list = data->lexer_list->next;
+// 			*tmp = (*tmp)->next;
+// 		}
+// 		if (!handle_redirections(data, *tmp, env, status))
+//             return ;
+//     }
+// }
+
+// void	start_cmd_lst_extraction(t_data *data, t_env *env,
+// 			t_commands *tmp, int status)
+// {
+// 	while (data->lexer_list)
+// 	{
+// 		if (!tmp->command_args)
+// 		{
+// 			tmp->command_args = malloc(sizeof(char *) * 2);
+// 			ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
+// 		}
+// 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
+// 			handle_args(tmp, data, env, status);
+// 		while (data->lexer_list && is_metachar(data->lexer_list->str))
+// 		{
+// 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
+// 			{
+// 				tmp->next = gen_cmd_node();
+// 				data->x = 0;
+// 				data->lexer_list = data->lexer_list->next;
+// 				tmp = tmp->next;
+// 				continue ;
+// 			}
+// 			if (!handle_redirections(data, tmp, env, status))
+// 				return ;
+// 		}
+// 	}
+// }
 
 t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 {
@@ -65,12 +110,14 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
 			handle_args(tmp, &x, data, env, status);
+			// handle_args(tmp, data, env, status);
 		while (data->lexer_list && is_metachar(data->lexer_list->str))
 		{
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
 			{
 				tmp->next = gen_cmd_node();
 				x = 0;
+				// data->x = 0;
 				data->lexer_list = data->lexer_list->next;
 				tmp = tmp->next;
 				continue ;
@@ -80,9 +127,7 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 		}
 	}
 	if (g_signal == -1)
-	{
 		g_signal = 0;
-	}
 	ft_save_stdin_stdout(&fd[0], &fd[1]);
 	return (head);
 }
@@ -151,6 +196,8 @@ int	syntaxer(t_lexer *lexer)
 		return (0);
 	while (tmp)
 	{
+		if ((tmp->token >= INPUT && tmp->token <= PIPE) && !tmp->next)
+			return (0);
 		if (tmp->token >= INPUT && tmp->token <= PIPE
 			&& tmp->next->token >= INPUT && tmp->next->token <= PIPE)
 			return (0);
@@ -159,49 +206,61 @@ int	syntaxer(t_lexer *lexer)
 	return (1);
 }
 
+void	gen_cmds_and_execute(t_data *data, t_env *env, int status)
+{
+	data->commands = gen_cmd_lst(data, env, status);
+	if (!data->commands)
+	{
+		status = 1;
+		reset_data(data, env, status);
+	}
+	else
+	{
+		status = minishell_execute(data->commands, env, data);
+		reset_data(data, env, status);
+	}
+}
+
+int	init_starting_props(char *temp, t_data *data)
+{
+	data->commands = NULL;
+	data->lexer_list = NULL;
+	data->shell_input = readline("Minishell-> ");
+	if (!data->shell_input)
+		return (EXIT_SUCCESS);
+	temp = ft_strtrim(data->shell_input, " \n\t");
+	free(data->shell_input);
+	data->shell_input = ft_strdup(temp);
+	free(temp);
+	return (1);
+}
+
 int	minishell_loop(t_data *data, t_env *env, int status)
 {
 	char	*temp;
 
 	temp = NULL;
+	// init_starting_props(temp, data);
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	// printf ("zaba : %d\n", status);
 	data->shell_input = readline("Minishell-> ");
 	if (!data->shell_input)
-	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
-	}
-	temp = ft_strtrim(data->shell_input, "\t");
+		return (EXIT_SUCCESS);
+	temp = ft_strtrim(data->shell_input, " \n\t");
 	free(data->shell_input);
 	data->shell_input = ft_strdup(temp);
 	free(temp);
+	// return (1);
 	if (!data->shell_input)
-	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
-	}
+		return (EXIT_SUCCESS);
 	if (ft_strlen(&data->shell_input[0]) == '\0')
 		return (reset_data(data, env, status));
 	add_history(data->shell_input);
-	if (!quotes_are_matching(data->shell_input))
+	if (!quotes_are_matching(data->shell_input)
+		|| !tokens_reader(data)
+		|| !syntaxer(data->lexer_list))
 	{
-		ft_putendl_fd("Syntax error", STDOUT_FILENO);
-		status = 1;
-		reset_data(data, env, status);
-		return (EXIT_FAILURE);
-	}
-	if (!tokens_reader(data))
-	{
-		ft_putendl_fd("Syntax error", STDOUT_FILENO);
-		status = 1;
-		reset_data(data, env, status);
-		return (EXIT_FAILURE);
-	}
-	if (!syntaxer(data->lexer_list))
-	{
-		ft_putendl_fd("Syntax error", STDOUT_FILENO);
+		ft_putendl_fd("minishell: syntax error", STDOUT_FILENO);
 		status = 1;
 		reset_data(data, env, status);
 		return (EXIT_FAILURE);
@@ -210,56 +269,36 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 	{
 		data->commands = gen_cmd_lst(data, env, status);
 		if (!data->commands)
+		{
+			status = 1;
 			reset_data(data, env, status);
+		}
 		else
 		{
 			status = minishell_execute(data->commands, env, data);
 			reset_data(data, env, status);
 		}
 	}
+		// gen_cmds_and_execute(data, env, status);
 	return (1);
 }
 
-int	extract_pwd(t_data *data)
-{
-	int	x;
-
-	x = 0;
-	while (data->envp[x])
-	{
-		if (!ft_strncmp(data->envp[x], "PWD=", 4))
-			data->pwd = ft_substr(data->envp[x],
-					4, ft_strlen(data->envp[x]) - 4);
-		if (!ft_strncmp(data->envp[x], "OLDPWD=", 7))
-			data->old_pwd = ft_substr(data->envp[x],
-					7, ft_strlen(data->envp[x]) - 7);
-		x++;
-	}
-	return (1);
-}
-
-
-
-// void	ft_handler(int sig)
+// int	extract_pwd(t_data *data)
 // {
-// 	(void)sig;
-// 	if (g_signal > 0)
+// 	int	x;
+
+// 	x = 0;
+// 	while (data->envp[x])
 // 	{
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
+// 		if (!ft_strncmp(data->envp[x], "PWD=", 4))
+// 			data->pwd = ft_substr(data->envp[x],
+// 					4, ft_strlen(data->envp[x]) - 4);
+// 		if (!ft_strncmp(data->envp[x], "OLDPWD=", 7))
+// 			data->old_pwd = ft_substr(data->envp[x],
+// 					7, ft_strlen(data->envp[x]) - 7);
+// 		x++;
 // 	}
-// 	else
-// 	{
-// 		if (g_signal == -1)
-// 		{
-// 			close(STDIN_FILENO);
-// 			g_signal = -2;
-// 		}
-// 		printf("\n");
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
+// 	return (1);
 // }
 
 int	main(int argc, char **argv, char **envp)
@@ -278,10 +317,7 @@ int	main(int argc, char **argv, char **envp)
 	initialize_data(&data);
 	env = parse_environment(dup_env(envp));
 	if (!env)
-	{
-		
 		return (1);
-	}
 	minishell_loop(&data, env, 0);
 	return (0);
 }

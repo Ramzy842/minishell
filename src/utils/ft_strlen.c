@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:15 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/16 12:16:25 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 09:04:27 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_strlen(char *str)
 {
 	int	x;
 
+	if (!str)
+		return (0);
 	x = 0;
 	while (str[x])
 		x++;

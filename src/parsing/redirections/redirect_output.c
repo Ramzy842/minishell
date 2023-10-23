@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 03:57:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:43:45 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:50:49 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	redirect_output(t_commands *tmp, t_data *data, t_env *env, int status)
 	tmp->o_redir = IO_OUTPUT;
 	if (open(tmp->output_filename, O_CREAT | O_RDWR | O_TRUNC, 0644) == -1)
 	{
-		ft_putstr_fd("minishell: error creating file\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: No such file or directory\n", STDERR_FILENO);
 		return (0);
 	}
 	if (data->lexer_list)

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:34 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:43:17 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:45:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_parser_data
 typedef struct s_data
 {
 	char					*shell_input;
+	int						x;
 	char					**paths;
 	char					**envp;
 	char					**envp_arr;
@@ -67,7 +68,7 @@ typedef struct s_data
 	int						*pid;
 	int						heredoc;
 	int						reset;
-}	t_data;
+}			t_data;
 
 typedef struct s_env {
 	char					*key;
@@ -104,7 +105,8 @@ int			add_node(char *str, t_tokens token, t_lexer **lexer_list);
 int			launch_parser(t_data *data);
 void		update_pipes_count(t_data *data);
 t_commands	*parse_commands(t_data *data);
-void		parser_error(int error, t_data *data, t_lexer *lexer_list);
+void		parser_error(int error,
+				t_data *data, t_lexer *lexer_list);
 void		remove_lexer_node(t_lexer **lst, int key);
 int			parser_double_token_error(t_data *data,
 				t_lexer *lexer_list, t_tokens token);
@@ -114,21 +116,25 @@ t_lexer		*free_lexer_node(t_lexer **lst);
 void		clear_lexer_nodes(t_lexer **lst);
 int			ft_error(int error, t_data *data, t_env *env);
 t_lexer		*expand_lexer(t_lexer *lexer_list, t_env *env);
-// void		handle_args(t_commands *tmp, int *x, t_data *data, t_env *env);
-void		handle_args(t_commands *tmp, int *x, t_data *data, t_env *env, int status);
+void		handle_args(t_commands *tmp,
+				int *x, t_data *data, t_env *env, int status);
+// void	handle_args(t_commands *tmp, t_data *data, t_env *env, int status);
 char		**realloc_arr(char	**old_arr, int increment);
 int			get_list_length(void *head);
 
 // REDIRECTIONS
-int			redirect_append(t_commands *tmp, t_data *data, t_env *env, int status);
-void		redirect_heredoc(t_commands *tmp, t_data *data, t_env *env, int status);
-int			redirect_input(t_commands *tmp, t_data *data, t_env *env, int status);
-int			redirect_output(t_commands *tmp, t_data *data, t_env *env, int status);
-// int			redirect_output(t_commands *tmp, t_data *data, t_env *env);
-int			handle_redirections(t_data *data, t_commands *tmp, t_env *env, int status);
-// int			handle_redirections(t_data *data, t_commands *tmp, t_env *env);
-// char		*ft_get_heredoc(char *heredoc, t_env *env);
-char		*ft_get_heredoc(char *heredoc, t_env *env, int status);
+int			redirect_append(t_commands *tmp,
+				t_data *data, t_env *env, int status);
+void		redirect_heredoc(t_commands *tmp,
+				t_data *data, t_env *env, int status);
+int			redirect_input(t_commands *tmp,
+				t_data *data, t_env *env, int status);
+int			redirect_output(t_commands *tmp,
+				t_data *data, t_env *env, int status);
+int			handle_redirections(t_data *data,
+				t_commands *tmp, t_env *env, int status);
+char		*ft_get_heredoc(char *heredoc,
+				t_env *env, int status);
 
 // REDIRECTIONS UTILS
 int			is_metachar(char *str);
@@ -140,7 +146,8 @@ char		**convert_env_to_arr(t_env *env);
 char		**dup_env(char **envp);
 char		*extract_path(char **envp);
 void		handle_envp(t_data *data);
-t_env		*add_env(t_env *list, const char *key, const char *value);
+t_env		*add_env(t_env *list,
+				const char *key, const char *value);
 t_env		*parse_environment(char **env);
 char		*find_env_key(t_env *env, char *value);
 
@@ -148,6 +155,23 @@ char		*find_env_key(t_env *env, char *value);
 t_commands	*gen_cmd_node(void);
 void		clear_command_nodes(t_commands **list);
 
-int			ft_save_stdin_stdout(int *save_stdin, int *save_stdout);
-void		ft_reset_stdin_stdout(int *save_stdin, int *save_stdout);
+int			ft_save_stdin_stdout(int *save_stdin,
+				int *save_stdout);
+void		ft_reset_stdin_stdout(int *save_stdin,
+				int *save_stdout);
+
+// EXPANSION
+char		*find_env_var(t_env *env, char *key);
+int			count_dollar_signs(char *str);
+void		join_before_sign(char *str, char *joined);
+char		*handle_status(char *joined, int status,
+				char *var_name);
+char		*handle_exp(char *joined, char *var_name,
+				char *var_value, t_env *env);
+char		*handle_one_sign(char *str, t_env *env, int status);
+char		*handle_status_many(char *joined, int status, char *var_name);
+char		*handle_exp_many(char *joined,
+				char *var_name, char *var_value, t_env *env);
+char		*handle_many_signs(char *str, char **spl,
+				t_env *env, int status);
 #endif

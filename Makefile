@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/23 04:41:42 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/23 10:02:15 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,10 @@ CC = cc
 # Define the flags to pass to the compiler
 CFLAGS = -Werror -Wall -Wextra
 
-FLAGS = -lreadline  #-g -fsanitize=address
+FLAGS = -lreadline  -g -fsanitize=address
 
 # Define the source files for the minishell executable
-SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
+SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c \
 	./src/utils/ft_strjoinget.c ./src/parsing/redirections/redirect_heredoc.c ./src/parsing/redirections/redirect_append.c \
 	./src/parsing/redirections/redirect_output.c ./src/utils/spaces.c \
 	./src/utils/ft_strcmp.c ./src/utils/ft_atoi.c ./src/utils/ft_strchr.c ./src/parsing/lexer/lexer.c \
@@ -41,6 +41,7 @@ SRC = main.c printing.c ./src/parsing/parsing.c ./src/parsing/redirections/redir
 	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
 	./src/utils/ft_strlcpy.c ./src/builtins/utils/env_helper.c ./src/execution/help_function.c \
 	./src/execution/ft_signal.c ./src/builtins/utils/tools_export.c ./src/builtins/utils/tools2.c ./src/utils/ft_itoa.c \
+	./src/parsing/expansion/utils/many_exp.c ./src/parsing/expansion/utils/single_exp.c ./src/parsing/expansion/utils/utils_1.c
 # Define the object files for the minishell executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 

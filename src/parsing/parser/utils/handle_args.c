@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 11:27:20 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:38:15 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:53:32 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	handle_args(t_commands *tmp, int *x, t_data *data, t_env *env, int status)
 {
-	(void)env;
 	tmp->command_args = realloc_arr(tmp->command_args, 2);
 	if (data->lexer_list->str[0] == '\''
 		&& data->lexer_list->str[ft_strlen(data->lexer_list->str) - 1] == '\'')

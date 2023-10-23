@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/08 23:09:09 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 10:51:42 by rchahban         ###   ########.fr       */
+/*   Created: 2023/10/23 08:31:11 by rchahban          #+#    #+#             */
+/*   Updated: 2023/10/23 08:37:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../../minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+char	*find_env_var(t_env *env, char *key)
 {
-	int				x;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	t_env	*current;
 
-	if (!s1 || !s2)
-		return (0);
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	x = 0;
-	while (str1[x] != '\0' || str2[x] != '\0')
+	current = env;
+	while (current != NULL)
 	{
-		if (str1[x] != str2[x])
-			return (str1[x] - str2[x]);
+		if (ft_strcmp(current->key, key) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+int	count_dollar_signs(char *str)
+{
+	int	count;
+	int	x;
+
+	count = 0;
+	x = 0;
+	while (str[x])
+	{
+		if (str[x] == '$')
+			count++;
 		x++;
 	}
-	return (0);
+	return (count);
 }
