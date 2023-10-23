@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:37:51 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 05:11:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 	return (head);
 }
 
-static char	*ft_strjoin_char(char *s1, char c)
+char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*res;
 	int		x;
@@ -166,7 +166,7 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 	temp = NULL;
 	data->commands = NULL;
 	data->lexer_list = NULL;
-	printf ("zaba : %d\n", status);
+	// printf ("zaba : %d\n", status);
 	data->shell_input = readline("Minishell-> ");
 	if (!data->shell_input)
 	{

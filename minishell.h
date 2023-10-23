@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:35:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 05:11:56 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "./src/execution/execution.h"
 
 int		ft_strlen(char *str);
+char	*ft_strjoin_char(char *s1, char c);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_substr(char *s, unsigned int start, int len);
