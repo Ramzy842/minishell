@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 22:32:24 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:35:10 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int		ft_atoi(const char *str);
 int		minishell_execute(t_commands *cmd, t_env *env, t_data *data);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 char	*ft_strjoinget(char *s1, char *s2);
+char	*ft_itoa(int n);
 
 // printing
 void	printer(t_data *data, t_commands *command);
@@ -69,7 +70,7 @@ void	print_commands_list(t_commands *list);
 void	clear_command_nodes(t_commands **lst);
 void	build_commands_list(t_lexer **lexer_list, t_data *data);
 void	print_cmd_lst(t_commands *cmd);
-char	*expand_variables(char *input, t_env *env);
+char	*expand_variables(char *str, t_env *env, int status);
 void	free_env_list(t_env *list);
 
 typedef struct s_global

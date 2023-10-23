@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:47:03 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 00:02:26 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 00:51:10 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <dirent.h>
 #include <sys/types.h>
-
-
 
 int	check_if_its_a_directory(char *path)
 {

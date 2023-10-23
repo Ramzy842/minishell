@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 07:54:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 23:18:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:53:05 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,32 @@ int	count_dollar_signs(char *str)
 	return (count);
 }
 
-char	*handle_many_signs(char **spl, t_env *env)
+// char	*handle_many_signs(char **spl, t_env *env, int status)
+// {
+// 	char	*var_name;
+// 	char	*var_value;
+// 	int		x;
+// 	char	*joined;
+
+// 	x = 0;
+// 	joined = malloc(1);
+// 	joined[0] = '\0';
+// 	while (spl[x])
+// 	{
+// 		// if spl[x][0] == '$'
+// 		var_name = spl[x];
+// 		var_value = find_env_var(env, var_name);
+// 		if (var_value)
+// 			joined = ft_strjoin(joined, var_value);
+// 		else
+// 			joined = ft_strjoin(joined, "");
+// 		x++;
+// 	}
+// 	free_arr(spl);
+// 	return (joined);
+// }
+
+char	*handle_many_signs(char **spl, t_env *env, int status)
 {
 	char	*var_name;
 	char	*var_value;
@@ -55,6 +80,11 @@ char	*handle_many_signs(char **spl, t_env *env)
 	while (spl[x])
 	{
 		var_name = spl[x];
+		if (var_name[0] == '?')
+		{
+			joined = ft_itoa(status);
+			var_name = var_name + 1;
+		}
 		var_value = find_env_var(env, var_name);
 		if (var_value)
 			joined = ft_strjoin(joined, var_value);
@@ -66,8 +96,9 @@ char	*handle_many_signs(char **spl, t_env *env)
 	return (joined);
 }
 
-char	*handle_one_sign(char *str, t_env *env)
+char	*handle_one_sign(char *str, t_env *env, int status)
 {
+	(void) status;
 	char	*dollar_sign;
 	char	*var_name;
 	char	*var_value;
@@ -75,6 +106,7 @@ char	*handle_one_sign(char *str, t_env *env)
 	dollar_sign = ft_strchr(str, '$');
 	if (dollar_sign)
 	{
+		if (dollar_sign[1] == '?') // handle status expansion
 		if (ft_strcmp(dollar_sign + 1, ""))
 		{
 			var_name = dollar_sign + 1;
@@ -90,7 +122,7 @@ char	*handle_one_sign(char *str, t_env *env)
 	return (ft_strdup(str));
 }
 
-char	*expand_variables(char *str, t_env *env)
+char	*expand_variables(char *str, t_env *env, int status)
 {
 	char	*removed_quotes_str;
 	char	**spl;
@@ -98,61 +130,7 @@ char	*expand_variables(char *str, t_env *env)
 	removed_quotes_str = remove_quotes(str);
 	spl = ft_split(removed_quotes_str, '$');
 	if (count_dollar_signs(str) > 1)
-		return (handle_many_signs(spl, env));
+		return (handle_many_signs(spl, env, status));
 	else
-		return (handle_one_sign(removed_quotes_str, env));
+		return (handle_one_sign(removed_quotes_str, env, status));
 }
-
-// char	*expand_variables(char *str, t_env *env)
-// {
-// 	char	*dollar_sign;
-// 	char	*removed_quotes_str;
-// 	int		x;
-// 	char	**spl;
-// 	char	*joined;
-// 	char	*var_name;
-// 	char	*var_value;
-
-// 	dollar_sign = NULL;
-// 	removed_quotes_str = NULL;
-// 	if (count_dollar_signs(str) > 1)
-// 	{
-// 		x = 0;
-// 		removed_quotes_str = remove_quotes(str);
-// 		spl = ft_split(removed_quotes_str, '$');
-// 		joined = malloc(1);
-// 		joined[0] = '\0';
-// 		while (spl[x])
-// 		{
-// 			var_name = spl[x];
-// 			var_value = find_env_var(env, var_name);
-// 			if (var_value)
-// 				joined = ft_strjoin(joined, var_value);
-// 			else
-// 				joined = ft_strjoin(joined, "");
-// 			x++;
-// 		}
-// 		free_arr(spl);
-// 		return (joined);
-// 	}
-// 	else
-// 	{
-// 		removed_quotes_str = remove_quotes(str);
-// 		dollar_sign = ft_strchr(removed_quotes_str, '$');
-// 		free(removed_quotes_str);
-// 		if (dollar_sign && ft_strcmp(dollar_sign + 1, ""))
-// 		{
-// 			var_name = dollar_sign + 1;
-// 			var_value = find_env_var(env, var_name);
-// 			if (var_value)
-// 				str = ft_strdup(var_value);
-// 			else
-// 				str = ft_strdup("");
-// 		}
-// 		else if (dollar_sign && !ft_strcmp(dollar_sign + 1, ""))
-// 			str = ft_strdup("$");
-// 		else
-// 			str = ft_strdup(str);
-// 	}
-// 	return (str);
-// }

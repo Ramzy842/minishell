@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 09:47:53 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 19:57:01 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:42:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-static	char	*ft_getline_herdoc(char *heredoc, t_env *env)
+static	char	*ft_getline_herdoc(char *heredoc, t_env *env, int status)
 {
 	char	*line;
 	char	*temp;
@@ -30,7 +30,7 @@ static	char	*ft_getline_herdoc(char *heredoc, t_env *env)
 				free(line);
 			break ;
 		}
-		temp = ft_strjoinget(temp, expand_variables(line, env));
+		temp = ft_strjoinget(temp, expand_variables(line, env, status));
 		temp = ft_strjoinget(temp, "\n");
 		if (line)
 			free(line);
@@ -38,17 +38,17 @@ static	char	*ft_getline_herdoc(char *heredoc, t_env *env)
 	return (temp);
 }
 
-char	*ft_get_heredoc(char *heredoc, t_env *env)
+char	*ft_get_heredoc(char *heredoc, t_env *env, int status)
 {
 	char	*tmp;
 
 	if (!heredoc)
 		return (NULL); 
-	tmp = ft_getline_herdoc(heredoc, env);
+	tmp = ft_getline_herdoc(heredoc, env, status);
 	return (tmp);
 }
 
-void	redirect_heredoc(t_commands *tmp, t_data *data, t_env *env)
+void	redirect_heredoc(t_commands *tmp, t_data *data, t_env *env, int status)
 {
 	(void)env;
 	if (tmp->input_filename)
@@ -58,5 +58,5 @@ void	redirect_heredoc(t_commands *tmp, t_data *data, t_env *env)
 	data->lexer_list = data->lexer_list->next;
 	if (data->lexer_list)
 		data->lexer_list = data->lexer_list->next;
-	tmp->heredoc = ft_get_heredoc(tmp->input_filename, env);
+	tmp->heredoc = ft_get_heredoc(tmp->input_filename, env, status);
 }

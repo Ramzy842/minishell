@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 09:58:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 14:13:43 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:43:29 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int	redirect_append(t_commands *tmp, t_data *data, t_env *env)
+int	redirect_append(t_commands *tmp, t_data *data, t_env *env, int status)
 {
 	(void)env;
 	if (tmp->output_filename)
@@ -20,7 +20,7 @@ int	redirect_append(t_commands *tmp, t_data *data, t_env *env)
 	if (data->lexer_list->next)
 		tmp->output_filename = 
 			ft_strdup(expand_variables(
-					remove_quotes(data->lexer_list->next->str), env));
+					remove_quotes(data->lexer_list->next->str), env, status));
 	tmp->o_redir = IO_APPEND;
 	if (open(tmp->output_filename, O_CREAT | O_RDWR | O_APPEND, 0644) == -1)
 	{

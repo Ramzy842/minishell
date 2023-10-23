@@ -6,13 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 03:57:59 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 13:30:52 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:43:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int	redirect_output(t_commands *tmp, t_data *data, t_env *env)
+int	redirect_output(t_commands *tmp, t_data *data, t_env *env, int status)
 {
 	(void)env;
 	if (tmp->output_filename)
@@ -21,7 +21,7 @@ int	redirect_output(t_commands *tmp, t_data *data, t_env *env)
 	{
 		tmp->output_filename = ft_strdup(
 				expand_variables(remove_quotes
-					(data->lexer_list->next->str), env));
+					(data->lexer_list->next->str), env, status));
 		data->lexer_list = data->lexer_list->next;
 	}
 	tmp->o_redir = IO_OUTPUT;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/22 23:51:11 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/23 01:37:51 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,6 @@ int	reset_data(t_data *data, t_env *env, int status)
 	return (1);
 }
 
-// char	*show_current_path(char *working_dir)
-// {
-// 	working_dir = print_current_dir();
-// 	working_dir = ft_strjoin("\x1b[32mMinishell:\x1b[36m",working_dir);
-// 	working_dir = ft_strjoin(working_dir, "$ \x1b[0m");
-// 	return (working_dir);
-// }
-
 int	ft_save_stdin_stdout(int *save_stdin, int *save_stdout)
 {
 	*save_stdin = dup(STDIN_FILENO);
@@ -52,7 +44,7 @@ void ft_reset_stdin_stdout(int *save_stdin, int *save_stdout)
 	close(*save_stdout);
 }
 
-t_commands	*gen_cmd_lst(t_data *data, t_env *env)
+t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 {
 	t_commands	*head;
 	t_commands	*tmp;
@@ -72,7 +64,7 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env)
 			ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
-			handle_args(tmp, &x, data, env);
+			handle_args(tmp, &x, data, env, status);
 		while (data->lexer_list && is_metachar(data->lexer_list->str))
 		{
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
@@ -83,7 +75,7 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env)
 				tmp = tmp->next;
 				continue ;
 			}
-			if (!handle_redirections(data, tmp, env))
+			if (!handle_redirections(data, tmp, env, status))
 				return (NULL);
 		}
 	}
@@ -196,19 +188,27 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 	if (!quotes_are_matching(data->shell_input))
 	{
 		ft_putendl_fd("Syntax error", STDOUT_FILENO);
+		status = 1;
 		reset_data(data, env, status);
 		return (EXIT_FAILURE);
 	}
 	if (!tokens_reader(data))
-		return (ft_error(1, data, env));
+	{
+		ft_putendl_fd("Syntax error", STDOUT_FILENO);
+		status = 1;
+		reset_data(data, env, status);
+		return (EXIT_FAILURE);
+	}
 	if (!syntaxer(data->lexer_list))
 	{
-		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
+		ft_putendl_fd("Syntax error", STDOUT_FILENO);
+		status = 1;
 		reset_data(data, env, status);
+		return (EXIT_FAILURE);
 	}
 	if (data->lexer_list)
 	{
-		data->commands = gen_cmd_lst(data, env);
+		data->commands = gen_cmd_lst(data, env, status);
 		if (!data->commands)
 			reset_data(data, env, status);
 		else
@@ -272,13 +272,16 @@ int	main(int argc, char **argv, char **envp)
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
-	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, ft_handler);
+	// signal(SIGQUIT, SIG_IGN);
 	g_signal = 0;
 	initialize_data(&data);
 	env = parse_environment(dup_env(envp));
 	if (!env)
+	{
+		
 		return (1);
+	}
 	minishell_loop(&data, env, 0);
 	return (0);
 }
