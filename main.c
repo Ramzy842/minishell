@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 10:49:31 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 19:52:10 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 {
 	t_commands	*head;
 	t_commands	*tmp;
-	int			x;
+	// int			x;
 	int			fd[2];
 
 	head = gen_cmd_node();
 	tmp = head;
-	x = 0;
+	// x = 0;
 	ft_save_stdin_stdout(&fd[0], &fd[1]);
 	g_signal = -1;
 	while (data->lexer_list)
@@ -109,14 +109,14 @@ t_commands	*gen_cmd_lst(t_data *data, t_env *env, int status)
 			ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
 		}
 		while (data->lexer_list && !is_metachar(data->lexer_list->str))
-			handle_args(tmp, &x, data, env, status);
-			// handle_args(tmp, data, env, status);
+			// handle_args(tmp, &x, data, env, status);
+			handle_args(tmp, data, env, status);
 		while (data->lexer_list && is_metachar(data->lexer_list->str))
 		{
 			if (data->lexer_list && !ft_strcmp(data->lexer_list->str, "|"))
 			{
 				tmp->next = gen_cmd_node();
-				x = 0;
+				data->x = 0;
 				// data->x = 0;
 				data->lexer_list = data->lexer_list->next;
 				tmp = tmp->next;
@@ -250,7 +250,6 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 	free(data->shell_input);
 	data->shell_input = ft_strdup(temp);
 	free(temp);
-	// return (1);
 	if (!data->shell_input)
 		return (EXIT_SUCCESS);
 	if (ft_strlen(&data->shell_input[0]) == '\0')
@@ -282,6 +281,7 @@ int	minishell_loop(t_data *data, t_env *env, int status)
 		// gen_cmds_and_execute(data, env, status);
 	return (1);
 }
+
 
 // int	extract_pwd(t_data *data)
 // {
@@ -318,6 +318,7 @@ int	main(int argc, char **argv, char **envp)
 	env = parse_environment(dup_env(envp));
 	if (!env)
 		return (1);
+	// minishell_loop(&data, env, 0);
 	minishell_loop(&data, env, 0);
 	return (0);
 }
