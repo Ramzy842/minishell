@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 22:03:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 22:25:32 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:48:50 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	main(int argc, char **argv, char **envp)
 		printf("\x1b[31mMinishell does not accept arguments.\n");
 		exit(0);
 	}
-	// signal(SIGINT, ft_handler);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ft_handler);
+	signal(SIGQUIT, SIG_IGN);
 	g_signal = 0;
 	initialize_data(&data);
 	env = parse_environment(dup_env(envp));

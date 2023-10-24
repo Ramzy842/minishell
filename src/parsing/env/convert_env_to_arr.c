@@ -3,55 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   convert_env_to_arr.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:04:11 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/21 13:26:54 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:40:28 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
-// char	**convert_env_to_arr(t_env *env)
-// {
-// 	int		count;
-// 	t_env	*current;
-// 	int		x;
-// 	int		key_len;
-// 	int		value_len;
-// 	int		length;
-// 	char	**array;
-
-// 	count = 0;
-// 	current = env;
-// 	while (current != NULL)
-// 	{
-// 		count++;
-// 		current = current->next;
-// 	}
-// 	array = malloc(sizeof(char *) * (count + 1));
-// 	array[count] = NULL;
-// 	if (!array)
-// 		return (NULL);
-// 	current = env;
-// 	x = 0;
-// 	while (current != NULL)
-// 	{
-// 		key_len = ft_strlen(current->key);
-// 		value_len = ft_strlen(current->value);
-// 		length = key_len + value_len + 2;
-// 		array[x] = malloc(sizeof(char) * length);
-// 		if (!array[x])
-// 			return (NULL);
-// 		ft_strncpy(array[x], current->key, key_len);
-// 		array[x][key_len] = '=';
-// 		ft_strncpy(array[x] + key_len + 1, current->value, value_len);
-// 		array[x][length - 1] = '\0';
-// 		current = current->next;
-// 		x++;
-// 	}
-// 	return (array);
-// }
 
 int	count_env_elements(t_env *env)
 {
@@ -89,7 +48,7 @@ char	*copy_env_to_array(char *key, char *value)
 	value_len = ft_strlen(value);
 	key_len = ft_strlen(key);
 	length = key_len + value_len + 2;
-	env_str = malloc(sizeof(char) * length);
+	 env_str = malloc(sizeof(char) * length);
 	if (!env_str)
 		return (NULL);
 	ft_strncpy(env_str, key, key_len);

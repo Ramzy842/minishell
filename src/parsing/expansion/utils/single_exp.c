@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_exp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 08:35:01 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 21:12:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:26:49 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*handle_one_sign(char *str, t_env *env, int status)
 	char	*var_value;
 	char	*joined;
 
-	joined = malloc(1);
+	joined = custom_malloc(1, NULL, ALLOC, NULL);
 	joined[0] = '\0';
 	var_value = NULL;
 	var_name = NULL;

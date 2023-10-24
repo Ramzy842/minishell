@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:25 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 22:32:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 01:45:43 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_strjoin_char(char *s1, char c)
 		x++;
 	}
 	res[x] = c;
-	free(s1);
+	// free(s1);
 	return (res);
 }
 

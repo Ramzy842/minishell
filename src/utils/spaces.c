@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spaces.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 03:37:02 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 02:48:30 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:27:27 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*remove_beg_end(char *str)
 	start = 0;
 	end = ft_strlen(str) - 1;
 	idx = 0;
-	ptr = malloc(sizeof(char) * ft_strlen(str));
+	ptr = custom_malloc((sizeof(char) * ft_strlen(str)) , NULL, ALLOC , NULL);
 	while (str[start]
 		&& (str[start] == ' ' || str[start] == '\t' || str[start] == '\n'))
 		start++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 22:24:39 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 01:51:46 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "./src/builtins/builtins.h"
 # include "./src/parsing/parsing.h"
 # include "./src/execution/execution.h"
+# include "custom_malloc.h"
 
 int		ft_strlen(char *str);
 char	*ft_strjoin_char(char *s1, char c);

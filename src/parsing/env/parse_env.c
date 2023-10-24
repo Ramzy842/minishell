@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:02:27 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 23:25:25 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 01:55:40 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_env	*parse_environment(char **env)
 			ft_strncpy(key, env[x], (equals - env[x]));
 			value = equals + 1;
 			env_list = add_env(env_list, key, value);
+			free(key);
 		}
 		x++;
 	}

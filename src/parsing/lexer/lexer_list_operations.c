@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_list_operations.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:22:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 22:48:38 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:26:52 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_lexer	*create_lexer_node(char *str, int token)
 	t_lexer		*new_node;
 	static int	idx = 0;
 
-	new_node = malloc(sizeof(t_lexer));
+	new_node = custom_malloc(sizeof(t_lexer) , NULL, ALLOC, NULL);
 	if (!new_node)
 		return (0);
 	new_node->str = str;

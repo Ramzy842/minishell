@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   many_exp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 08:34:32 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 21:16:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:26:46 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*handle_many_signs(char *str, char **spl, t_env *env, int status)
 	char	*joined;
 
 	x = 0;
-	joined = malloc(1);
+	joined = custom_malloc(1, NULL, ALLOC, NULL);
 	joined[0] = '\0';
 	var_value = NULL;
 	var_name = NULL;

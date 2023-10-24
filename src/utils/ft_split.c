@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/15 02:45:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:27:16 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**ft_split(char *s, char c)
 	k = 0;
 	while (!s)
 		return (NULL);
-	str = (char **)malloc(sizeof(char *) * (f_count(s, c) + 1));
+	str = (char **)custom_malloc((sizeof(char *) * (f_count(s, c) + 1)) ,NULL, ALLOC, NULL);
 	if (!str)
 		return (NULL);
 	while (s[i])

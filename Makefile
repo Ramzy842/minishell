@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
+#    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/23 22:35:22 by rchahban         ###   ########.fr        #
+#    Updated: 2023/10/24 04:43:21 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@
 CC = cc
 
 # Define the flags to pass to the compiler
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra #-g -fsanitize=address
 
-FLAGS = -lreadline  -g -fsanitize=address
+LIBRARY_PATH = -L/Users/mbouderr/.brew/opt/readline/lib
+INCLUDE_PATH = -I/Users/mbouderr/.brew/opt/readline/include
 
 # Define the source files for the minishell executable
 SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c ./src/parsing/minishell_loop.c \
@@ -41,7 +42,8 @@ SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c
 	./src/builtins/builtins.c ./src/builtins/utils/exit_helpers.c ./src/builtins/utils/export_helper.c ./src/builtins/utils/pwd_helper.c ./src/builtins/utils/unset_helper.c \
 	./src/utils/ft_strlcpy.c ./src/builtins/utils/env_helper.c ./src/execution/help_function.c \
 	./src/execution/ft_signal.c ./src/builtins/utils/tools_export.c ./src/builtins/utils/tools2.c ./src/utils/ft_itoa.c \
-	./src/parsing/expansion/utils/many_exp.c ./src/parsing/expansion/utils/single_exp.c ./src/parsing/expansion/utils/utils_1.c
+	./src/parsing/expansion/utils/many_exp.c ./src/parsing/expansion/utils/single_exp.c ./src/parsing/expansion/utils/utils_1.c\
+	./custom_malloc.c ./misc_functions.c ./misc_functions2.c \
 # Define the object files for the minishell executable, generated from the source files
 OBJ = $(SRC:.c=.o)
 
@@ -53,11 +55,11 @@ all: $(NAME)
 
 # Rule to generate the minishell executable from the object files
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline 
+	$(CC) $(CFLAGS) $(LIBRARY_PATH) $(INCLUDE_PATH) $(OBJ) -o $(NAME) -lreadline
 
 # Rule to generate the object files from the source files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(patsubst %.c,%.o,$<) 
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) -c $< -o $@
 
 # Clean target to remove generated files
 clean:

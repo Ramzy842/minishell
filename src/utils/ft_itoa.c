@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 01:34:06 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 01:34:49 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:27:09 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	get_length(int n)
 
 static char	*handle_zero(char *ptr)
 {
-	ptr = malloc(2);
+	ptr = custom_malloc(2, NULL, ALLOC, NULL);
 	ptr[0] = '0';
 	ptr[1] = '\0';
 	return (ptr);
@@ -48,7 +48,7 @@ char	*ft_itoa(int n)
 	ptr = NULL;
 	if (number == 0)
 		return (handle_zero(ptr));
-	ptr = malloc(sizeof(char) * (get_length(number) + 1));
+	ptr = custom_malloc((sizeof(char) * (get_length(number) + 1)) , NULL, ALLOC , NULL );
 	if (!ptr)
 		return (0);
 	x = get_length(number);
