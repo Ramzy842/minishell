@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 03:17:38 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 01:51:46 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:03:54 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*join_args(char **args);
 char	*remove_beg_end(char *str);
 char	*ft_strnstr( char *haystack, char *needle, int len);
-char	**ft_split_spaces(char *s);
 int		ft_strlen_2d(char **tab);
-char	**tok_w_no_quotes(char **args);
 char	*ft_strtrim(char *s1, char *set);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
@@ -53,7 +51,6 @@ void	ft_putstr_fd(char *s, int fd);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_strncmp(const char *s1, const char *s2, size_t length);
 void	ft_bzero(void *s, size_t n);
-char	*ft_strjoin_2d(char *s1, char **s2, int s2_size);
 void	ft_memset(void *addr, unsigned char data, int len);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 void	free_arr(char **arr);

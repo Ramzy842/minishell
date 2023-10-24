@@ -6,7 +6,7 @@
 #    By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 00:46:41 by rchahban          #+#    #+#              #
-#    Updated: 2023/10/24 04:43:21 by mbouderr         ###   ########.fr        #
+#    Updated: 2023/10/24 05:01:53 by mbouderr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC = main.c ./src/parsing/parsing.c ./src/parsing/redirections/redirect_input.c
 	./src/utils/ft_strnstr.c ./src/utils/ft_split.c ./src/utils/ft_substr.c \
 	./src/utils/ft_strdup.c ./src/utils/ft_strlen.c ./src/utils/ft_strjoin.c ./src/utils/handle_args.c \
 	./src/builtins/utils/cd_helpers.c ./src/parsing/expansion/expander.c \
-	./src/execution/execution.c ./src/utils/tok_w_no_quotes.c ./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
+	./src/execution/execution.c ./src/builtins/utils/echo_helpers.c ./src/utils/ft_strlen_2d.c \
 	./src/parsing/utils/lexer/quotes_utils.c ./src/parsing/utils/lexer/lexer_utils.c \
 	./src/parsing/lexer/lexer_list_operations.c ./src/parsing/parser/parser.c ./src/parsing/utils/parser/parser_utils.c \
 	./src/utils/ft_putstr_fd.c ./src/parsing/utils/lexer/lexer_utils_1.c \

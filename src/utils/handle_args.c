@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:10:57 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 04:23:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 04:59:31 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*join_args(char **args)
 	char	*str;
 
 	x = 0;
-	str = custom_malloc( sizeof(char) * 1 , NULL ,ALLOC ,NULL );
+	str = custom_malloc(sizeof(char) * 1, NULL, ALLOC, NULL);
 	str[0] = '\0';
 	while (args[x])
 	{

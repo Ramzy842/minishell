@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 02:10:52 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 04:27:23 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:08:47 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	ptr = custom_malloc(((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char)) + 1, NULL, ALLOC,NULL);
+	ptr = custom_malloc(((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char)) + 1,
+			NULL, ALLOC, NULL);
 	if (ptr == 0)
 		return (ptr);
 	x = 0;

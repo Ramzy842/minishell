@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 23:09:12 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 04:27:16 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:07:32 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ char	**ft_split(char *s, char c)
 	k = 0;
 	while (!s)
 		return (NULL);
-	str = (char **)custom_malloc((sizeof(char *) * (f_count(s, c) + 1)) ,NULL, ALLOC, NULL);
-	if (!str)
-		return (NULL);
+	str = (char **)custom_malloc((sizeof(char *) * (f_count(s, c) + 1)), NULL,
+			ALLOC, NULL);
 	while (s[i])
 	{
 		while (s[i] == c && s[i])

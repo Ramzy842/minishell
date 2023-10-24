@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 11:24:17 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/23 22:34:44 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:20:05 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ void	free_lexer_nodes(t_lexer **lst)
 	}
 	*lst = NULL;
 }
-

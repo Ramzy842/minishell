@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 07:20:48 by mbouderr          #+#    #+#             */
-/*   Updated: 2023/10/24 01:08:05 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:22:33 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_env	*create_env_variable(char *var, char *value)
 {
 	t_env	*new_env;
-	
+
 	new_env = malloc(sizeof(t_env));
 	if (new_env)
 	{

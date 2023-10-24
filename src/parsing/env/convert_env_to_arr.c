@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 11:04:11 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 04:40:28 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:18:23 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*copy_env_to_array(char *key, char *value)
 	value_len = ft_strlen(value);
 	key_len = ft_strlen(key);
 	length = key_len + value_len + 2;
-	 env_str = malloc(sizeof(char) * length);
+	env_str = malloc(sizeof(char) * length);
 	if (!env_str)
 		return (NULL);
 	ft_strncpy(env_str, key, key_len);

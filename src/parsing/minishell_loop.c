@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 22:22:13 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 04:26:35 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:20:44 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	argumentize(t_commands *tmp, t_data *data, t_env *env, int status)
 {
 	if (!tmp->command_args)
 	{
-		tmp->command_args = custom_malloc((sizeof(char *) * 2),NULL, ALLOC,NULL);
+		tmp->command_args = custom_malloc((sizeof(char *) * 2), 
+				NULL, ALLOC, NULL);
 		ft_memset(tmp->command_args, 0, sizeof(char *) * 2);
 	}
 	while (data->lexer_list && !is_metachar(data->lexer_list->str))

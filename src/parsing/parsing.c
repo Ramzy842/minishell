@@ -6,7 +6,7 @@
 /*   By: mbouderr <mbouderr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 00:46:25 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/24 01:45:43 by mbouderr         ###   ########.fr       */
+/*   Updated: 2023/10/24 05:18:12 by mbouderr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	*ft_strjoin_char(char *s1, char c)
 		x++;
 	}
 	res[x] = c;
-	// free(s1);
 	return (res);
 }
 
