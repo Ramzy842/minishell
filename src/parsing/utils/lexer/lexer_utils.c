@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 03:10:41 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/20 20:51:49 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:14:32 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,45 +63,6 @@ int	handle_words(int x, char *str, t_lexer **lexer_list)
 		return (-1);
 	return (y);
 }
-
-// int	handle_token(char *str, int x, t_lexer **lexer_list)
-// {
-// 	t_tokens	token;
-
-// 	token = extract_token(str[x]);
-// 	if (token == OUTPUT && extract_token(str[x + 1]) == OUTPUT)
-// 	{
-// 		if (!add_node(ft_strdup(">>"), APPEND, lexer_list))
-// 			return (-1);
-// 		return (2);
-// 	}
-// 	else if (token == INPUT && extract_token(str[x + 1]) == INPUT)
-// 	{
-// 		if (!add_node(ft_strdup("<<"), HEREDOC, lexer_list))
-// 			return (-1);
-// 		return (2);
-// 	}
-// 	else if (token)
-// 	{
-// 		if (token == INPUT)
-// 		{
-// 			if (!add_node(ft_strdup("<"), INPUT, lexer_list))
-// 				return (-1);
-// 		}
-// 		if (token == OUTPUT)
-// 		{
-// 			if (!add_node(ft_strdup(">"), OUTPUT, lexer_list))
-// 				return (-1);
-// 		}
-// 		if (token == PIPE)
-// 		{
-// 			if (!add_node(ft_strdup("|"), PIPE, lexer_list))
-// 				return (-1);
-// 		}
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 int	handle_token(char *str, int x, t_lexer **lexer_list)
 {

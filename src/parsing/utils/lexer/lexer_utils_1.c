@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:14:31 by rchahban          #+#    #+#             */
-/*   Updated: 2023/10/17 19:42:15 by rchahban         ###   ########.fr       */
+/*   Updated: 2023/10/24 06:14:21 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ void	clear_lexer_nodes(t_lexer **lst)
 	}
 	*lst = NULL;
 }
-
-// void	lexer_error(int error, t_data *data)
-// {
-// 	clear_lexer_nodes(&data->lexer_list);
-// 	ft_error(error, data);
-// }
 
 void	delete_first_lexer_node(t_lexer **lst)
 {
